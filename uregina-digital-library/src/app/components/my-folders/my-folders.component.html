@@ -50,19 +50,39 @@
     </div>
 </nav>
 
+<section class="border row accent-bg mx-0" style="padding: 20px 0 30px;">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-8">
+        <form style="width: 100%;" (submit)="search()" class="mx-3">
+            <div class="input-group mb-3 input-group-lg">
+                <input [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                    placeholder="Quick Find">
+                <div class="input-group-append">
+                    <button class="btn btn-lg bg-white anti-round-left" type="submit"><i
+                            class="fa fa-search fa-rotate-90"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</section>
+
 <Section>
     <br />
     <br />
     <br />
 </Section>
-
 <section class="row mx-0">
     <div class="col-md-1">
 
     </div>
 
     <div class="col-md-10">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <!-- <ul class="nav nav-tabs accent-header-color" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
                     role="tab" aria-controls="home" aria-selected="true">SAVED RECORDS</button>
@@ -80,7 +100,13 @@
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-        </div>
+        </div> -->
+
+        <mat-tab-group animationDuration="600ms">
+            <mat-tab label="SAVED RECORDS">SAVED RECORDS</mat-tab>
+            <mat-tab label="SAVED SEARCHES">SAVED SEARCHES</mat-tab>
+            <mat-tab label="SEARCH HISTORY">SEARCH HISTORY</mat-tab>
+        </mat-tab-group>
     </div>
 
     <div class="col-md-1">

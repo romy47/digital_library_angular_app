@@ -1,0 +1,16 @@
+.nav-tabs .nav-link {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.nav-tabs .nav-link.active{
+    border-bottom: 2px solid #2e5370;
+}
+
+.nav-tabs .nav-link:hover {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+

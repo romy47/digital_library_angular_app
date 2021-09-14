@@ -16,8 +16,12 @@
 body{
     font-family: Arial,verdana;
 }
-.doc-title {
+.accent-title-color {
     color: #44707b;
+}
+
+.accent-header-color {
+    color: #4d6b82;
 }
 
 .fa-rotate-lite{
@@ -26,4 +30,11 @@ body{
     -ms-transform: rotate(25deg);
     -o-transform: rotate(25deg);
     transform: rotate(25deg);
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #2e5370;
 }
