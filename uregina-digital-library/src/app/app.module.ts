@@ -3,14 +3,28 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SerpComponent } from './components/serp/serp.component';
+import { DocDetailComponent } from './components/doc-detail/doc-detail.component';
+import { MyFoldersComponent } from './components/my-folders/my-folders.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { DocCardComponent } from './components/doc-card/doc-card.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SerpComponent,
+    DocDetailComponent,
+    MyFoldersComponent,
+    DocCardComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

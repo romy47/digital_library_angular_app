@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+.accent-bg{
+    background-color: #00663c;
+}
+
+.anti-round {
+    border-radius: 0 !important;
+}
+
+
+.anti-round-left {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+body{
+    font-family: Arial,verdana;
+}
+.doc-title {
+    color: #44707b;
+}
+
+.fa-rotate-lite{
+    -webkit-transform: rotate(25deg);
+    -moz-transform: rotate(25deg);
+    -ms-transform: rotate(25deg);
+    -o-transform: rotate(25deg);
+    transform: rotate(25deg);
+}

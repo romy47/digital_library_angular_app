@@ -1,0 +1,103 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light m-0">
+    <a class="navbar-brand" href="#">
+        <img src="./../../../assets/images/library-logo.png" width="200" class="d-inline-block align-top" alt="">
+        <!--  height="30" -->
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#"></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">New<br />Search</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">e-Journal<br />Titles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Database</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Browse</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Help</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Citation<br />Finder</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" [routerLink]="['/my-folder']"><i style="color: black;"
+                        class="fa fa-thumbtack fa-rotate-lite"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Sign in</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Menu</a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<section class="border row accent-bg mx-0" style="padding: 20px 0 30px;">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-8">
+        <form style="width: 100%;" (submit)="search()" class="mx-3">
+            <div class="input-group mb-3 input-group-lg">
+                <input [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                    placeholder="Quick Find">
+                <div class="input-group-append">
+                    <button class="btn btn-lg bg-white anti-round-left" type="submit"><i
+                            class="fa fa-search fa-rotate-90"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</section>
+
+<section class="row mx-0">
+    <div class="col-md-2">
+
+    </div>
+
+    <div class="col-md-8">
+        <ng-container *ngIf="documents!=null">
+            <div class="doc-index-{{i}} mx-2" *ngFor="let doc of documents  | paginate: { id: 'document-search-paginator',
+            itemsPerPage: pageSize,
+            currentPage: currentPage,
+            totalItems: totalDocuments }; let i = index"
+                [ngClass]="{'card-border-strong': doc.isFocused, 'card-border':!doc.isFocused }"
+                style="border-color: #bbbbbb;">
+                <app-doc-card class="app-doc-card pb-2 pl-2 pr-2 pt-0" [doc]="doc" [searchTerms]="searchTerms"
+                    [searchQuery]="searchQuery" (saveDoc)="saveToWorkspace($event)" (viewDoc)="viewDocument($event)">
+                </app-doc-card>
+            </div>
+            <pagination-controls style="position: relative;" id="document-search-paginator"
+                (pageChange)="pageChanged($event)" (pageBoundsCorrection)="pageChanged($event)" maxSize="9"
+                directionLinks="true" autoHide="true" responsive="true" previousLabel="Previous" nextLabel="Next"
+                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page">
+            </pagination-controls>
+        </ng-container>
+    </div>
+
+    <div class="col-md-2">
+
+    </div>
+
+</section>

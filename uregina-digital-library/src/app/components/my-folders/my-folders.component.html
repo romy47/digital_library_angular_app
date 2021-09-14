@@ -1,0 +1,89 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light m-0">
+    <a class="navbar-brand" href="#">
+        <img src="./../../../assets/images/library-logo.png" width="200" class="d-inline-block align-top" alt="">
+        <!--  height="30" -->
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#"></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">New<br />Search</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">e-Journal<br />Titles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Database</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Browse</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Help</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Citation<br />Finder</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" [routerLink]="['/search']">
+                    <i class="fa fa-search fa-rotate-90 text-dark"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Sign in</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Menu</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<Section>
+    <br />
+    <br />
+    <br />
+</Section>
+
+<section class="row mx-0">
+    <div class="col-md-1">
+
+    </div>
+
+    <div class="col-md-10">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                    role="tab" aria-controls="home" aria-selected="true">SAVED RECORDS</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+                    role="tab" aria-controls="profile" aria-selected="false">SAVED SEARCHES</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false">SEARCH HISTORY</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        </div>
+    </div>
+
+    <div class="col-md-1">
+
+    </div>
+</section>
