@@ -20,15 +20,16 @@ export class Search {
     constructor(obj: Search) {
         Object.assign(this, obj);
     }
-    activePagefacetTab ?: string;
-    createdAt ?: Date;
-    documentsBrowsed ?: number;
-    interestedDocuments ?: Doc[] = [];
+    activePagefacetTab?: string;
+    selected?: boolean = false;
+    createdAt?: Date;
+    documentsBrowsed?: number;
+    interestedDocuments?: Doc[] = [];
     documentSaved?: number = 0;
-    searchQuery ?: string;
-    selectedNavigationFacets ?: AllFacets;
-    taskId ?: string;
-    totalDocuments ?: number;
-    updatedAt ?: Date;
-    _id ?: string;
+    searchQuery?: string;
+    selectedNavigationFacets?: AllFacets;
+    taskId?: string;
+    totalDocuments?: number;
+    updatedAt?: Date;
+    _id?: string;
 }

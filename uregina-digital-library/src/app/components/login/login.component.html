@@ -1,0 +1,14 @@
+<div class="card mt-5 text-center" style="width: 18rem;" style="margin: 0 auto; max-width: 350px;">
+    <div class="card-body">
+        <h5 class="card-title">IIRV Academic digital library (Baseline)</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Univeristy of Regina</h6>
+        <p class="card-text">Sign in</p>
+        <button *ngIf="!verifyingCode" id="connect-orcid-button" (click)="openORCID()"><img id="orcid-id-icon"
+                src="https://orcid.org/sites/default/files/images/orcid_24x24.png" width="24" height="24"
+                alt="ORCID iD icon" />Register or Connect your ORCID iD</button>
+
+        <div *ngIf="verifyingCode" class="text-center mt-3">
+            Logging in, Please Wait <i class="fa fa-spinner fa-spin"></i>
+        </div>
+    </div>
+</div>

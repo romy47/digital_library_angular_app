@@ -70,6 +70,13 @@ export class SerpComponent implements OnInit {
 
         console.log(this.searchTerms);
 
+        this.libraryService.addSearch(this.searchQuery, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
+          this.searchId = searchResponse._id;
+
+          this.searching = false;
+        }, err => {
+          this.searching = false;
+        });
 
 
         // if (newSearch) {

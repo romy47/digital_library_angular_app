@@ -12,14 +12,18 @@ import { DocCardComponent } from './components/doc-card/doc-card.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { LoginComponent } from './components/login/login.component';
+import { SearchHistoryComponent } from './components/search-history/search-history.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AppComponent,
     SerpComponent,
     DocDetailComponent,
     MyFoldersComponent,
-    DocCardComponent
+    DocCardComponent,
+    LoginComponent,
+    SearchHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     NgxPaginationModule,
     MatTabsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

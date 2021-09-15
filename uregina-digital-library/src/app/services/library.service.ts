@@ -13,6 +13,45 @@ export class LibraryService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
+  // For the baseline
+  public addSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(api.API_PATH + 'baseline/search', {
+      searchQuery: searchQuery ? searchQuery.trim() : '',
+      totalDocuments: totalDocuments ? totalDocuments : 0,
+      documentsBrowsed: docBrowsed ? docBrowsed : 0,
+      createdBy: this.authService.getCurrentUserData()._id
+    }, httpOptions);
+  }
+
+  public getAllBaselineSearches(): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
+    return this.http.post(api.API_PATH + 'baseline/search/all', {
+      userId: this.authService.getCurrentUserData()._id
+    },
+      httpOptions
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+  // From the prototype ##########################################################################
   public getSearchResult(query: string, facetedQueryString?: string, offset = 0): Observable<any> {
     let params = new HttpParams();
     params = params.append('q', 'any,contains,' + query);
@@ -69,30 +108,6 @@ export class LibraryService {
     }, httpOptions);
   }
 
-  // tslint:disable-next-line:max-line-length
-  public addSearch(taskId: string, searchQuery: string, activePagefacetTab?: string, selectedFacets?: AllFacets, totalDocuments?: number, docBrowsed?: number): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post(api.API_PATH + 'search', {
-      searchQuery: searchQuery ? searchQuery.trim() : '',
-      taskId: taskId,
-      activePagefacetTab: activePagefacetTab ? activePagefacetTab : '',
-      totalDocuments: totalDocuments ? totalDocuments : 0,
-      documentsBrowsed: docBrowsed ? docBrowsed : 0,
-      selectedNavigationFacets: selectedFacets ? selectedFacets : {
-        contributors: [],
-        topics: [],
-        categories: [],
-        resourceTypes: [],
-        journalTitles: [],
-        languages: [],
-        creationDate: []
-      },
-    }, httpOptions);
-  }
 
   public getAllTasks(): Observable<any> {
     const httpOptions = {
