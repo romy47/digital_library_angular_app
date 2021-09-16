@@ -1,0 +1,9 @@
+.btn-save-search {
+    border: 0px;
+    color: #CA6D4C;
+}
+
+.btn-save-search:hover {
+    color: white;
+    background-color: #418D8C;
+}

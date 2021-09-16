@@ -42,6 +42,34 @@ export class LibraryService {
     );
   }
 
+  public addSavedSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(api.API_PATH + 'baseline/savedsearch', {
+      searchQuery: searchQuery ? searchQuery.trim() : '',
+      totalDocuments: totalDocuments ? totalDocuments : 0,
+      documentsBrowsed: docBrowsed ? docBrowsed : 0,
+      createdBy: this.authService.getCurrentUserData()._id
+    }, httpOptions);
+  }
+
+  public getAllSavedBaselineSearches(): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
+    return this.http.post(api.API_PATH + 'baseline/savedsearch/all', {
+      userId: this.authService.getCurrentUserData()._id
+    },
+      httpOptions
+    );
+  }
+
 
 
 

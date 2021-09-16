@@ -40,6 +40,8 @@ export class SerpComponent implements OnInit {
   queryParamSubscription: Subscription;
   backToDash = false;
   searching = false;
+
+  allDocSelected = false;
   constructor(private libraryService: LibraryService) { }
 
   ngOnInit(): void {
@@ -62,8 +64,6 @@ export class SerpComponent implements OnInit {
         });
         this.searching = false;
 
-
-
         this.searchTerms = this.searchQuery.split(' ');
 
         this.searchTerms = this.searchTerms.filter((el) => !this.stopwords.includes(el.toLowerCase()));
@@ -77,23 +77,6 @@ export class SerpComponent implements OnInit {
         }, err => {
           this.searching = false;
         });
-
-
-        // if (newSearch) {
-        //   this.libraryService.addSearch(this.taskId, this.searchQuery, this.activePagefacetTab, this.selectedNavigationFacets, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
-        //     this.searchId = searchResponse.searches[searchResponse.searches.length - 1]._id;
-
-        //     this.searching = false;
-        //   }, err => {
-        //     this.searching = false;
-        //   });
-        // } else {
-        //   this.libraryService.updateDocumentBrowsedCount(this.taskId, this.searchId, this.currentPage * this.pageSize).subscribe(res => {
-        //     this.searching = false;
-        //   }, err => {
-        //     this.searching = false;
-        //   });
-        // }
       }, err => {
         console.log('Error')
       });
@@ -108,6 +91,12 @@ export class SerpComponent implements OnInit {
 
   pageBoundsCorrection() {
 
+  }
+
+  saveSearch() {
+    this.libraryService.addSavedSearch(this.searchQuery, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
+      console.log('Search Saved');
+    });
   }
 
 }

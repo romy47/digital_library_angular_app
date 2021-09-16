@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { SearchHistoryComponent } from './components/search-history/search-history.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SavedSearchComponent } from './components/saved-search/saved-search.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +24,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MyFoldersComponent,
     DocCardComponent,
     LoginComponent,
-    SearchHistoryComponent
+    SearchHistoryComponent,
+    SavedSearchComponent
   ],
   imports: [
     BrowserModule,
