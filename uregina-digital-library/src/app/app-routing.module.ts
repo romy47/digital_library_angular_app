@@ -6,10 +6,10 @@ import { SerpComponent } from './components/serp/serp.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   { path: 'search', component: SerpComponent, canActivate: [AuthGuard] },
-  { path: '', redirectTo: '/search', pathMatch: 'full', },
+  { path: '', redirectTo: 'search', pathMatch: 'full', },
   { path: 'my-folder', component: MyFoldersComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
