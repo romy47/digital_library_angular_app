@@ -318,10 +318,11 @@ export class DocumentModelConverter {
             doc.pnx.addata.au.forEach((f, index) => {
                 let names = f.split(',');
                 let autext = '';
-                if (names.length > 1) {
-                    autext = names[1] + ' ';
-                }
                 autext += names[0];
+                if (names.length > 1) {
+                    autext += ', ' + names[1];
+                }
+
                 text: autext;
                 contfacets.push(new Facet({
                     text: autext

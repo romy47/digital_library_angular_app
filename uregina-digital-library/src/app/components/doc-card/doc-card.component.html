@@ -1,32 +1,40 @@
 <div class="doc-container d-flex justify-content-start">
     <div class="m-3">
         <figure class="figure pull-left text-center mr-2 mb-0" style="width: 60px;">
-            <img src="./../../../assets/images/book-icon-1.jpeg" width="60" height="60" class="figure-img img-fluid"
+            <img src="{{doc.imageUrl}}" width="60" height="60" class="figure-img img-fluid"
                 alt="A generic square placeholder image with rounded corners in a figure."><br>
         </figure>
     </div>
-    <div>
+    <div class="flex-grow-1">
         <div style="width: 100%;">
-            <span class="text-secondary fw-bold doc-type">Article</span>
-            <em class="fa btn pull-right" style="margin-right: 10px;">
-                <i class="fa fa-thumbtack fa-rotate-lite text-secondary"></i>
+            <span class="text-secondary doc-type">{{doc.type|uppercase}}</span>
+            <em class="fa btn float-end float-right" style="margin-right: 10px;">
+                <i class="fa fa-thumbtack fa-thumbtack-save-doc fa-rotate-lite text-secondary"></i>
             </em>
         </div>
-        <h5 class="cursor-pointer accent-title-color mb-0 fw-bold">
-            {{doc.title}}
-        </h5>
-        <span class="doc-author">John Doe
+        <p class="cursor-pointer doc-title mb-0">
+            <title-highlight [needle]="searchQuery" [needles]="searchTerms" [haystack]="doc.title"></title-highlight>
+        </p>
+        <span class="doc-author">
+            <span class="doc-author"
+                *ngFor="let contrib of doc.facets.contributors; let j = index">{{contrib.text}}{{j==doc.facets.contributors.length-1?'':';
+                '}}</span>
         </span>
-        <ng-container>
-            <h6 class="m-0 doc-source font-weight-normal font-italic">Journal Name</h6>
+
+        <ng-container *ngIf="doc.source">
+            <h6 class="m-0 doc-source font-weight-normal font-italic">{{doc.source}}</h6>
         </ng-container>
-        <ng-container>
+        <ng-container *ngIf="!doc.source&&(doc.facets.journalTitles&&doc.facets.journalTitles[0])">
+            <h6>
+                {{doc.facets.journalTitles[0].text}}
+            </h6>
+        </ng-container>
+        <ng-container *ngIf="doc.snippet">
             <h6 class="m-0 doc-snippet font-weight-normal">
-                <!-- <i class="fa fa-quote-left font-weight-normal"></i> -->
-                ... and Skh:HR-1, both of which have an Hrhr allele. Using PCR with multiple pairs of primers
-                designed to amplify multiple overlapping regions covering the entire Hr gene, we found an
-                insertion mutation in intron 6 of mutant Hr genes in HR mice...
-                <!-- <i class="fa fa-quote-right"></i> -->
+                <i class="fa fa-quote-left font-weight-normal"></i>
+                <title-highlight [needle]="searchQuery" [needles]="searchTerms" [haystack]="doc.snippet">
+                </title-highlight>
+                <i class="fa fa-quote-right"></i>
             </h6>
         </ng-container>
     </div>

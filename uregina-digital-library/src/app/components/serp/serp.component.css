@@ -7,3 +7,27 @@
     color: white;
     background-color: #418D8C;
 }
+
+.nav-cell {
+    color: black;
+    font-weight: 500;
+    border-left: 1px solid gainsboro;
+    height: 100%;
+    margin-bottom: auto;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.last-nav-cell {
+    border-right: 1px solid gainsboro;
+}
+
+a{
+    text-decoration: none;
+}
+
+.navbar {
+    align-items: stretch;
+}

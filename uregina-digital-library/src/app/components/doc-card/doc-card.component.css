@@ -3,3 +3,29 @@
     border-bottom: 1px solid lightgray;
     padding: 10px 5px;
 }
+
+h6, .doc-author {
+    font-size: 16px;
+    color: #515151;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.doc-type {
+    font-weight: 500;
+}
+
+.doc-title {
+    color: #44707B;
+    font-size: 19px;
+    font-weight: 550;
+    line-height: 1.3;
+}
+
+.fa-thumbtack-save-doc {
+    font-size: 17px;
+}
+
+.fa-quote-left, .fa-quote-right {
+    font-size: 13px;
+}

@@ -16,6 +16,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SearchHistoryComponent } from './components/search-history/search-history.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SavedSearchComponent } from './components/saved-search/saved-search.component';
+import { TitleHighlightComponent } from './components/title-highlight/title-highlight';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,8 @@ import { SavedSearchComponent } from './components/saved-search/saved-search.com
     DocCardComponent,
     LoginComponent,
     SearchHistoryComponent,
-    SavedSearchComponent
+    SavedSearchComponent,
+    TitleHighlightComponent
   ],
   imports: [
     BrowserModule,
