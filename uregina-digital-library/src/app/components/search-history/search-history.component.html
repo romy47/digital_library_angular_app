@@ -1,69 +1,38 @@
 <section>
-    <!-- <div class="col-md-2">
-
+    <div class="d-flex">
+        <div style="margin: 0px 30px 10px 20px;" class="mt-2">
+            <mat-checkbox [(ngModel)]="allSelected" (change)="allSearchHistoryChecked($event)" ngDefaultControl
+                class="example-margin"></mat-checkbox>
+            {{allSearches.length}} search queries
+        </div>
     </div>
+    <ng-container *ngIf="searches.length>0">
+        <div *ngFor="let query of searches; let i = index"
+            [className]="i<searches.length-1 ? 'border-bottom myfolder-list-item-bg' : 'myfolder-list-item-bg'">
 
-    <div class="col-md-8"> -->
-    <div *ngFor="let query of searches; let i = index"
-        [className]="i<searches.length-1 ? 'border-bottom pb-1 myfolder-list-item-bg' : 'myfolder-list-item-bg'">
-
-        <div class="d-flex">
-            <div style="margin-right: 30px; margin-left: 20px;" class="mt-2">
-                <mat-checkbox ngDefaultControl class="example-margin" [(ngModel)]="query.selected"></mat-checkbox>
-            </div>
-            <div class="flex-grow-1">
-                <p class="m-1" [routerLink]="['/search']">{{query.searchQuery}}</p>
-                <p class="m-1">SCOPE: Quick Find / Everything</p>
-                <p class="m-1">{{query.createdAt | date:'M/d/yy' }}</p>
-            </div>
             <div class="d-flex">
-                <span style="margin-right: 20px;" class="d-flex w-100 justify-content-center align-self-center">
-                    <i style="margin-right: 20px;" class="text-danger fa fa-thumbtack"></i>
-                    <i class="text-danger fa fa-solid fa-trash"></i>
-                </span>
+                <div style="margin-right: 30px; margin-left: 20px;" class="mt-2">
+                    <mat-checkbox (change)="searchHistoryChecked(query)" ngDefaultControl class="example-margin"
+                        [(ngModel)]="query.selected"></mat-checkbox>
+                    <p class="mb-0 checkbox-text" style="width: 22px; text-align: center;">{{i+1}}</p>
+
+                </div>
+                <div class="flex-grow-1">
+                    <p class="m-1" [routerLink]="['/search']">{{query.searchQuery}}</p>
+                    <p class="m-1">SCOPE: Quick Find / Everything</p>
+                    <p class="m-1">{{query.createdAt | date:'M/d/yy' }}</p>
+                </div>
+                <div class="d-flex">
+                    <span style="margin-right: 20px;" class="d-flex w-100 justify-content-center align-self-center">
+                        <i *ngIf="!query.isSaved" (click)="addToSavedSearch(query)" style="margin-right: 20px;"
+                            class="text-danger fa fa-thumbtack cursor-pointer"></i>
+                        <i (click)="saveToWorkspace(query)" class="text-danger fa fa-solid fa-trash cursor-pointer"></i>
+                    </span>
+                </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-        <!-- <div class="d-flex justify-content-between mb-2">
-                <a class="session-card-query" [routerLink]="['/search']">{{query.searchQuery}}</a>
-                <p class="mb-0 mr-4">{{query.createdAt | date:'h:mm a' }}</p>
-            </div>
-            <div class="d-flex">
-                <div style="flex: 0.7;" [ngPlural]="query.totalDocuments" class="text-center query-stat">
-                    <p class="mb-0">{{query.totalDocuments | number: '2.'}}</p>
-                    <p class="mb-0">
-                        <ng-template ngPluralCase="=0">Result</ng-template>
-                        <ng-template ngPluralCase="=1">Result</ng-template>
-                        <ng-template ngPluralCase="other">Results</ng-template>
-                    </p>
-                </div>
-                <div style="flex: 0.7" class="text-center query-stat">
-                    <p class="mb-0">{{query.documentSaved}}</p>
-                    <p class="mb-0">Saved</p>
-                </div>
-                <div style="flex: 1" [ngPlural]="query.documentsBrowsed/10" class="text-center query-stat">
-                    <p class="mb-0">{{query.documentsBrowsed/10}}</p>
-                    <p class="mb-0">
-                        <ng-template ngPluralCase="=0">Page</ng-template>
-                        <ng-template ngPluralCase="=1">Page</ng-template>
-                        <ng-template ngPluralCase="other">Pages</ng-template>
-                        Browsed
-                    </p>
-                </div>
-            </div> -->
+    </ng-container>
+    <div *ngIf="searches.length<allSearches.length" class="load-more" (click)="loadMore()">
+        <p>LOAD MORE RESULTS</p>
     </div>
-    <!-- </div>
-
-    <div class="col-md-2">
-
-    </div> -->
 </section>

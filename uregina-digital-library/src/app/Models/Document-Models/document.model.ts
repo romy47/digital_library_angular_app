@@ -1,9 +1,16 @@
 import { Facet, AllFacets } from '..';
 
+
 export class Doc {
     constructor(obj: Doc) {
         Object.assign(this, obj);
     }
+    linkText?= '';
+    language?= '';
+    publisher?= '';
+    allIdentifiers?= [];
+    peerReviewed?= false;
+    openAccess?= false;
     facets?: AllFacets;
     creationDate?: string;
     doi?: string;
@@ -21,6 +28,8 @@ export class Doc {
     page?: number;
     isSaved?= false;
     isRead?= false;
+    selected?= false;
+    labels?: string[] = [];
     id?: string;
     _id?: string;
     searchId?: string;
@@ -30,4 +39,5 @@ export class Doc {
     sessionEndDate?: Date = null;
     imageUrl?: string = 'assets/images/book-placeholder.jpg';
     searchQuery?= '';
+    createdBy?= '';
 }

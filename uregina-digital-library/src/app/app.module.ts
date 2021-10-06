@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { SerpComponent } from './components/serp/serp.component';
 import { DocDetailComponent } from './components/doc-detail/doc-detail.component';
 import { MyFoldersComponent } from './components/my-folders/my-folders.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DocCardComponent } from './components/doc-card/doc-card.component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -17,6 +17,12 @@ import { SearchHistoryComponent } from './components/search-history/search-histo
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SavedSearchComponent } from './components/saved-search/saved-search.component';
 import { TitleHighlightComponent } from './components/title-highlight/title-highlight';
+import { DefaultPagerComponent } from './components/default-pager/default-pager.component';
+import { SavedRecordsComponent } from './components/saved-records/saved-records.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +33,9 @@ import { TitleHighlightComponent } from './components/title-highlight/title-high
     LoginComponent,
     SearchHistoryComponent,
     SavedSearchComponent,
-    TitleHighlightComponent
+    TitleHighlightComponent,
+    DefaultPagerComponent,
+    SavedRecordsComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +45,15 @@ import { TitleHighlightComponent } from './components/title-highlight/title-high
     NgxPaginationModule,
     MatTabsModule,
     BrowserAnimationsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatFormFieldModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]

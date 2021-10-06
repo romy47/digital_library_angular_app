@@ -60,23 +60,3 @@
     .ngx-pagination.responsive li:not(.small-screen):not(.pagination-previous):not(.pagination-next) {
       display: none; }
   }
-
-  ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
-    opacity: 0.03 !important;
-    background-color: #00663C!important;
-  }
-
-::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-    background-color: #00663C;
-  }
-
-  mat-checkbox ::ng-deep .mat-checkbox-inner-container {
-    width: 22px;
-    height: 22px;
-    position: relative;
-    z-index: 1000;
-  }
-  .checkbox-text{
-    position: relative;
-    top: -22px;
-  }

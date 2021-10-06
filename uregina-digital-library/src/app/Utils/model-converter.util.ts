@@ -1,7 +1,7 @@
 import { Facet, Colour, Doc, AllFacets } from 'src/app/Models/index';
 import { ColourUtil } from './Colour.util';
 import { FacetTypesForDropdown, FacetTypesForApiAndModelRelation } from '../static-data';
-
+declare var require: any;
 
 export class DocumentModelConverter {
     public static buildMultiFacetSearchParamFromFacets(selectedFacets: AllFacets): string {
@@ -47,6 +47,8 @@ export class DocumentModelConverter {
     }
 
     public static formatSingleDocumentModel(d: any): Doc {
+        let langs = require('langs');
+
         // console.log(d);
         let imageSrc;
         // if(d.delivery&&d.delivery.link&&d.delivery.link.length>0) {
@@ -75,6 +77,7 @@ export class DocumentModelConverter {
             source: (d.pnx.display.ispartof && d.pnx.display.ispartof[0]) ? d.pnx.display.ispartof[0] : '',
             snippet: (d.pnx.display.snippet && d.pnx.display.snippet[0]) ? d.pnx.display.snippet[0] : '',
             identifier: (d.pnx.display.identifier && d.pnx.display.identifier[0]) ? d.pnx.display.identifier[0] : '',
+            allIdentifiers: (d.pnx.display.identifier) ? d.pnx.display.identifier : [],
             description: (d.pnx.display.description && d.pnx.display.description[0]) ? d.pnx.display.description[0] : '',
             imageUrl: imageSrc ? imageSrc : 'assets/images/book-placeholder.jpg',
             facets: {
@@ -83,7 +86,15 @@ export class DocumentModelConverter {
                 journalTitles: this.getJournalTitleFacets(d),
                 resourceTypes: this.getResourceTypeFacets(d)
             },
-            rawObject: d
+            rawObject: d,
+            peerReviewed: (d.pnx.display.lds50 && d.pnx.display.lds50[0] && d.pnx.display.lds50[0] == "peer_reviewed") ? true : false,
+            openAccess: (d.pnx.display.oa && d.pnx.display.oa[0] && d.pnx.display.oa[0] == "free_for_read") ? true : false,
+            linkText: (d.delivery && d.delivery.availability && d.delivery.availability[0]) ? d.delivery.availability[0] : '',
+            createdBy: d.createdBy ? d.createdBy : '',
+            language: (d.pnx.display.language && d.pnx.display.language[0]) ? langs.where("2", d.pnx.display.language[0]) ? langs.where("2", d.pnx.display.language[0]).name : '' : '',
+            publisher: (d.pnx.addata && d.pnx.addata.cop && d.pnx.addata.cop.length > 0) && (d.pnx.addata && d.pnx.addata.pub && d.pnx.addata.pub.length > 0) ?
+                d.pnx.addata.cop[0] + ' : ' + d.pnx.addata.pub[0] : '',
+            labels: d.labels ? d.labels : []
         });
     }
 

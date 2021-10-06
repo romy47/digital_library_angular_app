@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
           this.authService.setToken(res2);
           this.verifyingCode = false;
           this.errMessage = '';
-          this.router.navigate(['/search']);
+          this.router.navigate(['/library/search']);
 
 
         }, err => {

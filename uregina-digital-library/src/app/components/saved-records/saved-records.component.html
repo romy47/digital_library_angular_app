@@ -1,0 +1,26 @@
+<section>
+    <div style="margin: 0px 30px 10px 20px;" class="mt-2">
+        <mat-checkbox [(ngModel)]="allSelected" (change)="allSavedDocsChecked($event)" ngDefaultControl
+            class="example-margin"></mat-checkbox>
+        {{allDocs.length}} items
+    </div>
+    <div *ngFor="let doc of docs; let i = index"
+        [className]="i<docs.length-1 ? 'border-bottom myfolder-list-item-bg' : 'myfolder-list-item-bg'">
+
+        <!-- <div class="d-flex"> -->
+        <!-- <div style="margin-right: 30px; margin-left: 20px;" class="mt-2"> -->
+        <!-- <mat-checkbox ngDefaultControl class="example-margin" [(ngModel)]="doc.selected"></mat-checkbox> -->
+        <!-- <p class="mb-0" style="width: 22px; border: 1px solid gray; text-align: center;">{{i+1}}</p> -->
+        <!-- </div> -->
+        <!-- <div class="flex-grow-1"> -->
+        <app-doc-card class="app-doc-card pb-2 pl-2 pr-2 pt-0" [parent]="'saved-records'" [itemCount]="i+1" [doc]="doc"
+            (saveDoc)="saveToWorkspace($event)" (savedDocChecked)="savedDocChecked($event)"
+            (viewDoc)="viewDocument($event)" [availableLabels]="availableLabelsArr">
+        </app-doc-card>
+        <!-- </div> -->
+        <!-- </div> -->
+    </div>
+    <div *ngIf="docs.length<allDocs.length" class="load-more" (click)="loadMore()">
+        <p>LOAD MORE RESULTS</p>
+    </div>
+</section>

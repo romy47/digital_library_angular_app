@@ -1,52 +1,46 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light m-0">
+<nav class="navbar p-0">
     <a class="navbar-brand" href="#">
-        <img src="./../../../assets/images/library-logo.png" width="200" class="d-inline-block align-top" alt="">
-        <!--  height="30" -->
+        <img src="./../../../assets/images/library-logo.png" width="190" class="d-inline-block align-top" alt="">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#"></a>
-            </li>
-        </ul>
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">New<br />Search</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">e-Journal<br />Titles</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Database</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Browse</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Help</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Citation<br />Finder</a>
-            </li>
-        </ul>
-
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" [routerLink]="['/search']">
-                    <i class="fa fa-search fa-rotate-90 text-dark"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Sign in</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Menu</a>
-            </li>
-        </ul>
+    <!-- <ng-container class="d-none d-md-block d-lg-block d-xl-block "> -->
+    <div class="d-none d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-stretch flex-grow-1">
+        <div class="nav-cell ">
+            <a class="text-dark" href="#">New<br />Search</a>
+        </div>
+        <div class="nav-cell">
+            <a class="text-dark" href="#">e-Journal<br />Titles</a>
+        </div>
+        <div class="nav-cell">
+            <a class="text-dark" href="#">Database</a>
+        </div>
+        <div class="nav-cell">
+            <a class="text-dark" href="#">Browse</a>
+        </div>
+        <div class="nav-cell">
+            <a class="text-dark" href="#">Help</a>
+        </div>
+        <div class="nav-cell last-nav-cell">
+            <a class="text-dark" href="#">Citation<br />Finder</a>
+        </div>
+    </div>
+    <!-- </ng-container> -->
+    <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center px-3 ">
+            <a [routerLink]="['/library/search']">
+                <i style="color: black;" class="fa fa-search fa-rotate-90 text-dark"></i>
+            </a>
+        </div>
+        <div class="dropdown d-none d-md-flex d-lg-flex d-xl-flex align-items-center">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                {{username}}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 
@@ -101,14 +95,55 @@
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
         </div> -->
+        <div class="d-flex justify-content-start align-items-stretch top-batch-menu" style="height: 60px;">
+            <div style="width: 160px;border-right: 1px solid lightgray;">
 
-        <mat-tab-group animationDuration="600ms">
-            <mat-tab label="SAVED RECORDS">SAVED RECORDS</mat-tab>
+            </div>
+            <div *ngIf="selectedTabIndex==0" class="d-flex">
+                <span style="margin-left: 20px; white-space: nowrap;"
+                    class="d-flex justify-content-start align-self-center cursor-pointer">
+                    <span class="align-self-center">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                        <span style="margin-left: 10px; margin-right: 10px;">EDIT LABELS</span>
+                    </span>
+                    <span (click)="deleteBatchSavedRecords()"
+                        class="d-flex align-self-center justify-content-center fa-stack fa-1x cursor-pointer">
+                        <i class="fas fa-slash fa-stack-1x"></i>
+                        <i class="fa fa-thumbtack fa-stack-1x"></i>
+                    </span>
+                </span>
+            </div>
+            <div *ngIf="selectedTabIndex==1" class="d-flex">
+                <span style="margin-left: 20px;"
+                    class="d-flex justify-content-center align-self-center fa-stack fa-1x cursor-pointer">
+                    <i class="fas fa-slash fa-stack-1x"></i>
+                    <i (click)="deleteBatchSavedSearch()" class="fa fa-thumbtack fa-stack-1x"></i>
+                </span>
+            </div>
+            <div *ngIf="selectedTabIndex==2" class="d-flex">
+                <span style="margin-left: 20px;" class="d-flex justify-content-center align-self-center">
+                    <i style="margin-right: 20px;" class="fa fa-thumbtack cursor-pointer"></i>
+                    <i (click)="deleteBatchSearchedHistory()" class="fa fa-solid fa-trash cursor-pointer"></i>
+                </span>
+            </div>
+        </div>
+        <mat-tab-group [(selectedIndex)]="selectedTabIndex" ngDefaultControl (selectedTabChange)="onTabChanged($event);"
+            animationDuration="600ms">
+
+            <mat-tab label="SAVED RECORDS">
+                <!-- <ng-template matTabContent> -->
+                <app-saved-records></app-saved-records>
+                <!-- </ng-template> -->
+            </mat-tab>
             <mat-tab label="SAVED SEARCHES">
+                <!-- <ng-template matTabContent> -->
                 <app-saved-search></app-saved-search>
+                <!-- </ng-template> -->
             </mat-tab>
             <mat-tab label="SEARCH HISTORY">
+                <!-- <ng-template matTabContent> -->
                 <app-search-history></app-search-history>
+                <!-- </ng-template> -->
             </mat-tab>
         </mat-tab-group>
     </div>

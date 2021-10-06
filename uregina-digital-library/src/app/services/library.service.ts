@@ -14,7 +14,7 @@ export class LibraryService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   // For the baseline
-  public addSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
+  public addBaselineSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -40,6 +40,32 @@ export class LibraryService {
     },
       httpOptions
     );
+  }
+
+  public deleteBaselineSearchHistory(id: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const createdBy = this.authService.getCurrentUserData()._id
+    return this.http.post(api.API_PATH + 'baseline/search/delete', {
+      id: id ? id.trim() : '',
+      createdBy: createdBy ? createdBy.trim() : '',
+    }, httpOptions);
+  }
+
+  public deleteBatchBaselineSearchHistory(ids: string[] = []): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const createdBy = this.authService.getCurrentUserData()._id
+    return this.http.post(api.API_PATH + 'baseline/search/delete/batch', {
+      ids: ids,
+      createdBy: createdBy ? createdBy.trim() : '',
+    }, httpOptions);
   }
 
   public addSavedSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
@@ -70,15 +96,117 @@ export class LibraryService {
     );
   }
 
+  public deleteBaselineSavedSearch(searchId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const createdBy = this.authService.getCurrentUserData()._id
+    return this.http.post(api.API_PATH + 'baseline/savedsearch/delete', {
+      id: searchId ? searchId.trim() : '',
+      createdBy: createdBy ? createdBy.trim() : '',
+    }, httpOptions);
+  }
+
+  public deleteBatchBaselineSavedSearch(ids: string[] = []): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const createdBy = this.authService.getCurrentUserData()._id
+    return this.http.post(api.API_PATH + 'baseline/savedsearch/delete/batch', {
+      ids: ids,
+      createdBy: createdBy ? createdBy.trim() : '',
+    }, httpOptions);
+  }
+
+
+  public addBaselineSavedDoc(doc: Doc): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    doc.createdBy = this.authService.getCurrentUserData()._id;
+    return this.http.post(api.API_PATH + 'baseline/doc',
+      doc
+      , httpOptions);
+  }
+
+  public addLabelToDoc(label: string, savedRecordId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(api.API_PATH + 'baseline/doc/label', {
+      label: label,
+      docId: savedRecordId,
+      createdBy: this.authService.getCurrentUserData()._id
+    }, httpOptions);
+  }
+
+  public removeLabelFromDoc(label: string, savedRecordId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(api.API_PATH + 'baseline/doc/label/delete', {
+      label: label,
+      docId: savedRecordId,
+      createdBy: this.authService.getCurrentUserData()._id
+    }, httpOptions);
+  }
+
+  public getAllSavedBaselineDocs(): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
+    return this.http.post(api.API_PATH + 'baseline/doc/all', {
+      userId: this.authService.getCurrentUserData()._id
+    },
+      httpOptions
+    );
+  }
+
+  public deleteBaselineSavedDoc(docId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const createdBy = this.authService.getCurrentUserData()._id
+    return this.http.post(api.API_PATH + 'baseline/doc/delete', {
+      id: docId ? docId.trim() : '',
+      createdBy: createdBy ? createdBy.trim() : '',
+    }, httpOptions);
+  }
+
+  deleteBatchBaselineSavedDocs(ids: string[] = []): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const createdBy = this.authService.getCurrentUserData()._id
+    return this.http.post(api.API_PATH + 'baseline/doc/delete/batch', {
+      ids: ids,
+      createdBy: createdBy ? createdBy.trim() : '',
+    }, httpOptions);
+  }
 
 
 
 
 
-
-
-
-
+  // *********************************************************************************************
+  //********* **************** ********** *********** ********** ************ ************ ***** */
   // From the prototype ##########################################################################
   public getSearchResult(query: string, facetedQueryString?: string, offset = 0): Observable<any> {
     let params = new HttpParams();
@@ -98,18 +226,18 @@ export class LibraryService {
   }
 
 
-  public addTask(taskName: string): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post(api.API_PATH + 'task', {
-      name: taskName ? taskName.trim() : '',
-      searches: [],
-      createdBy: this.authService.getCurrentUserData()._id
-    }, httpOptions);
-  }
+  // public addTask(taskName: string): Observable<any> {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json'
+  //     })
+  //   };
+  //   return this.http.post(api.API_PATH + 'task', {
+  //     name: taskName ? taskName.trim() : '',
+  //     searches: [],
+  //     createdBy: this.authService.getCurrentUserData()._id
+  //   }, httpOptions);
+  // }
 
   public createUser(userName: string, orcid: string): Observable<any> {
     const httpOptions = {
@@ -123,118 +251,118 @@ export class LibraryService {
     }, httpOptions);
   }
 
-  public addSavedDoc(doc: any, taskId: string, searchId: string): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post(api.API_PATH + 'saved', {
-      taskId: taskId ? taskId.trim() : '',
-      searchId: searchId ? searchId.trim() : '',
-      doc: doc
-    }, httpOptions);
-  }
+  // public addSavedDoc(doc: any, taskId: string, searchId: string): Observable<any> {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json'
+  //     })
+  //   };
+  //   return this.http.post(api.API_PATH + 'saved', {
+  //     taskId: taskId ? taskId.trim() : '',
+  //     searchId: searchId ? searchId.trim() : '',
+  //     doc: doc
+  //   }, httpOptions);
+  // }
 
 
-  public getAllTasks(): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
-    return this.http.post(api.API_PATH + 'task/all', {
-      userId: this.authService.getCurrentUserData()._id
-    },
-      httpOptions
-    );
-  }
+  // public getAllTasks(): Observable<any> {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json'
+  //     })
+  //   };
+  //   const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
+  //   return this.http.post(api.API_PATH + 'task/all', {
+  //     userId: this.authService.getCurrentUserData()._id
+  //   },
+  //     httpOptions
+  //   );
+  // }
 
-  public getSearch(taskId: string, searchId: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.append('taskId', taskId);
-    params = params.append('searchId', searchId);
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
-    return this.http.get(api.API_PATH + 'search', {
-      headers: headers,
-      params: params
-    });
-  }
+  // public getSearch(taskId: string, searchId: string): Observable<any> {
+  //   let params = new HttpParams();
+  //   params = params.append('taskId', taskId);
+  //   params = params.append('searchId', searchId);
+  //   const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
+  //   return this.http.get(api.API_PATH + 'search', {
+  //     headers: headers,
+  //     params: params
+  //   });
+  // }
 
 
-  public getTaskSearchHistory(taskId: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.append('taskId', taskId);
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
-    return this.http.get(api.API_PATH + 'task/searches', {
-      headers: headers,
-      params: params
-    });
-  }
+  // public getTaskSearchHistory(taskId: string): Observable<any> {
+  //   let params = new HttpParams();
+  //   params = params.append('taskId', taskId);
+  //   const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
+  //   return this.http.get(api.API_PATH + 'task/searches', {
+  //     headers: headers,
+  //     params: params
+  //   });
+  // }
 
-  public getTask(taskId: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.append('taskId', taskId);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      params: params
-    };
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
-    return this.http.post(api.API_PATH + 'task_', {
-      userId: this.authService.getCurrentUserData()._id
-    }, httpOptions);
-  }
+  // public getTask(taskId: string): Observable<any> {
+  //   let params = new HttpParams();
+  //   params = params.append('taskId', taskId);
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json'
+  //     }),
+  //     params: params
+  //   };
+  //   const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
+  //   return this.http.post(api.API_PATH + 'task_', {
+  //     userId: this.authService.getCurrentUserData()._id
+  //   }, httpOptions);
+  // }
 
-  public updateDocumentBrowsedCount(taskId: string, searchId: string, documentsBrowsed: number): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.put(api.API_PATH + 'search/docbrowsed', {
-      taskId: taskId,
-      searchId: searchId,
-      documentsBrowsed: documentsBrowsed
-    }, httpOptions);
-  }
+  // public updateDocumentBrowsedCount(taskId: string, searchId: string, documentsBrowsed: number): Observable<any> {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json'
+  //     })
+  //   };
+  //   return this.http.put(api.API_PATH + 'search/docbrowsed', {
+  //     taskId: taskId,
+  //     searchId: searchId,
+  //     documentsBrowsed: documentsBrowsed
+  //   }, httpOptions);
+  // }
 
-  public deleteTask(task: Task): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post(api.API_PATH + 'task/delete', {
-      taskId: task._id ? task._id.trim() : '',
-    }, httpOptions);
-  }
+  // public deleteTask(task: Task): Observable<any> {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json'
+  //     })
+  //   };
+  //   return this.http.post(api.API_PATH + 'task/delete', {
+  //     taskId: task._id ? task._id.trim() : '',
+  //   }, httpOptions);
+  // }
 
-  public deleteSavedDoc(taskId: string, searchId: string, docId: string): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post(api.API_PATH + 'saved/delete', {
-      docId: docId ? docId.trim() : '',
-      searchId: searchId ? searchId.trim() : '',
-      taskId: taskId ? taskId.trim() : '',
-    }, httpOptions);
-  }
+  // public deleteSavedDoc(taskId: string, searchId: string, docId: string): Observable<any> {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json'
+  //     })
+  //   };
+  //   return this.http.post(api.API_PATH + 'saved/delete', {
+  //     docId: docId ? docId.trim() : '',
+  //     searchId: searchId ? searchId.trim() : '',
+  //     taskId: taskId ? taskId.trim() : '',
+  //   }, httpOptions);
+  // }
 
-  public EditTask(task: Task): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post(api.API_PATH + 'task/edit', {
-      task: { _id: task._id, name: task.name },
-    }, httpOptions);
-  }
+  // public EditTask(task: Task): Observable<any> {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json'
+  //     })
+  //   };
+  //   return this.http.post(api.API_PATH + 'task/edit', {
+  //     task: { _id: task._id, name: task.name },
+  //   }, httpOptions);
+  // }
 
   getArticleThumbnail(doi: string): Observable<any> {
     let params = new HttpParams();

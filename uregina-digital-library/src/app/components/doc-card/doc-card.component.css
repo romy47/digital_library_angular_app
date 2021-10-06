@@ -4,6 +4,11 @@
     padding: 10px 5px;
 }
 
+.doc-container-modal{
+    background-color: #E5EFEB;
+    padding: 20px 10px;
+}
+
 h6, .doc-author {
     font-size: 16px;
     color: #515151;
@@ -28,4 +33,57 @@ h6, .doc-author {
 
 .fa-quote-left, .fa-quote-right {
     font-size: 13px;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+    opacity: 0.03 !important;
+    background-color: #00663C!important;
+  }
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #00663C;
+  }
+
+  mat-checkbox ::ng-deep .mat-checkbox-inner-container {
+    width: 22px;
+    height: 22px;
+    position: relative;
+    z-index: 1000;
+  }
+  .checkbox-text{
+    position: relative;
+    top: -22px;
+  }
+
+  .btn-save-search {
+    border: 0px;
+    color: gray;
+    border-radius: 20px;
+}
+
+    .btn-save-search:hover {
+    color: #fff;
+    background-color: rgb(36, 36, 36);
+}
+
+.doc-label-chip{
+    color: rgba(0,0,0,.57);
+    height: 2em;
+    line-height: 2em;
+    font-size: .85em;
+    padding: 4px 7px;
+    border-radius: 1em;
+    margin-top: .75em;
+    margin-right: .5em;
+    border: 1px solid gray;
+}
+
+.label-items:hover {
+    background: rgb(36, 36, 36);
+    color: white;
+}
+
+.label-items{
+    font-size: 13px;
+    padding: 10px 5px;
 }

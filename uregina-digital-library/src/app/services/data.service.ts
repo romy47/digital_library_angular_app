@@ -13,6 +13,16 @@ export class DataService {
     private task: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
     taskObs = this.task.asObservable();
 
+    private myFolderSearchHistoryDeleteAll: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    myFolderSearchHistoryDeleteAllObs = this.myFolderSearchHistoryDeleteAll.asObservable();
+
+
+    private myFolderSavedSearchesDeleteAll: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    myFolderSavedSearchesDeleteAllObs = this.myFolderSavedSearchesDeleteAll.asObservable();
+
+    private myFolderSavedRecordsDeleteAll: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    myFolderSavedRecordsDeleteAllObs = this.myFolderSavedRecordsDeleteAll.asObservable();
+
     constructor() { }
 
     updateDocument(data: Doc) {
@@ -22,5 +32,18 @@ export class DataService {
     updateTask(task: Task) {
         this.task.next(task);
     }
+
+    updateMyFolderSearchHistoryDeleteAll(data: number) {
+        this.myFolderSearchHistoryDeleteAll.next(data);
+    }
+
+    updateMyFolderSavedSearchesDeleteAll(data: number) {
+        this.myFolderSavedSearchesDeleteAll.next(data);
+    }
+
+    updateMyFolderSavedRecordsDeleteAll(data: number) {
+        this.myFolderSavedRecordsDeleteAll.next(data);
+    }
+
 
 }

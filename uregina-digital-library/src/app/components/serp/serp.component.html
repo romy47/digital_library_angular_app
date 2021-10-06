@@ -26,12 +26,13 @@
     <!-- </ng-container> -->
     <div class="d-flex align-items-center">
         <div class="d-flex align-items-center px-3 ">
-            <a [routerLink]="['/my-folder']"><i style="color: black;" class="fa fa-thumbtack fa-rotate-lite"></i></a>
+            <a [routerLink]="['/library/my-folder']"><i style="color: black;"
+                    class="fa fa-thumbtack fa-rotate-lite"></i></a>
         </div>
         <div class="dropdown d-none d-md-flex d-lg-flex d-xl-flex align-items-center">
             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                Gomes, Sebastian
+                {{username}}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" href="#">Action</a></li>
@@ -61,30 +62,30 @@
 
     </div>
 </section>
-<section class="row sticky-top">
+<section class="row sticky-top docs-info-nav" *ngIf="documents.length>0&&searching==false">
     <div class="col-md-2 px-0">
 
     </div>
 
-    <div class="col-md-8 d-flex myfolder-list-item-bg">
+    <div class="col-md-8 d-flex align-items-center myfolder-list-item-bg">
         <div class="flex-grow-1">
-            <span>
+            <!-- <span>
                 <mat-checkbox ngDefaultControl class="example-margin" [(ngModel)]="allDocSelected"></mat-checkbox>
-            </span>
-            <span class="me-2 fst-italic"> 0 selected</span>
-            <span class="me-2 fst-italic f"> PAGE 1</span>
-            <span class="me-2 fst-italic"> 9,348 Results</span>
+            </span> -->
+            <!-- <span class="me-2 fst-italic"> 0 selected</span> -->
+            <span class="me-2 fst-italic f"> PAGE {{currentPage}}</span>
+            <span class="me-2 fst-italic"> {{totalDocuments}} Results</span>
             <button type="button" (click)="saveSearch()" class="btn btn-outline-secondary btn-save-search">
                 <i class="fa fa-thumbtack fa-rotate-lite"></i>
                 Save Search
             </button>
         </div>
-        <div class="d-flex">
+        <!-- <div class="d-flex">
             <span style="margin-right: 20px;" class="d-flex w-100 justify-content-center align-self-center">
                 <i style="margin-right: 20px;" class="text-danger fa fa-thumbtack"></i>
                 <i class="text-danger fa fa-solid fa-trash"></i>
             </span>
-        </div>
+        </div> -->
     </div>
 
     <div class="col-md-2 px-0">
@@ -104,16 +105,94 @@
             totalItems: totalDocuments }; let i = index"
                 [ngClass]="{'card-border-strong': doc.isFocused, 'card-border':!doc.isFocused }"
                 style="border-color: #bbbbbb;">
-                <app-doc-card class="app-doc-card pb-2 pl-2 pr-2 pt-0" [doc]="doc" [searchTerms]="searchTerms"
-                    [searchQuery]="searchQuery" (saveDoc)="saveToWorkspace($event)" (viewDoc)="viewDocument($event)">
+                <app-doc-card class="app-doc-card pb-2 pl-2 pr-2 pt-0" [itemCount]="i+1" [doc]="doc"
+                    [searchTerms]="searchTerms" [searchQuery]="searchQuery" (saveDoc)="saveToWorkspace($event)"
+                    (viewDoc)="viewDocument($event)">
                 </app-doc-card>
             </div>
-            <pagination-controls style="position: relative;" id="document-search-paginator"
-                (pageChange)="pageChanged($event)" (pageBoundsCorrection)="pageChanged($event)" maxSize="9"
-                directionLinks="true" autoHide="true" responsive="true" previousLabel="Previous" nextLabel="Next"
-                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
-                screenReaderCurrentLabel="You're on page">
+            <!-- <app-default-pager class="'serp-page-control'" [id]="document-search-paginator"
+                (pageChange)="pageChanged($event)" (pageBoundsCorrection)="pageChanged($event)" [maxSize]="7"
+                [directionLinks]="true" [autoHide]="true" [responsive]="true" [previousLabel]="" [nextLabel]="">
+            </app-default-pager> -->
+            <!-- <pagination-template class="serp-page-control" [id]="'document-search-paginator'" #p="paginationApi"
+                (pageChange)="pageChanged($event)" (pageBoundsCorrection)="pageChanged($event)">
+
+                <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
+                    <a *ngIf="!p.isFirstPage()" (click)="p.previous()">
+                        < </a>
+                </div>
+
+                <div *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
+                    <a (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">
+                        <span>{{ page.label }}</span>
+                    </a>
+                    <div *ngIf="p.getCurrent() === page.value">
+                        <span>{{ page.label }}</span>
+                    </div>
+                </div>
+
+                <div class="pagination-next" [class.disabled]="p.isLastPage()">
+                    <a *ngIf="!p.isLastPage()" (click)="p.next()"> > </a>
+                </div>
+
+            </pagination-template> -->
+
+            <pagination-controls *ngIf="searching==false" class="serp-page-control" style="position: relative;"
+                id="document-search-paginator" (pageChange)="pageChanged($event)"
+                (pageBoundsCorrection)="pageChanged($event)" maxSize="5" directionLinks="true" autoHide="true"
+                responsive="true" previousLabel="" nextLabel="" screenReaderPaginationLabel="Pagination"
+                screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+
             </pagination-controls>
+            <div *ngIf="documents.length>0&&searching==false"
+                class="page-size-select d-flex justify-content-center align-items-center page-size-select">
+                Results Per Page:
+                <span class="active">10</span>
+                <span>25</span>
+                <span>50</span>
+            </div>
+
+
+            <!-- <pagination-template #p="paginationApi" [class]="serp-page-control" style="position: relative;"
+                [id]="'document-search-paginator'" [maxSize]="5" (pageChange)="pageChanged($event)"
+                (pageBoundsCorrection)="pageChanged($event)">
+                <ul class="ngx-pagination" [attr.aria-label]="screenReaderPaginationLabel"
+                    [class.responsive]="responsive" *ngIf="!(autoHide && p.pages.length <= 1)">
+                    <li class="pagination-previous" [class.disabled]="p.isFirstPage()" *ngIf="directionLinks">
+                        <a tabindex="0" *ngIf="1 < p.getCurrent()" (keyup.enter)="p.previous()" (click)="p.previous()"
+                            [attr.aria-label]="previousLabel + ' ' + screenReaderPageLabel">
+                            {{ previousLabel }} <span class="show-for-sr">{{ screenReaderPageLabel }}</span>
+                        </a>
+                        <span *ngIf="p.isFirstPage()">
+                            {{ previousLabel }} <span class="show-for-sr">{{ screenReaderPageLabel }}</span>
+                        </span>
+                    </li>
+                    <li class="small-screen">
+                        {{ p.getCurrent() }} / {{ p.getLastPage() }}
+                    </li>
+                    <li [class.current]="p.getCurrent() === page.value" [class.ellipsis]="page.label === '...'"
+                        *ngFor="let page of p.pages; trackBy: trackByIndex">
+                        <a tabindex="0" (keyup.enter)="p.setCurrent(page.value)" (click)="p.setCurrent(page.value)"
+                            *ngIf="p.getCurrent() !== page.value">
+                            <span class="show-for-sr">{{ screenReaderPageLabel }} </span>
+                            <span>{{ (page.label === '...') ? page.label : (page.label | number:'') }}</span>
+                        </a>
+                        <ng-container *ngIf="p.getCurrent() === page.value">
+                            <span class="show-for-sr">{{ screenReaderCurrentLabel }} </span>
+                            <span>{{ (page.label === '...') ? page.label : (page.label | number:'') }}</span>
+                        </ng-container>
+                    </li>
+                    <li class="pagination-next" [class.disabled]="p.isLastPage()" *ngIf="directionLinks">
+                        <a tabindex="0" *ngIf="!p.isLastPage()" (keyup.enter)="p.next()" (click)="p.next()"
+                            [attr.aria-label]="nextLabel + ' ' + screenReaderPageLabel">
+                            {{ nextLabel }} <span class="show-for-sr">{{ screenReaderPageLabel }}</span>
+                        </a>
+                        <span *ngIf="p.isLastPage()">
+                            {{ nextLabel }} <span class="show-for-sr">{{ screenReaderPageLabel }}</span>
+                        </span>
+                    </li>
+                </ul>
+            </pagination-template> -->
         </ng-container>
     </div>
 
@@ -122,3 +201,129 @@
     </div>
 
 </section>
+<div *ngIf="docViewing" class="modal fade" id="serpDocViewModal" tabindex="-1" aria-labelledby="serpDocViewModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-body d-flex justify-content-start p-0">
+                <div class="modal-control align-self-stretch d-flex align-items-center justify-content-center">
+                    <i (click)="closeModal()" class="fas fa-times text-light modal-close-btn"></i>
+                </div>
+                <div class="modal-center align-self-stretch flex-grow-1" style="overflow-y: scroll;">
+                    <app-doc-card class="app-doc-card pb-2 pl-2 pr-2 pt-0" [style]="'doc-container-modal'"
+                        [doc]="docViewing" [searchTerms]="[]" [searchQuery]="''" (saveDoc)="saveToWorkspace(docViewing)"
+                        (viewDoc)="viewDocument($event)">
+                    </app-doc-card>
+                    <div class="{{style}} d-flex justify-content-start">
+                        <div class="m-3">
+                            <figure class="figure pull-left text-center mr-2 mb-0" style="width: 60px;">
+                                <img style="visibility: hidden;" src="./../../../assets/images/book-placeholder.jpg"
+                                    width="60" height="60" class="figure-img img-fluid"
+                                    alt="A generic square placeholder image with rounded corners in a figure."><br>
+                            </figure>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-start align-self-center mx-3">
+                                <h2 style="min-width: 100px;" class="mb-0 text-secondary">Details</h2>
+                                <div class="line align-self-center"></div>
+                            </div>
+
+                            <div class="d-flex justify-content-start align-self-top mx-3">
+                                <h3 style="min-width: 100px;" class="mb-0">Title</h3>
+                                <div class="flex-grow-1 mt-1">
+                                    <span>{{docViewing.title}}</span>
+                                </div>
+                            </div>
+
+
+                            <div *ngIf="docViewing.facets.contributors.length>0"
+                                class="d-flex justify-content-start align-self-top mx-3">
+                                <h3 style="min-width: 100px;" class="mb-0">Author</h3>
+                                <div class="flex-grow-1 mt-1">
+                                    <p class="" *ngFor="let contrib of docViewing.facets.contributors; let j = index">
+                                        {{contrib.text}}{{j==docViewing.facets.contributors.length-1?'':';
+                                        '}}</p>
+                                </div>
+                            </div>
+
+                            <div *ngIf="docViewing.facets.topics.length>0"
+                                class="d-flex justify-content-start align-self-top mx-3">
+                                <h3 style="min-width: 100px;" class="mb-0">Subjects</h3>
+                                <div class="flex-grow-1 mt-1">
+                                    <p class="" *ngFor="let topic of docViewing.facets.topics; let j = index">
+                                        {{topic.text}}</p>
+                                </div>
+                            </div>
+
+                            <div *ngIf="docViewing.source" class="d-flex justify-content-start align-self-top mx-3">
+                                <h3 style="min-width: 100px;" class="mb-0">Is Part Of</h3>
+                                <div class="flex-grow-1 mt-1">
+                                    <ng-container *ngIf="docViewing.source">
+                                        <p class="m-0 doc-source font-weight-normal font-italic">{{docViewing.source}}
+                                        </p>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="docViewing.description"
+                                class="d-flex justify-content-start align-self-top mx-3">
+                                <h3 style="min-width: 100px;" class="mb-0">Description</h3>
+                                <div class="flex-grow-1 mt-1">
+                                    <ng-container *ngIf="docViewing.source">
+                                        <p class="m-0 doc-source font-weight-normal font-italic">
+                                            {{docViewing.description}}
+                                        </p>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="docViewing.publisher" class="d-flex justify-content-start align-self-top mx-3">
+                                <h3 style="min-width: 100px;" class="mb-0">Publisher</h3>
+                                <div class="flex-grow-1 mt-1">
+                                    <ng-container *ngIf="docViewing.source">
+                                        <p class="m-0 doc-source font-weight-normal font-italic">
+                                            {{docViewing.publisher}}
+                                        </p>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="docViewing.language" class="d-flex justify-content-start align-self-top mx-3">
+                                <h3 style="min-width: 100px;" class="mb-0">Language</h3>
+                                <div class="flex-grow-1 mt-1">
+                                    <ng-container *ngIf="docViewing.source">
+                                        <p class="m-0 doc-source font-weight-normal font-italic">
+                                            {{docViewing.language}}
+                                        </p>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="docViewing.allIdentifiers&&docViewing.allIdentifiers.length>0"
+                                class="d-flex justify-content-start align-self-top mx-3">
+                                <h3 style="min-width: 100px;" class="mb-0">Identifier</h3>
+                                <div class="flex-grow-1 mt-1">
+
+                                    <p *ngFor="let id of docViewing.allIdentifiers"
+                                        class="m-0 doc-source font-weight-normal font-italic">
+                                        {{id}}
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-right-sidebar align-self-stretch">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="saveSearchMessageVisible"
+    style="width: 100%; height: 70px; background-color: #FFFCC4; color: black;position:fixed; top:0;"
+    class="d-flex align-items-center justify-content-center ext-center">
+    <p class="m-0">This search query was saved to your folders.</p>
+</div>

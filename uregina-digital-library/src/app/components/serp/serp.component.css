@@ -8,26 +8,139 @@
     background-color: #418D8C;
 }
 
-.nav-cell {
-    color: black;
-    font-weight: 500;
-    border-left: 1px solid gainsboro;
-    height: 100%;
-    margin-bottom: auto;
-    align-self: flex-start;
+
+
+.serp-page-control /deep/ .ngx-pagination {
     display: flex;
-    align-items: center;
-    padding: 20px;
+    justify-content: center;
+    font-size: 20px;
+    margin: 20px;
+  }
+
+
+/* 
+.ngx-pagination {
+    margin-left: 0;
+    margin-bottom: 1rem; }
+    .ngx-pagination::before, .ngx-pagination::after {
+      content: ' ';
+      display: table; }
+    .ngx-pagination::after {
+      clear: both; }
+    .ngx-pagination li {
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      margin-right: 0.0625rem;
+      border-radius: 0; }
+    .ngx-pagination li {
+      display: inline-block; }
+    .ngx-pagination a,
+    .ngx-pagination button {
+      color: #0a0a0a; 
+      display: block;
+      padding: 0.1875rem 0.625rem;
+      border-radius: 0; }
+      .ngx-pagination a:hover,
+      .ngx-pagination button:hover {
+        background: #e6e6e6; }
+    .ngx-pagination .current {
+      padding: 0.1875rem 0.625rem;
+      background: #2199e8;
+      color: #fefefe;
+      cursor: default; }
+    .ngx-pagination .disabled {
+      padding: 0.1875rem 0.625rem;
+      color: #cacaca;
+      cursor: default; } 
+      .ngx-pagination .disabled:hover {
+        background: transparent; }
+    .ngx-pagination a, .ngx-pagination button {
+      cursor: pointer; }
+  .ngx-pagination .pagination-previous a::before,
+  .ngx-pagination .pagination-previous.disabled::before { 
+    content: '«';
+    display: inline-block;
+    margin-right: 0.5rem; }
+  .ngx-pagination .pagination-next a::after,
+  .ngx-pagination .pagination-next.disabled::after {
+    content: '»';
+    display: inline-block;
+    margin-left: 0.5rem; }
+  .ngx-pagination .show-for-sr {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0); }
+  .ngx-pagination .small-screen {
+    display: none; }
+  @media screen and (max-width: 601px) {
+    .ngx-pagination.responsive .small-screen {
+      display: inline-block; } 
+    .ngx-pagination.responsive li:not(.small-screen):not(.pagination-previous):not(.pagination-next) {
+      display: none; }
+  } */
+
+  .docs-info-nav {
+    height: 55px;
+  }
+
+  .page-size-select {
+      font-size: 20px
+  }
+
+  .page-size-select span {
+      border-radius: 5px;
+      padding: 10px;
+      margin: 5px;
+      cursor: pointer;
+  }
+
+  .page-size-select span.active {
+    border: 2px solid#5d5d5d ;
 }
 
-.last-nav-cell {
-    border-right: 1px solid gainsboro;
-}
+  .page-size-select span:hover {
+    color: white;
+    background-color: #5d5d5d;
+  }
 
-a{
-    text-decoration: none;
-}
+  .modal-control {
+    background: #5A7A8E;
+    width: 10%;
+  }
 
-.navbar {
-    align-items: stretch;
+  .modal-center {
+    background: #E5EFEB;
+  }
+
+  .modal-right-sidebar {
+    background: white;
+    width: 20%;
+  }
+
+  .modal-close-btn {
+    height: 90px;
+    width: 90px;
+    line-height: 90px;
+    text-align: center; 
+    border-radius: 50%;
+    font-size: 50px;
+    border: 1px solid #5A7A8E;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .modal-close-btn:hover{
+    background-color: #3a3a3a;
+    
+  }
+
+  
+.line {  width: 100%; height: 1px; background-color: #bfbfbf; }
+
+.doc-link {
+  width: 100%;
+  /* height: 300px; */
 }

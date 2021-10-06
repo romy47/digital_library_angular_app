@@ -1,4 +1,15 @@
-<div class="doc-container d-flex justify-content-start">
+<div class="{{style}} d-flex justify-content-start">
+    <!-- <div *ngIf="itemCount" style="margin-right: 30px; margin-left: 20px;" class="mt-2" class="m-3">
+        <p class="mb-0" style="width: 22px; border: 1px solid gray; text-align: center;">{{itemCount}}</p>
+    </div> -->
+    <div *ngIf="itemCount" class="d-flex" style="margin-right: 30px; margin-left: 20px;" class="mt-2" class="m-3">
+        <div style="margin-right: 30px; margin-left: 20px;" class="mt-2">
+            <mat-checkbox (change)="savedDocCheck()" ngDefaultControl class="example-margin" [(ngModel)]="doc.selected">
+            </mat-checkbox>
+            <p class="mb-0 checkbox-text" style="width: 22px; text-align: center;">{{itemCount}}</p>
+
+        </div>
+    </div>
     <div class="m-3">
         <figure class="figure pull-left text-center mr-2 mb-0" style="width: 60px;">
             <img src="{{doc.imageUrl}}" width="60" height="60" class="figure-img img-fluid"
@@ -8,11 +19,17 @@
     <div class="flex-grow-1">
         <div style="width: 100%;">
             <span class="text-secondary doc-type">{{doc.type|uppercase}}</span>
-            <em class="fa btn float-end float-right" style="margin-right: 10px;">
+            <em *ngIf="doc.isSaved==false" (click)="addBaselineSavedDoc(doc)" class="fa btn float-end float-right"
+                style="margin-right: 10px;">
                 <i class="fa fa-thumbtack fa-thumbtack-save-doc fa-rotate-lite text-secondary"></i>
             </em>
+            <span *ngIf="doc.isSaved==true" (click)="addBaselineSavedDoc(doc)"
+                class="fa-stack fa-1x text-danger fa btn float-end float-right">
+                <i class="fas fa-slash fa-stack-1x"></i>
+                <i class="fa fa-thumbtack fa-stack-1x"></i>
+            </span>
         </div>
-        <p class="cursor-pointer doc-title mb-0">
+        <p (click)="viewDocument(doc)" class="cursor-pointer doc-title mb-0">
             <title-highlight [needle]="searchQuery" [needles]="searchTerms" [haystack]="doc.title"></title-highlight>
         </p>
         <span class="doc-author">
@@ -37,5 +54,75 @@
                 <i class="fa fa-quote-right"></i>
             </h6>
         </ng-container>
+        <ng-container *ngIf="doc.peerReviewed||doc.openAccess">
+            <h6>
+                <span style="margin-right: 50px;" *ngIf="doc.peerReviewed"> <img height="17px"
+                        src="./../../../assets/images/peer_reviewed.png" /> PEER REVIEWED</span>
+                <span *ngIf="doc.openAccess"> <img height="17px" src="./../../../assets/images/open_access.png" /> OPEN
+                    ACCESS</span>
+            </h6>
+        </ng-container>
+
+        <ng-container *ngIf="doc.linkText=='fulltext'||'available_in_institution'">
+            <h6 (click)="openDocument()" class="text-success cursor-pointer" *ngIf="doc.linkText=='fulltext'"><i
+                    class="fas fa-link"></i> Full
+                text available
+                &nbsp;
+                <i class="fas fa-external-link-alt"></i>&nbsp;<i class="fas fa-chevron-right"></i>
+            </h6>
+
+            <h6 (click)="openDocument()" class="text-success cursor-pointer"
+                *ngIf="doc.linkText=='available_in_institution'"><i class="fas fa-link"></i>Available
+                at <span class="text-info">ARCHER
+                    Library &nbsp; <i class="fas fa-chevron-right"></i></span></h6>
+        </ng-container>
+        <ng-container *ngIf="doc.linkText!='fulltext'&&doc.linkText!='available_in_institution'">
+            <h6 (click)="openDocument()" class="text-success cursor-pointer"><i class="fas fa-link"></i> Online
+                Access &nbsp;
+                <i class="fas fa-external-link-alt"></i>&nbsp; <i class="fas fa-chevron-right"></i>
+            </h6>
+        </ng-container>
+        <ng-container *ngIf="parent=='saved-records'">
+
+            <ng-container *ngIf="doc.labels.length>0">
+                <span class="doc-label-chip" *ngFor="let label of doc.labels">{{label}}</span>
+                <button [matMenuTriggerFor]="menu" #menuTrigger type="button"
+                    class="btn btn-outline-secondary btn-save-search">
+                    <i class="fa fa-pencil"></i>
+                </button>
+            </ng-container>
+            <button *ngIf="doc.labels.length==0" [matMenuTriggerFor]="menu" #menuTrigger type="button"
+                class="btn btn-outline-secondary btn-save-search">
+                <i class="fa fa-pencil"></i>
+                ADD LABELS
+            </button>
+            <!-- <button mat-button [matMenuTriggerFor]="menu" #menuTrigger>Menu</button> -->
+            <mat-menu #menu="matMenu">
+                <div class="d-flex flex-column" style="padding: 10px;">
+                    <strong *ngIf="doc.labels&&doc.labels.length>0">ASSIGNED LABELS</strong>
+                    <p (click)="removeLabel(label)"
+                        class="label-items cursor-pointer d-flex justify-content-between align-items-center"
+                        *ngFor="let label of doc.labels">
+                        <span>{{label}}</span>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </p>
+                    <strong *ngIf="availableLabels.length>0">AVILABLE LABELS</strong>
+                    <p (click)="addExistingLabel(label)"
+                        class="label-items cursor-pointer  d-flex justify-content-between align-items-center"
+                        *ngFor="let label of availableLabels">
+                        <span>{{label}}</span>
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </p>
+                    <form (ngSubmit)="submitLabel()" class="form">
+                        <mat-form-field (click)="$event.stopPropagation();$event.preventDefault();">
+                            <mat-label>ADD NEW LABELS</mat-label>
+                            <input matInput [(ngModel)]="newLabel" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                    </form>
+                </div>
+            </mat-menu>
+        </ng-container>
+
+
     </div>
 </div>

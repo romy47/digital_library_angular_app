@@ -20,6 +20,7 @@ export class Search {
     constructor(obj: Search) {
         Object.assign(this, obj);
     }
+    isSaved?: boolean = false;
     activePagefacetTab?: string;
     selected?: boolean = false;
     createdAt?: Date;
