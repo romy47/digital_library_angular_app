@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Doc } from 'src/app/Models';
 import { DataService } from 'src/app/services';
 import { LibraryService } from 'src/app/services/library.service';
@@ -8,8 +8,9 @@ import { LibraryService } from 'src/app/services/library.service';
   templateUrl: './saved-records.component.html',
   styleUrls: ['./saved-records.component.css']
 })
-export class SavedRecordsComponent implements OnInit {
 
+export class SavedRecordsComponent implements OnInit {
+  @Output() edilAllLabels: EventEmitter<{ all: unknown[], selected: unknown[] }> = new EventEmitter<{ all: unknown[], selected: unknown[] }>();
   docs: Doc[] = [];
   allDocs: Doc[] = [];
   pagingIndex = 0;
@@ -26,6 +27,36 @@ export class SavedRecordsComponent implements OnInit {
         this.deleteBatchSavedDocs();
       }
     })
+
+    this.dataService.myFolderBatchEditLabelObs.subscribe(data => {
+      console.log(data);
+      if (data != null) {
+        let selectedDocsLabels = new Set();
+        let allDocsLabels = new Set();
+
+        this.docs.forEach(d => {
+          d.labels.forEach(l => {
+            if (d.selected == true) {
+              console.log('sel: ', l);
+              selectedDocsLabels.add(l)
+            } else {
+              console.log('unsel: ', l);
+              allDocsLabels.add(l);
+            }
+          });
+        });
+        console.log('befor emit');
+        this.edilAllLabels.emit({ all: Array.from(allDocsLabels), selected: Array.from(selectedDocsLabels) });
+
+      }
+    });
+
+    this.dataService.myFolderBatchEditLabelAddAndRemoveObs.subscribe(data => {
+      console.log(data);
+      if (data != null) {
+        this.batchUpdateDocLabel(data);
+      }
+    });
   }
 
   getAllSavedDocs() {
@@ -44,6 +75,28 @@ export class SavedRecordsComponent implements OnInit {
       this.loadMore();
       console.log(this.docs);
     });
+  }
+
+  batchUpdateDocLabel(data) {
+    let docIds: string[] = [];
+    this.docs.forEach(s => {
+      if (s.selected == true) {
+        docIds.push(s._id);
+      }
+    });
+    if (data.type == 'add') {
+      this.libraryService.addLabelToDocBatch(data.label, docIds).subscribe(res => {
+        this.docs.filter(d => d.selected == true).forEach(d => {
+          d.labels.push(data.label);
+        });
+      });
+    } else if (data.type == 'remove') {
+      this.libraryService.removeLabelFromDocBatch(data.label, docIds).subscribe(res => {
+        this.docs.filter(d => d.selected == true).forEach(d => {
+          d.labels = d.labels.filter(l => l != data.label);
+        });
+      });
+    }
   }
 
   loadMore() {

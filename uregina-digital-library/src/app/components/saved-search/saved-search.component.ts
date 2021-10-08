@@ -23,17 +23,27 @@ export class SavedSearchComponent implements OnInit {
         this.deleteBatchSavedSearch();
       }
     });
+
+    this.dataService.myFolderSavedSearchForceRefreshObs.subscribe(data => {
+      console.log(data);
+      if (data != null) {
+        this.getAllSavedSearches();
+      }
+    })
   }
 
   getAllSavedSearches() {
     this.libraryService.getAllSavedBaselineSearches().subscribe(res => {
+      this.searches = [];
       this.allSearches = [];
+      this.pagingIndex = 0;
       res.forEach(t => {
         t['selected'] = false;
         this.allSearches.push(new Search(t));
       });
       this.loadMore();
     });
+
   }
 
   deleteBatchSavedSearch() {

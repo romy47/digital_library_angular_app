@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Facet, AllFacets, Task, Doc } from '../Models';
+import { Facet, AllFacets, Task, Doc, Search } from '../Models';
 import { AuthService } from './auth.service';
 import * as api from './../../environments/custom/sandbox-localhost';
 
@@ -68,7 +68,7 @@ export class LibraryService {
     }, httpOptions);
   }
 
-  public addSavedSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
+  public addBaselineSavedSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -79,6 +79,20 @@ export class LibraryService {
       totalDocuments: totalDocuments ? totalDocuments : 0,
       documentsBrowsed: docBrowsed ? docBrowsed : 0,
       createdBy: this.authService.getCurrentUserData()._id
+    }, httpOptions);
+  }
+
+  public addBatchBaselineSavedSearch(searches: Search[]): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    searches.forEach(s => {
+      s['createdBy'] = this.authService.getCurrentUserData()._id;
+    });
+    return this.http.post(api.API_PATH + 'baseline/savedsearch/batch', {
+      searches
     }, httpOptions);
   }
 
@@ -148,6 +162,19 @@ export class LibraryService {
     }, httpOptions);
   }
 
+  public addLabelToDocBatch(label: string, savedRecordIds: string[]): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(api.API_PATH + 'baseline/doc/label/batch', {
+      label: label,
+      docIds: savedRecordIds,
+      createdBy: this.authService.getCurrentUserData()._id
+    }, httpOptions);
+  }
+
   public removeLabelFromDoc(label: string, savedRecordId: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -157,6 +184,19 @@ export class LibraryService {
     return this.http.post(api.API_PATH + 'baseline/doc/label/delete', {
       label: label,
       docId: savedRecordId,
+      createdBy: this.authService.getCurrentUserData()._id
+    }, httpOptions);
+  }
+
+  public removeLabelFromDocBatch(label: string, savedRecordIds: string[]): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(api.API_PATH + 'baseline/doc/label/batch/delete', {
+      label: label,
+      docIds: savedRecordIds,
       createdBy: this.authService.getCurrentUserData()._id
     }, httpOptions);
   }

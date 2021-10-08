@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Search } from 'src/app/Models';
 import { DataService, LibraryService } from 'src/app/services';
 
@@ -13,6 +13,7 @@ export class SearchHistoryComponent implements OnInit {
   allSearches: Search[] = [];
   allSelected: boolean = false;
   savedSearcheQueryTitles = new Set();
+  @Output() forceRefresh: EventEmitter<number> = new EventEmitter<number>();
 
   pagingIndex = 0;
   constructor(private libraryService: LibraryService, private dataService: DataService) { }
@@ -30,7 +31,14 @@ export class SearchHistoryComponent implements OnInit {
       if (data != null) {
         this.deleteBatchSearchHistory();
       }
-    })
+    });
+
+    this.dataService.myFolderSearchHistorySaveAllObs.subscribe(data => {
+      console.log(data);
+      if (data != null) {
+        this.saveBatchSearchHistory();
+      }
+    });
   }
 
   allSearchHistoryChecked(event: any) {
@@ -44,6 +52,13 @@ export class SearchHistoryComponent implements OnInit {
         s.selected = false;
       });
     }
+  }
+
+  addToSavedSearch(search: Search) {
+    this.libraryService.addBaselineSavedSearch(search.searchQuery, 0, 0).subscribe(res => {
+      this.forceRefresh.emit(1);
+      this.saveToWorkspace(search);
+    });
   }
 
 
@@ -60,21 +75,6 @@ export class SearchHistoryComponent implements OnInit {
   }
 
   getAllSearches() {
-    // this.libraryService.getAllSavedBaselineSearches().subscribe(res => {
-    //   this.allSearches = [];
-    //   res.forEach(t => {
-    //     if (this.savedSearcheQueryTitles.has(t.searchQuery)) {
-    //       t['isSaved'] = true;
-    //     }
-    //     this.allSearches.push(new Search(t));
-    //   });
-    //   console.log(this.savedSearcheQueryTitles);
-    //   console.log(this.allSearches);
-    //   this.loadMore();
-    // });
-
-
-
     this.libraryService.getAllBaselineSearches().subscribe(res => {
       this.allSearches = [];
       res.forEach(t => {
@@ -127,7 +127,7 @@ export class SearchHistoryComponent implements OnInit {
         deleteIds.push(s._id);
       }
     });
-    console.log(deleteIds);
+    console.log('batch delete: ', deleteIds);
     this.libraryService.deleteBatchBaselineSearchHistory(deleteIds).subscribe(res => {
       console.log(res);
       deleteIds.forEach(id => {
@@ -135,5 +135,16 @@ export class SearchHistoryComponent implements OnInit {
       });
       this.refreshDocsAfterRemove(deleteIds.length);
     });
+  }
+
+  saveBatchSearchHistory() {
+    const searchesToBeSaved = this.searches.filter(s => s.selected == true);
+    console.log('batch delete prelode');
+    this.libraryService.addBatchBaselineSavedSearch(searchesToBeSaved).subscribe(res => {
+      console.log('batch delete started');
+      this.deleteBatchSearchHistory();
+    }, err => {
+      console.log('Err', err);
+    })
   }
 }

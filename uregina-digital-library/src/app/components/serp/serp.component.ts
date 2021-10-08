@@ -118,7 +118,7 @@ export class SerpComponent implements OnInit {
   }
 
   saveSearch() {
-    this.libraryService.addSavedSearch(this.searchQuery, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
+    this.libraryService.addBaselineSavedSearch(this.searchQuery, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
       console.log('Search Saved');
       this.showSaveSearchMessage();
     });

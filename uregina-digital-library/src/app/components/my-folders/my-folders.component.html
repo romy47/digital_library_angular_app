@@ -102,10 +102,37 @@
             <div *ngIf="selectedTabIndex==0" class="d-flex">
                 <span style="margin-left: 20px; white-space: nowrap;"
                     class="d-flex justify-content-start align-self-center cursor-pointer">
-                    <span class="align-self-center">
+                    <span (click)="editBatchSavedRecordsLabels()" class="align-self-center">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                         <span style="margin-left: 10px; margin-right: 10px;">EDIT LABELS</span>
                     </span>
+                    <button style="visibility: hidden;" #mtfolderEditLabelBtn="matMenuTrigger"
+                        [matMenuTriggerFor]="myFolderEdLabmenu">
+                    </button>
+                    <mat-menu #myFolderEdLabmenu="matMenu">
+                        <div class="d-flex flex-column" style="padding: 10px;">
+                            <strong *ngIf="batchEditLabel.selected&&batchEditLabel.selected.length>0">ASSIGNED
+                                LABELS</strong>
+                            <p class="label-items cursor-pointer d-flex justify-content-between align-items-center"
+                                (click)="changeLabel(label, 'remove')" *ngFor="let label of batchEditLabel.selected">
+                                <span>{{label}}</span>
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </p>
+                            <strong *ngIf="batchEditLabel.all&&batchEditLabel.all.length>0">AVILABLE
+                                LABELS</strong>
+                            <p *ngFor="let label of batchEditLabel.all" (click)="changeLabel(label, 'add')"
+                                class="label-items cursor-pointer  d-flex justify-content-between align-items-center">
+                                <span>{{label}}</span>
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </p>
+                            <form (ngSubmit)="submitLabel()" class="form">
+                                <mat-form-field (click)="$event.stopPropagation();$event.preventDefault();">
+                                    <mat-label>ADD NEW LABELS</mat-label>
+                                    <input matInput [(ngModel)]="newLabel" [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
+                            </form>
+                        </div>
+                    </mat-menu>
                     <span (click)="deleteBatchSavedRecords()"
                         class="d-flex align-self-center justify-content-center fa-stack fa-1x cursor-pointer">
                         <i class="fas fa-slash fa-stack-1x"></i>
@@ -122,7 +149,8 @@
             </div>
             <div *ngIf="selectedTabIndex==2" class="d-flex">
                 <span style="margin-left: 20px;" class="d-flex justify-content-center align-self-center">
-                    <i style="margin-right: 20px;" class="fa fa-thumbtack cursor-pointer"></i>
+                    <i (click)="saveBatchSearchedHistory()" style="margin-right: 20px;"
+                        class="fa fa-thumbtack cursor-pointer"></i>
                     <i (click)="deleteBatchSearchedHistory()" class="fa fa-solid fa-trash cursor-pointer"></i>
                 </span>
             </div>
@@ -132,7 +160,7 @@
 
             <mat-tab label="SAVED RECORDS">
                 <!-- <ng-template matTabContent> -->
-                <app-saved-records></app-saved-records>
+                <app-saved-records (edilAllLabels)="edilAllLabels($event)"></app-saved-records>
                 <!-- </ng-template> -->
             </mat-tab>
             <mat-tab label="SAVED SEARCHES">
@@ -142,7 +170,7 @@
             </mat-tab>
             <mat-tab label="SEARCH HISTORY">
                 <!-- <ng-template matTabContent> -->
-                <app-search-history></app-search-history>
+                <app-search-history (forceRefresh)="forceRefresh($event)"></app-search-history>
                 <!-- </ng-template> -->
             </mat-tab>
         </mat-tab-group>
