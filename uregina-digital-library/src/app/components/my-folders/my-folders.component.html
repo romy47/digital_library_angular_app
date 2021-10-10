@@ -1,37 +1,36 @@
 <nav class="navbar p-0">
     <a class="navbar-brand" href="#">
-        <img src="./../../../assets/images/library-logo.png" width="190" class="d-inline-block align-top" alt="">
+        <img src="./../../../assets/images/library-logo.png" class="d-inline-block align-top ur-logo" alt="">
     </a>
-    <!-- <ng-container class="d-none d-md-block d-lg-block d-xl-block "> -->
     <div class="d-none d-md-flex d-lg-flex d-xl-flex justify-content-center align-items-stretch flex-grow-1">
         <div class="nav-cell ">
-            <a class="text-dark" href="#">New<br />Search</a>
+            <a class="nav-center-menu" href="#">New<br />Search</a>
         </div>
         <div class="nav-cell">
-            <a class="text-dark" href="#">e-Journal<br />Titles</a>
+            <a class="nav-center-menu" href="#">e-Journal<br />Titles</a>
         </div>
         <div class="nav-cell">
-            <a class="text-dark" href="#">Database</a>
+            <a class="nav-center-menu" href="#">Databases</a>
         </div>
         <div class="nav-cell">
-            <a class="text-dark" href="#">Browse</a>
+            <a class="nav-center-menu" href="#">Browse</a>
         </div>
         <div class="nav-cell">
-            <a class="text-dark" href="#">Help</a>
+            <a class="nav-center-menu" href="#">Help</a>
         </div>
         <div class="nav-cell last-nav-cell">
-            <a class="text-dark" href="#">Citation<br />Finder</a>
+            <a class="nav-center-menu" href="#">Citation<br />Finder</a>
         </div>
+
     </div>
-    <!-- </ng-container> -->
-    <div class="d-flex align-items-center">
-        <div class="d-flex align-items-center px-3 ">
+    <div class="d-flex align-items-center nav-profile-menu">
+        <div class="d-flex align-items-center px-3 nav-toggle-icon">
             <a [routerLink]="['/library/search']">
                 <i style="color: black;" class="fa fa-search fa-rotate-90 text-dark"></i>
             </a>
         </div>
         <div class="dropdown d-none d-md-flex d-lg-flex d-xl-flex align-items-center">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1"
+            <button class="btn btn-light user-profile-btn" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 {{username}}
             </button>
@@ -44,57 +43,37 @@
     </div>
 </nav>
 
-<section class="border row accent-bg mx-0" style="padding: 20px 0 30px;">
-    <div class="col-md-2">
+<p style="display: none;" class="quick-find-text">Quick Find <i class="fas fa-caret-down"
+        style="margin-left: 20px;"></i></p>
+<section class="row nav-accent-bg mx-0 nav-section">
+    <div class="col-md-3 px-0">
 
     </div>
-    <div class="col-md-8">
-        <form style="width: 100%;" (submit)="search()" class="mx-3">
-            <div class="input-group mb-3 input-group-lg">
-                <input [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                    placeholder="Quick Find">
+    <div class="col-md-6">
+        <form style="width: 100%;" (submit)="search()">
+            <div class="input-group input-group-lg">
+                <input [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" type="text"
+                    class="form-control search-bar-input" placeholder="Quick Find">
                 <div class="input-group-append">
-                    <button class="btn btn-lg bg-white anti-round-left" type="submit"><i
+                    <button class="btn btn-lg bg-white anti-round-left search-bar-btn" type="submit"><i
                             class="fa fa-search fa-rotate-90"></i></button>
                 </div>
             </div>
         </form>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3 px-0">
 
     </div>
 </section>
+<section style="width: 100%; height: 47px;" class="accent-bg">
 
-<Section>
-    <br />
-    <br />
-    <br />
-</Section>
+</section>
 <section class="row mx-0">
-    <div class="col-md-1">
+    <div class="col-md-2">
 
     </div>
 
-    <div class="col-md-10">
-        <!-- <ul class="nav nav-tabs accent-header-color" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-                    role="tab" aria-controls="home" aria-selected="true">SAVED RECORDS</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-                    role="tab" aria-controls="profile" aria-selected="false">SAVED SEARCHES</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
-                    role="tab" aria-controls="contact" aria-selected="false">SEARCH HISTORY</button>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-        </div> -->
+    <div class="col-md-9 myfolder-center-console">
         <div class="d-flex justify-content-start align-items-stretch top-batch-menu" style="height: 60px;">
             <div style="width: 160px;border-right: 1px solid lightgray;">
 
@@ -102,9 +81,9 @@
             <div *ngIf="selectedTabIndex==0" class="d-flex">
                 <span style="margin-left: 20px; white-space: nowrap;"
                     class="d-flex justify-content-start align-self-center cursor-pointer">
-                    <span (click)="editBatchSavedRecordsLabels()" class="align-self-center">
+                    <span (click)="editBatchSavedRecordsLabels()" class="align-self-center myfolder-menu-text">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
-                        <span style="margin-left: 10px; margin-right: 10px;">EDIT LABELS</span>
+                        <span style="margin-left: 10px; margin-right: 10px;">ADD LABELS</span>
                     </span>
                     <button style="visibility: hidden;" #mtfolderEditLabelBtn="matMenuTrigger"
                         [matMenuTriggerFor]="myFolderEdLabmenu">
@@ -134,7 +113,7 @@
                         </div>
                     </mat-menu>
                     <span (click)="deleteBatchSavedRecords()"
-                        class="d-flex align-self-center justify-content-center fa-stack fa-1x cursor-pointer">
+                        class="d-flex align-self-center justify-content-center fa-stack fa-1x cursor-pointer myfolder-menu-text">
                         <i class="fas fa-slash fa-stack-1x"></i>
                         <i class="fa fa-thumbtack fa-stack-1x"></i>
                     </span>
@@ -142,13 +121,14 @@
             </div>
             <div *ngIf="selectedTabIndex==1" class="d-flex">
                 <span style="margin-left: 20px;"
-                    class="d-flex justify-content-center align-self-center fa-stack fa-1x cursor-pointer">
+                    class="d-flex justify-content-center align-self-center fa-stack fa-1x cursor-pointer myfolder-menu-text">
                     <i class="fas fa-slash fa-stack-1x"></i>
                     <i (click)="deleteBatchSavedSearch()" class="fa fa-thumbtack fa-stack-1x"></i>
                 </span>
             </div>
             <div *ngIf="selectedTabIndex==2" class="d-flex">
-                <span style="margin-left: 20px;" class="d-flex justify-content-center align-self-center">
+                <span style="margin-left: 20px;"
+                    class="d-flex justify-content-center align-self-center myfolder-menu-text">
                     <i (click)="saveBatchSearchedHistory()" style="margin-right: 20px;"
                         class="fa fa-thumbtack cursor-pointer"></i>
                     <i (click)="deleteBatchSearchedHistory()" class="fa fa-solid fa-trash cursor-pointer"></i>
@@ -156,7 +136,7 @@
             </div>
         </div>
         <mat-tab-group [(selectedIndex)]="selectedTabIndex" ngDefaultControl (selectedTabChange)="onTabChanged($event);"
-            animationDuration="600ms">
+            animationDuration="600ms" class="remove-border-bottom">
 
             <mat-tab label="SAVED RECORDS">
                 <!-- <ng-template matTabContent> -->

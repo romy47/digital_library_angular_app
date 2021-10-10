@@ -1,4 +1,237 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* mobile devices */
+@media only screen and (max-width: 768px) {
+
+    .nav-profile-menu {
+        margin-right: 0px;
+    }
+
+    
+    .nav-toggle-icon {
+        margin-right: 10px;
+    }
+
+    .nav-accent-bg {
+        background-color: white;
+    }
+
+    .search-bar-input {
+        border: none !important;
+    }
+
+    .quick-find-text {        
+        font-size:
+        15px;
+        line-height:
+        normal;
+        letter-spacing:
+        normal;
+        font-weight:
+        400;
+        padding-left: 28px;
+        display: block !important;
+    }
+
+    .docs-info-nav-large-device {
+        display: none;
+    }
+
+    .docs-info-nav-small-device {
+        display: block;
+    }
+
+    .doc-image {
+        display: none;
+    }
+
+    
+    .doc-text-info-box {
+        margin-left: 10px;
+    }
+
+    
+    .doc-check-small-device {
+        display: block;
+    }
+
+    .doc-check-large-device {
+        display: none;
+    }
+
+    .modal-control, .modal-right-sidebar {
+        display: none !important;
+    }
+
+    .doc-modal-left-offset {
+        display: none;
+    }
+    
+    .saved-search-item {
+        padding: 15px 0px;
+    }
+
+    .search-history-item-check {
+        margin: 13px 8px 0px 20px;
+    }
+
+    .myfolder-center-console {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    
+    .nav-profile-menu {
+        margin-right: 40px;
+    }
+
+
+    .nav-toggle-icon {
+        margin-right: 20px;
+    }
+
+    .nav-accent-bg {
+        background-color: #00663c;
+    }
+    
+    .nav-section {
+        padding: 20px 0 15px;
+    }
+
+    .docs-info-nav-large-device {
+        display: flex;
+    }
+
+    .docs-info-nav-small-device {
+        display: none;
+    }
+
+    .doc-check-small-device {
+        display: none;
+    }
+
+    .doc-check-large-device {
+        display: block;
+    }
+
+    .mobile-doc-view-modal-close {
+        display: none !important
+        ;
+    }
+
+    .search-history-item-check {
+        margin: 13px 30px 0px 20px;
+    }
+}
+
+.input-group .fa-search {
+    font-size: 24px;
+}
+
+.mobile-doc-view-modal-close {
+    background-color: white;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    padding: 0px 15px;
+    color:
+#686868;
+font-size:
+14px;	
+line-height:
+36px;
+letter-spacing:
+0.14px;
+word-spacing:
+0px;
+font-weight:
+500;
+}
+
+
+
+.navbar .ur-logo {
+    margin-left: 20px;
+    width: 200px;
+    margin-bottom: 0px;
+}
+.navbar-brand{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.nav-center-menu {
+    color:
+rgb(37, 37, 37);
+
+font-family:
+Arial, verdana
+,Arial
+100.0%;
+font-size:
+13.125px;
+line-height:
+15.75px;
+vertical-align:
+middle;
+letter-spacing:
+0.39375px;
+word-spacing:
+0px;	
+font-weight:
+600;
+font-style:
+normal;
+font-variant:
+normal;
+text-transform:
+none;
+text-decoration:
+none solid rgb(255, 255, 255);
+text-align:
+center;
+text-indent:
+0px;
+}
+
+.user-profile-btn {
+    line-height:
+36px;
+vertical-align:
+baseline;
+letter-spacing:
+0.14px;
+word-spacing:
+0px;
+font-weight:
+600;
+font-style:
+normal;
+font-variant:
+normal;
+text-transform:
+none;
+text-decoration:
+none solid rgb(255, 255, 255);
+text-align:
+center;
+text-indent:
+0px;
+background-color: #fff;
+font-size:
+14px;
+}
+
+
+.search-bar-input, .search-bar-btn {
+    padding: 0.8rem 1rem !important; 
+}
+
+
 .accent-bg{
     background-color: #00663c;
 }
@@ -14,7 +247,7 @@
 }
 
 body{
-    font-family: Arial,verdana;
+    font-family: Arial,verdana !important;
 }
 .accent-title-color {
     color: #44707b;
@@ -32,11 +265,17 @@ body{
     transform: rotate(25deg);
 }
 
-html, body { height: 100%; margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body { height: 100%; margin: 0; }
 
 .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
     background-color: #2e5370;
+    height: 2px;
 }
+
+::ng-deep md-tabs-wrapper {
+    border: black 2px solid;
+}
+
 
 .myfolder-list-item-bg {
     background-color: #E5EFEB;
@@ -46,7 +285,10 @@ html, body { height: 100%; margin: 0; font-family: Roboto, "Helvetica Neue", san
     font-size: 15px;
 }
 .xxggxxqqxxss {
-    border-bottom: 4px solid #FFE564;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-color: #FFE564;
+    text-decoration-thickness: 4px;
 }
 
 .row{
@@ -63,6 +305,7 @@ html, body { height: 100%; margin: 0; font-family: Roboto, "Helvetica Neue", san
 
 /* Nav */
 .nav-cell {
+    justify-content: center;
     color: black;
     font-weight: 500;
     border-left: 1px solid gainsboro;
@@ -71,7 +314,8 @@ html, body { height: 100%; margin: 0; font-family: Roboto, "Helvetica Neue", san
     align-self: flex-start;
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 20px 17px;
+    min-width: 80px;
 }
 
 .last-nav-cell {
@@ -109,6 +353,11 @@ a{
     font-weight: 400;
     font-size: 17px;
 }
+
+.baseline-danger {
+    color: #C34D24;
+}
+
 
 
 /* Nav Ends */

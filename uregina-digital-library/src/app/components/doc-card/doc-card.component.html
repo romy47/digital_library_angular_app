@@ -1,22 +1,34 @@
-<div class="{{style}} d-flex justify-content-start">
+<div class="{{style}} d-flex justify-content-start" style="padding: 12px;">
     <!-- <div *ngIf="itemCount" style="margin-right: 30px; margin-left: 20px;" class="mt-2" class="m-3">
         <p class="mb-0" style="width: 22px; border: 1px solid gray; text-align: center;">{{itemCount}}</p>
     </div> -->
-    <div *ngIf="itemCount" class="d-flex" style="margin-right: 30px; margin-left: 20px;" class="mt-2" class="m-3">
-        <div style="margin-right: 30px; margin-left: 20px;" class="mt-2">
+    <div *ngIf="itemCount" class="d-flex">
+
+        <div class="doc-check-large-device">
             <mat-checkbox (change)="savedDocCheck()" ngDefaultControl class="example-margin" [(ngModel)]="doc.selected">
             </mat-checkbox>
             <p class="mb-0 checkbox-text" style="width: 22px; text-align: center;">{{itemCount}}</p>
 
         </div>
+
+        <div class="doc-check-small-device">
+            <mat-checkbox *ngIf="parent=='saved-records' || mobileSelectEnbaled == true" (change)="savedDocCheck()"
+                ngDefaultControl class="example-margin" [(ngModel)]="doc.selected">
+            </mat-checkbox>
+            <p [ngClass]="{'checkbox-text': parent=='saved-records' || mobileSelectEnbaled == true}" class="mb-0"
+                style="width: 22px; text-align: center;">{{itemCount}}</p>
+
+        </div>
+
+
     </div>
-    <div class="m-3">
+    <div class="m-3 mt-0 doc-image">
         <figure class="figure pull-left text-center mr-2 mb-0" style="width: 60px;">
             <img src="{{doc.imageUrl}}" width="60" height="60" class="figure-img img-fluid"
                 alt="A generic square placeholder image with rounded corners in a figure."><br>
         </figure>
     </div>
-    <div class="flex-grow-1">
+    <div class="flex-grow-1 doc-text-info-box">
         <div style="width: 100%;">
             <span class="text-secondary doc-type">{{doc.type|uppercase}}</span>
             <em *ngIf="doc.isSaved==false" (click)="addBaselineSavedDoc(doc)" class="fa btn float-end float-right"
@@ -24,7 +36,7 @@
                 <i class="fa fa-thumbtack fa-thumbtack-save-doc fa-rotate-lite text-secondary"></i>
             </em>
             <span *ngIf="doc.isSaved==true" (click)="addBaselineSavedDoc(doc)"
-                class="fa-stack fa-1x text-danger fa btn float-end float-right">
+                class="fa-stack fa-1x remove-doc fa btn float-end float-right">
                 <i class="fas fa-slash fa-stack-1x"></i>
                 <i class="fa fa-thumbtack fa-stack-1x"></i>
             </span>
@@ -47,7 +59,7 @@
             </h6>
         </ng-container>
         <ng-container *ngIf="doc.snippet">
-            <h6 class="m-0 doc-snippet font-weight-normal">
+            <h6 class="m-0 doc-snippet font-weight-normal fst-italic">
                 <i class="fa fa-quote-left font-weight-normal"></i>
                 <title-highlight [needle]="searchQuery" [needles]="searchTerms" [haystack]="doc.snippet">
                 </title-highlight>
@@ -55,31 +67,36 @@
             </h6>
         </ng-container>
         <ng-container *ngIf="doc.peerReviewed||doc.openAccess">
-            <h6>
+            <p class="peer-reviewed" style="margin-top: 7px;">
                 <span style="margin-right: 50px;" *ngIf="doc.peerReviewed"> <img height="17px"
                         src="./../../../assets/images/peer_reviewed.png" /> PEER REVIEWED</span>
                 <span *ngIf="doc.openAccess"> <img height="17px" src="./../../../assets/images/open_access.png" /> OPEN
                     ACCESS</span>
-            </h6>
+            </p>
         </ng-container>
 
         <ng-container *ngIf="doc.linkText=='fulltext'||'available_in_institution'">
-            <h6 (click)="openDocument()" class="text-success cursor-pointer" *ngIf="doc.linkText=='fulltext'"><i
-                    class="fas fa-link"></i> Full
+            <h6 (click)="openDocument()" class="availability-text cursor-pointer" *ngIf="doc.linkText=='fulltext'"><i
+                    class="fa-gray-colour fas fa-link"></i> Full
                 text available
-                &nbsp;
-                <i class="fas fa-external-link-alt"></i>&nbsp;<i class="fas fa-chevron-right"></i>
+
+                <!-- <i class="fas fa-external-link-alt"></i> -->
+                &nbsp;<i class="fas fa-chevron-right fa-gray-colour"></i>
             </h6>
 
-            <h6 (click)="openDocument()" class="text-success cursor-pointer"
-                *ngIf="doc.linkText=='available_in_institution'"><i class="fas fa-link"></i>Available
+            <h6 (click)="openDocument()" class="availability-text cursor-pointer"
+                *ngIf="doc.linkText=='available_in_institution'"><i class="fa-gray-colour fas fa-link"></i>Available
                 at <span class="text-info">ARCHER
-                    Library &nbsp; <i class="fas fa-chevron-right"></i></span></h6>
+                    Library <i class="fas fa-chevron-right fa-gray-colour"></i></span></h6>
         </ng-container>
         <ng-container *ngIf="doc.linkText!='fulltext'&&doc.linkText!='available_in_institution'">
-            <h6 (click)="openDocument()" class="text-success cursor-pointer"><i class="fas fa-link"></i> Online
-                Access &nbsp;
-                <i class="fas fa-external-link-alt"></i>&nbsp; <i class="fas fa-chevron-right"></i>
+            <h6 (click)="openDocument()" class="availability-text cursor-pointer"><i
+                    class="fa-gray-colour fas fa-link"></i> Online
+                Access
+                <!-- <i class="fas fa-external-link-alt"> </i>-->
+
+                &nbsp;
+                <i class="fas fa-chevron-right fa-gray-colour"></i>
             </h6>
         </ng-container>
         <ng-container *ngIf="parent=='saved-records'">
@@ -92,7 +109,7 @@
                 </button>
             </ng-container>
             <button *ngIf="doc.labels.length==0" [matMenuTriggerFor]="menu" #menuTrigger type="button"
-                class="btn btn-outline-secondary btn-save-search">
+                class="btn btn-outline-secondary btn-save-search mt-1">
                 <i class="fa fa-pencil"></i>
                 ADD LABELS
             </button>

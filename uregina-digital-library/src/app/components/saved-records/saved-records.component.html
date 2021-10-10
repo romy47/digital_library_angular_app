@@ -1,8 +1,8 @@
-<section>
-    <div style="margin: 0px 30px 10px 20px;" class="mt-2">
+<section style="padding-top: 8px;">
+    <div style="margin: 8px 0px 20px 0px;" class="mt-2 d-flex">
         <mat-checkbox [(ngModel)]="allSelected" (change)="allSavedDocsChecked($event)" ngDefaultControl
             class="example-margin"></mat-checkbox>
-        {{allDocs.length}} items
+        <span class="saved-doc-count ps-2 flex-grow-1">Select all {{allDocs.length}} items</span>
     </div>
     <div *ngFor="let doc of docs; let i = index"
         [className]="i<docs.length-1 ? 'border-bottom myfolder-list-item-bg' : 'myfolder-list-item-bg'">

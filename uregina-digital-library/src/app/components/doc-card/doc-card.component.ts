@@ -13,11 +13,13 @@ export class DocCardComponent implements OnInit {
   @Input() doc: Doc;
   @Input() style: string = 'doc-container';
   @Input() searchTerms: string[] = [];
+  @Input() mobileSelectEnbaled: boolean = false;
   @Input() searchQuery: string = '';
   @Input() availableLabels = [];
   @Output() saveDoc: EventEmitter<Doc> = new EventEmitter();
   @Output() viewDoc: EventEmitter<{ data: Doc, type: string }> = new EventEmitter();
-  @Output() savedDocChecked: EventEmitter<{ data: Doc, selected: boolean }> = new EventEmitter();
+  @Output() savedDocChecked: EventEmitter<{ data: Doc, selected: boolean, location: string }> = new EventEmitter();
+
   newLabel = '';
   constructor(private libService: LibraryService) { }
 
@@ -28,8 +30,9 @@ export class DocCardComponent implements OnInit {
       this.availableLabels = this.availableLabels.filter((el) => !this.doc.labels.includes(el));
     }
   }
-  savedDocCheck() {
-    this.savedDocChecked.emit({ data: this.doc, selected: true });
+  savedDocCheck(data) {
+    console.log('wupwup')
+    this.savedDocChecked.emit({ data: this.doc, selected: true, location: 'doc-card' });
   }
 
   addExistingLabel(label: string) {
@@ -51,12 +54,18 @@ export class DocCardComponent implements OnInit {
   }
   getUrl() {
     if (this.doc.type.toLocaleLowerCase() == 'article') {
+      if (!this.doc.doi) {
+        this.doc.doi = (this.doc.rawObject.pnx.addata && this.doc.rawObject.pnx.addata.doi && this.doc.rawObject.pnx.addata.doi[0]) ? this.doc.rawObject.pnx.addata.doi[0] : '';
+      }
       this.libService.getArticleThumbnail(this.doc.doi).subscribe(res => {
         if (res.included && res.included[0] && res.included[0].coverImageUrl) {
           this.doc.imageUrl = res.included[0].coverImageUrl;
         }
       });
     } else if (this.doc.type.toLocaleLowerCase() == 'journal') {
+      if (!this.doc.issn) {
+        this.doc.issn = (this.doc.rawObject.pnx.addata && this.doc.rawObject.pnx.addata.issn && this.doc.rawObject.pnx.addata.issn[0]) ? this.doc.rawObject.pnx.addata.issn[0].replace(/-/g, "") : '';
+      }
       this.libService.getJournalThumbnail(this.doc.issn).subscribe(res => {
         if (res.data && res.data[0] && res.data[0].coverImageUrl) {
           this.doc.imageUrl = res.data[0].coverImageUrl;

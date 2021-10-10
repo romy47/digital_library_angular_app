@@ -50,7 +50,8 @@ export class SerpComponent implements OnInit {
   saveSearchMessageVisible = false;
   docUrl: SafeResourceUrl;
   langs = require('langs');
-
+  docCheckCount = 0;
+  mobileSelectEnbaled = false;
   constructor(private libraryService: LibraryService, private authService: AuthService, private sanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -69,6 +70,10 @@ export class SerpComponent implements OnInit {
     if (this.searchQuery) {
       this.search(0);
     }
+  }
+
+  toggleMobileSelect() {
+    this.mobileSelectEnbaled = !this.mobileSelectEnbaled;
   }
 
   search(offset = 0) {
@@ -163,6 +168,11 @@ export class SerpComponent implements OnInit {
         window.open(url, '_blanc');
       }
     }
+  }
+
+  savedDocChecked(data: { data: Doc, selected: boolean }) {
+    console.log('checked')
+    this.docCheckCount = this.documents.filter(d => d.selected == true).length;
   }
 
   closeModal() {

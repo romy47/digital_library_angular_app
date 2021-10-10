@@ -1,11 +1,47 @@
 .btn-save-search {
-    border: 0px;
-    color: #CA6D4C;
+  border: 0px;
+  color: #CA6D4C;
+  font-size:
+  14px;	
+  line-height:
+  14px;
+  vertical-align:
+  baseline;
+  letter-spacing:
+  normal;
+  word-spacing:
+  0px;	
+  font-weight:
+  600;
+  font-style:
+  normal;
+  font-variant:
+  normal;
+  text-transform:
+  none;
+  text-decoration:
+  none solid rgb(255, 255, 255);
+  text-align:
+  center;
+  text-indent:
+  0px;
 }
+
+.btn-mobile-select-togggler {
+  border: 0px;
+  color: #187474;
+  font-size:
+  20px;	
+}
+
 
 .btn-save-search:hover {
     color: white;
     background-color: #418D8C;
+}
+
+.btn-save-search i{
+  font-size: 16px;
 }
 
 
@@ -137,10 +173,89 @@
     
   }
 
+  .select-count {
+    font-size:
+15px;
+line-height:
+20px;
+vertical-align:
+baseline;
+letter-spacing:
+0.075px;
+word-spacing:
+0px;
+font-weight:
+400;
+font-style:
+italic;
+font-variant:
+normal;
+text-transform:
+none;
+  }
+
+  .page-count {
+    font-size:
+12.6px;	
+line-height:
+20px;
+vertical-align:
+baseline;
+letter-spacing:
+0.882px;
+word-spacing:
+0px;
+font-weight:
+600;
+font-variant:
+normal;
+text-transform:
+uppercase;
+  }
+  
+
+  .result-count {
+    font-size:
+    14px;	
+    line-height:
+    20px;
+    vertical-align:
+    baseline;
+    letter-spacing:
+    0.075px;
+    word-spacing:
+    0px;	
+    font-weight:
+    400;
+    font-style:
+    italic;
+    font-variant:
+    normal;
+    text-transform:
+    none;
+
+  }
+
   
 .line {  width: 100%; height: 1px; background-color: #bfbfbf; }
 
 .doc-link {
   width: 100%;
   /* height: 300px; */
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  opacity: 0.03 !important;
+  background-color: #00663C!important;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #00663C;
+}
+
+mat-checkbox ::ng-deep .mat-checkbox-inner-container {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  z-index: 1000;
 }

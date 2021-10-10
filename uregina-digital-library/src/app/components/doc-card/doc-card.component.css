@@ -1,3 +1,7 @@
+div{
+    font-family: Arial,verdana !important;
+}
+
 .doc-container{
     background-color: #f3f3f3;
     border-bottom: 1px solid lightgray;
@@ -9,22 +13,105 @@
     padding: 20px 10px;
 }
 
+.doc-snippet i{
+    font-size: 11px;
+    color: #3a3a3a;
+    /* font-weight: normal; */
+    /* -webkit-text-stroke: 0.5px white; */
+}
+
+.availability-text {
+    color:
+#00804a;
+font-size:
+15px;
+line-height:
+21px;
+vertical-align:
+baseline;
+letter-spacing:
+normal;
+word-spacing:
+0px;	
+font-weight:
+400;
+font-style:
+normal;
+}
+
+.fa-gray-colour {
+    color: #BEBEBE;
+    font-size: 12px;
+}
+
 h6, .doc-author {
-    font-size: 16px;
-    color: #515151;
-    font-weight: 400;
-    line-height: 1.4;
+    color: #3a3a3a;
+    font-size:
+15px;	
+line-height:
+21px;
+vertical-align:
+baseline;
+letter-spacing:
+normal;
+word-spacing:
+0px;
+font-weight:
+400;
+margin: 0px;
+}
+
+.peer-reviewed{
+    font-size:
+12px;	
+line-height:
+normal;
+vertical-align:
+baseline;
+letter-spacing:
+normal;
+word-spacing:
+0px;	
+font-weight:
+600;
+color: #3a3a3a;
 }
 
 .doc-type {
-    font-weight: 500;
+    font-size:
+11.25px;
+line-height:
+normal;
+vertical-align:
+baseline;
+letter-spacing:
+0.7875px;
+word-spacing:
+0px;
+font-weight:
+600;
+font-style:
+normal;
+font-variant:
+normal;
+text-transform:
+uppercase;
 }
 
 .doc-title {
-    color: #44707B;
-    font-size: 19px;
-    font-weight: 550;
-    line-height: 1.3;
+color: #44707B;
+font-size:
+19px;
+line-height:
+24.7px;
+vertical-align:
+baseline;
+letter-spacing:
+normal;
+word-spacing:
+0px;
+font-weight:
+550;
 }
 
 .fa-thumbtack-save-doc {
@@ -55,10 +142,33 @@ h6, .doc-author {
     top: -22px;
   }
 
+  .remove-doc {
+      color: #C34D24;
+  }
+
   .btn-save-search {
     border: 0px;
-    color: gray;
+    color: #A2A2A2;
     border-radius: 20px;
+    font-size:
+    12px;	
+    line-height:
+    20px;
+    vertical-align:
+    baseline;
+    letter-spacing:
+    0.384px;
+    word-spacing:
+    0px;	
+    font-weight:
+    500;
+    font-style:
+    normal;
+    font-variant:
+    normal;
+    text-transform:
+    uppercase;
+    padding: 4px 4px !important;
 }
 
     .btn-save-search:hover {

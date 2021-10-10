@@ -17,3 +17,23 @@
     position: relative;
     top: -22px;
   }
+
+  .saved-doc-count {
+    color:
+#3a3a3a;
+font-size:
+15px;
+line-height:
+normal;
+vertical-align:
+baseline;
+letter-spacing:
+normal;
+word-spacing:
+0px;
+font-weight:
+400;
+font-style:
+italic;
+background-color: #E5EFEB;
+  }

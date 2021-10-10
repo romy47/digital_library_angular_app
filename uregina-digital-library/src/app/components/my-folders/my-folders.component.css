@@ -14,3 +14,64 @@
     border-right: none;
 }
 
+.myfolder-menu-text span {
+    color: #aaa;
+    font-size:
+    12.8px;	
+    line-height:
+    36px;
+    vertical-align:
+    baseline;
+    letter-spacing:
+    0.384px;
+    word-spacing:
+    0px;
+    font-weight:
+    600;
+    font-style:
+    normal;
+    font-variant:
+    normal;
+    text-transform:
+    uppercase;
+}
+
+.myfolder-menu-text i {
+    color: #aaa;
+    font-size: 17px;
+}
+::ng-deep .mat-tab-label-content {
+    color:
+    #000;
+    font-size:
+    14px;
+    line-height:
+    24px;
+    vertical-align:
+    baseline;
+    letter-spacing:
+    normal;
+    word-spacing:
+    0px;	
+    font-weight:
+    500;
+    font-style:
+    normal;
+    font-variant:
+    normal;
+    text-transform:
+    uppercase;
+    font-family:
+    Arial, verdana
+    100.0%;
+    font-family: Arial,verdana !important;
+}
+
+::ng-deep .mat-ink-bar {
+    background-color: #2E5370;
+    /* height: 3px; */
+}
+
+::ng-deep .remove-border-bottom .mat-tab-header {
+    border-bottom: 1px solid black;
+}
