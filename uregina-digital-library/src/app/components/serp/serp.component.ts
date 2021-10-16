@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AllFacets, Colour, Doc, Facet } from 'src/app/Models';
 import { DocumentModelConverter } from 'src/app/Utils/model-converter.util';
@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { timeout } from 'rxjs/operators';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 declare var $: any;
 declare var require: any;
 
@@ -16,6 +18,7 @@ declare var require: any;
   styleUrls: ['./serp.component.css']
 })
 export class SerpComponent implements OnInit {
+  @ViewChild('EditLabelBtn') menuBtn: MatMenuTrigger;
   stopwords = ["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"];
   savedDocIds = new Set();
   taskEmpty = false;
@@ -52,17 +55,25 @@ export class SerpComponent implements OnInit {
   langs = require('langs');
   docCheckCount = 0;
   mobileSelectEnbaled = false;
+  newLabel = '';
+  allDocLabels: unknown[] = [];
   constructor(private libraryService: LibraryService, private authService: AuthService, private sanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.username = this.authService.getCurrentUserData().name;
 
-    const savedDocs: Doc[] = this.route.parent.snapshot.data.savedDocs;
+    const savedDocs: Doc[] = this.route.snapshot.data.savedDocs;
+    console.log('**** ****** ***** ****** ***** ***** ***** ****** ***** ****', savedDocs);
+    let allLabels = new Set();
     if (savedDocs && savedDocs.length > 0) {
       savedDocs.forEach(d => {
         this.savedDocIds.add(d.id);
+        d.labels.forEach(l => {
+          allLabels.add(l)
+        });
       });
-      console.log("saved docs: ", this.savedDocIds);
+      this.allDocLabels = Array.from(allLabels);
+      // console.log("saved docs: ", this.savedDocIds);
     }
 
     this.searchQuery = this.route.snapshot.queryParamMap.get('query');
@@ -72,8 +83,36 @@ export class SerpComponent implements OnInit {
     }
   }
 
+  changeLabel(label: string, type: string) {
+    let selecteDocs = this.documents.filter(d => d.selected == true);
+    selecteDocs.forEach(d => {
+      d.labels.push(label);
+    })
+    this.libraryService.addBatchBaselineSavedDoc(selecteDocs).subscribe(res => {
+      this.documents.filter(d => d.selected == true).forEach(doc => {
+        doc.isSaved = true;
+      });
+    });
+  }
+
+  submitLabel() {
+    this.changeLabel(this.newLabel, 'add');
+    this.menuBtn.closeMenu()
+  }
+
+
   toggleMobileSelect() {
     this.mobileSelectEnbaled = !this.mobileSelectEnbaled;
+  }
+
+  saveBatch() {
+    this.menuBtn.openMenu();
+    // let selecteDocs = this.documents.filter(d => d.selected == true);
+    // this.libraryService.addBatchBaselineSavedDoc(selecteDocs).subscribe(res => {
+    //   this.documents.filter(d => d.selected == true).forEach(doc => {
+    //     doc.isSaved = true;
+    //   });;
+    // })
   }
 
   search(offset = 0) {
@@ -148,12 +187,28 @@ export class SerpComponent implements OnInit {
   //   }
   // }
 
+  allSavedSearchChecked(data: any) {
+    if (this.allDocSelected) {
+      this.documents.forEach(d => {
+        d.selected = true;
+      });
+    } else {
+      this.documents.forEach(d => {
+        d.selected = false;
+      });
+    }
+  }
 
   viewDocument(input: { data: Doc, type: string }) {
-    if (input.type == 'view') {
+    if (input.type == 'checked') {
+      this.docCheckCount = this.documents.filter(d => d.selected == true).length;
+    }
+    else if (input.type == 'view') {
       input.data.isRead = true;
       input.data.page = this.currentPage;
+      // Object.assign(this.docViewing, input.data);
       this.docViewing = input.data;
+      console.log("lalalalalalalalalalalalalal", this.docViewing)
       setTimeout(() => {
         $('#serpDocViewModal').modal('show');
       }, 200)
@@ -170,10 +225,10 @@ export class SerpComponent implements OnInit {
     }
   }
 
-  savedDocChecked(data: { data: Doc, selected: boolean }) {
-    console.log('checked')
-    this.docCheckCount = this.documents.filter(d => d.selected == true).length;
-  }
+  // savedDocChecked(data: { data: Doc, selected: boolean }) {
+  //   console.log('checked')
+  //   this.docCheckCount = this.documents.filter(d => d.selected == true).length;
+  // }
 
   closeModal() {
     $('#serpDocViewModal').modal('hide');

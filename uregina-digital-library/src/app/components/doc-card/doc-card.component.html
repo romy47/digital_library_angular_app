@@ -31,9 +31,8 @@
     <div class="flex-grow-1 doc-text-info-box">
         <div style="width: 100%;">
             <span class="text-secondary doc-type">{{doc.type|uppercase}}</span>
-            <em *ngIf="doc.isSaved==false" (click)="addBaselineSavedDoc(doc)" class="fa btn float-end float-right"
-                style="margin-right: 10px;">
-                <i class="fa fa-thumbtack fa-thumbtack-save-doc fa-rotate-lite text-secondary"></i>
+            <em *ngIf="doc.isSaved==false" (click)="addBaselineSavedDoc(doc)" class="fa btn float-end float-right">
+                <i class="fa fa-thumbtack fa-thumbtack-save-doc fa-rotate-lite" style="color:#888888;"></i>
             </em>
             <span *ngIf="doc.isSaved==true" (click)="addBaselineSavedDoc(doc)"
                 class="fa-stack fa-1x remove-doc fa btn float-end float-right">

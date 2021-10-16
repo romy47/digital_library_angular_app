@@ -1,7 +1,7 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Doc } from 'src/app/Models';
 import { DataService } from 'src/app/services';
 import { AuthService } from 'src/app/services/auth.service';
@@ -18,7 +18,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class MyFoldersComponent implements OnInit {
   searchQuery = '';
   selectedTabIndex = 0;
-  constructor(private authService: AuthService, private router: Router, private dataService: DataService) { }
+  constructor(private authService: AuthService, private router: Router, private dataService: DataService, private route: ActivatedRoute) { }
   username = '';
   newLabel = '';
   @ViewChild('mtfolderEditLabelBtn') menuBtn: MatMenuTrigger;
@@ -27,6 +27,7 @@ export class MyFoldersComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.searchQuery = this.route.snapshot.queryParamMap.get('query');
     this.username = this.authService.getCurrentUserData().name;
   }
 

@@ -149,6 +149,20 @@ export class LibraryService {
       , httpOptions);
   }
 
+  public addBatchBaselineSavedDoc(docs: Doc[]): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    docs.forEach(s => {
+      s['createdBy'] = this.authService.getCurrentUserData()._id;
+    });
+    return this.http.post(api.API_PATH + 'baseline/doc/batch', {
+      docs
+    }, httpOptions);
+  }
+
   public addLabelToDoc(label: string, savedRecordId: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({

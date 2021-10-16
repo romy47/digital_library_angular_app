@@ -11,12 +11,22 @@ const routes: Routes = [
   {
     path: 'library',
     canActivate: [AuthGuard],
-    resolve: {
-      savedDocs: SearchResolver
-    },
     children: [
-      { path: 'search', component: SerpComponent },
-      { path: 'my-folder', component: MyFoldersComponent, canActivate: [AuthGuard] },
+      {
+        path: 'search',
+        component: SerpComponent,
+        resolve: {
+          savedDocs: SearchResolver
+        },
+      },
+      {
+        path: 'my-folder',
+        component: MyFoldersComponent,
+        resolve: {
+          savedDocs: SearchResolver
+        },
+        canActivate: [AuthGuard]
+      },
       { path: '', redirectTo: 'search', pathMatch: 'full', },
     ]
   },

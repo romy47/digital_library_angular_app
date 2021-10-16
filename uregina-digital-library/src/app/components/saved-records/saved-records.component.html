@@ -1,26 +1,259 @@
 <section style="padding-top: 8px;">
     <div style="margin: 8px 0px 20px 0px;" class="mt-2 d-flex">
         <mat-checkbox [(ngModel)]="allSelected" (change)="allSavedDocsChecked($event)" ngDefaultControl
-            class="example-margin"></mat-checkbox>
-        <span class="saved-doc-count ps-2 flex-grow-1">Select all {{allDocs.length}} items</span>
+            class="example-margin ms-1"></mat-checkbox>
+        <span class="saved-doc-count ps-2 flex-grow-1">Select all {{allDocs.length}} items
+            <span (click)="openFilterModal()" class="filter-label-mobile float-end mt-1 me-2">
+                <i style="color: #187474;" class="fa fa-filter"></i>
+            </span>
+        </span>
     </div>
-    <div *ngFor="let doc of docs; let i = index"
-        [className]="i<docs.length-1 ? 'border-bottom myfolder-list-item-bg' : 'myfolder-list-item-bg'">
+    <div class="row p-0">
+        <div class="col-md-9 p-0">
+            <div *ngFor="let doc of docs; let i = index"
+                [className]="i<docs.length-1 ? 'border-bottom myfolder-list-item-bg' : 'myfolder-list-item-bg'">
 
-        <!-- <div class="d-flex"> -->
-        <!-- <div style="margin-right: 30px; margin-left: 20px;" class="mt-2"> -->
-        <!-- <mat-checkbox ngDefaultControl class="example-margin" [(ngModel)]="doc.selected"></mat-checkbox> -->
-        <!-- <p class="mb-0" style="width: 22px; border: 1px solid gray; text-align: center;">{{i+1}}</p> -->
-        <!-- </div> -->
-        <!-- <div class="flex-grow-1"> -->
-        <app-doc-card class="app-doc-card pb-2 pl-2 pr-2 pt-0" [parent]="'saved-records'" [itemCount]="i+1" [doc]="doc"
-            (saveDoc)="saveToWorkspace($event)" (savedDocChecked)="savedDocChecked($event)"
-            (viewDoc)="viewDocument($event)" [availableLabels]="availableLabelsArr">
-        </app-doc-card>
-        <!-- </div> -->
-        <!-- </div> -->
+                <!-- <div class="d-flex"> -->
+                <!-- <div style="margin-right: 30px; margin-left: 20px;" class="mt-2"> -->
+                <!-- <mat-checkbox ngDefaultControl class="example-margin" [(ngModel)]="doc.selected"></mat-checkbox> -->
+                <!-- <p class="mb-0" style="width: 22px; border: 1px solid gray; text-align: center;">{{i+1}}</p> -->
+                <!-- </div> -->
+                <!-- <div class="flex-grow-1"> -->
+                <app-doc-card class="app-doc-card pb-2 pl-2 pr-2 pt-0" [parent]="'saved-records'" [itemCount]="i+1"
+                    [doc]="doc" (saveDoc)="saveToWorkspace($event)" (savedDocChecked)="savedDocChecked($event)"
+                    (viewDoc)="viewDocument($event)" [availableLabels]="availableLabelsArr">
+                </app-doc-card>
+                <!-- </div> -->
+                <!-- </div> -->
+            </div>
+            <div *ngIf="docs.length<allDocs.length" class="load-more" (click)="loadMore()">
+                <p>LOAD MORE RESULTS</p>
+            </div>
+        </div>
+        <div class="col-md-3 ps-3 label-filter-section">
+            <div class="d-flex">
+                <span class="ms-1 saved-doc-side-menu-label cursor-pointer">Sort by</span>
+                <div class="dropdown ms-3">
+                    <span class="" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>Date added <i class="fas fa-caret-down" style="margin-left: 10px;"></i></span>
+                    </span>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Date Added</a></li>
+                        <li><a class="dropdown-item" href="#">Title</a></li>
+                        <li><a class="dropdown-item" href="#">Author</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <p class="mb-0 saved-doc-side-menu-label cursor-pointer mt-3">Labels</p>
+                <p [ngClass]="{'label-selcted': label.selected==true}" (click)="filterLabelClick(label)"
+                    (mouseleave)="filterLabelMouseLeave(label)" *ngFor="let label of labelFilter"
+                    class="cursor-pointer">
+                    <span (mouseenter)="filterLabelMouseEnter(label)" (mouseleave)="filterLabelMouseLeave(label)">
+                        <span *ngIf="label.selected==true&&label.hovering==false"><i class="fas fa-check"></i>
+                        </span>
+                        <span *ngIf="label.selected==true&&label.hovering==true"><i class="fa fa-times text-danger"
+                                aria-hidden="true"></i>
+                        </span>
+                    </span>
+                    {{label.label}}
+                    ({{label.docs.length}})
+                </p>
+                <p *ngIf="LabelFilterActive" (click)="clearLabelSelection()" class="text-danger cursor-pointer">
+                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                    Clear selection
+                </p>
+            </div>
+        </div>
     </div>
-    <div *ngIf="docs.length<allDocs.length" class="load-more" (click)="loadMore()">
-        <p>LOAD MORE RESULTS</p>
+
+    <div class="modal fade" id="labelFilterModal" tabindex="-1" aria-labelledby="serpDocViewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+
+                <div style="background: #E9E9E9; padding: 30px;" class="modal-body d-flex flex-column">
+                    <p class="saved-doc-side-menu-label">Tweak my saved records</p>
+
+                    <div class="d-flex">
+                        <span class="saved-doc-side-menu-label cursor-pointer">Sort by</span>
+                        <div class="dropdown ms-3">
+                            <span class="" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span>Date added <i class="fas fa-caret-down" style="margin-left: 10px;"></i></span>
+                            </span>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">Date Added</a></li>
+                                <li><a class="dropdown-item" href="#">Title</a></li>
+                                <li><a class="dropdown-item" href="#">Author</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="mb-0 saved-doc-side-menu-label cursor-pointer mt-3">Labels</p>
+                        <p [ngClass]="{'label-selcted': label.selected==true}" (click)="filterLabelClick(label)"
+                            (mouseleave)="filterLabelMouseLeave(label)" *ngFor="let label of labelFilter"
+                            class="cursor-pointer">
+                            <span (mouseenter)="filterLabelMouseEnter(label)"
+                                (mouseleave)="filterLabelMouseLeave(label)">
+                                <span *ngIf="label.selected==true&&label.hovering==false"><i class="fas fa-check"></i>
+                                </span>
+                                <span *ngIf="label.selected==true&&label.hovering==true"><i
+                                        class="fa fa-times text-danger" aria-hidden="true"></i>
+                                </span>
+                            </span>
+                            {{label.label}}
+                            ({{label.docs.length}})
+                        </p>
+                        <p *ngIf="LabelFilterActive" (click)="clearLabelSelection()" class="text-danger cursor-pointer">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                            Clear selection
+                        </p>
+                    </div>
+                    <div class="mt-auto text-center">
+                        <p (click)="closeFilterModal()" class="btn btn-secondary btn-lg m-2">Close</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div *ngIf="docViewing" class="modal fade" id="serpDocViewModal" tabindex="-1"
+        aria-labelledby="serpDocViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-start p-0">
+                    <div class="modal-control align-self-stretch d-flex align-items-center justify-content-center">
+                        <i (click)="closeModal()" class="fas fa-times text-light modal-close-btn"></i>
+                    </div>
+                    <div class="modal-center align-self-stretch flex-grow-1" style="overflow-y: scroll;">
+                        <div (click)="closeModal()"
+                            class="mobile-doc-view-modal-close d-flex justify-content-between align-items-center">
+                            <span class="align-self-center">
+                                <i style="font-size: 20px; line-height: 20px;vertical-align: middle;"
+                                    class="fas fa-chevron-left me-1"></i>
+                                <i class="fa fa-search fa-rotate-90 me-1"></i>
+                                <span>BACK TO SEARCH RESULTS LIST</span>
+                            </span>
+
+                            <span>
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </div>
+                        <app-doc-card class="app-doc-card pb-2 pl-2 pr-2 pt-0" [style]="'doc-container-modal'"
+                            [doc]="docViewing" [searchTerms]="[]" [searchQuery]="''"
+                            (saveDoc)="saveToWorkspace(docViewing)" (viewDoc)="viewDocument($event)">
+                        </app-doc-card>
+                        <div class="{{style}} d-flex justify-content-start">
+                            <div class="doc-modal-left-offset">
+                                <figure class="figure pull-left text-center mr-2 mb-0" style="width: 60px;">
+                                    <img style="visibility: hidden;" src="./../../../assets/images/book-placeholder.jpg"
+                                        width="60" height="60" class="figure-img img-fluid"
+                                        alt="A generic square placeholder image with rounded corners in a figure."><br>
+                                </figure>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-start align-self-center mx-3">
+                                    <h2 style="min-width: 100px;" class="mb-0 text-secondary">Details</h2>
+                                    <div class="line align-self-center"></div>
+                                </div>
+
+                                <div class="d-flex justify-content-start align-self-top mx-3">
+                                    <h3 style="min-width: 100px;" class="mb-0">Title</h3>
+                                    <div class="flex-grow-1 mt-1">
+                                        <span>{{docViewing.title}}</span>
+                                    </div>
+                                </div>
+
+
+                                <div *ngIf="docViewing.facets.contributors.length>0"
+                                    class="d-flex justify-content-start align-self-top mx-3">
+                                    <h3 style="min-width: 100px;" class="mb-0">Author</h3>
+                                    <div class="flex-grow-1 mt-1">
+                                        <p class=""
+                                            *ngFor="let contrib of docViewing.facets.contributors; let j = index">
+                                            {{contrib.text}}{{j==docViewing.facets.contributors.length-1?'':';
+                                            '}}</p>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="docViewing.facets.topics.length>0"
+                                    class="d-flex justify-content-start align-self-top mx-3">
+                                    <h3 style="min-width: 100px;" class="mb-0">Subjects</h3>
+                                    <div class="flex-grow-1 mt-1">
+                                        <p class="" *ngFor="let topic of docViewing.facets.topics; let j = index">
+                                            {{topic.text}}</p>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="docViewing.source" class="d-flex justify-content-start align-self-top mx-3">
+                                    <h3 style="min-width: 100px;" class="mb-0">Is Part Of</h3>
+                                    <div class="flex-grow-1 mt-1">
+                                        <ng-container *ngIf="docViewing.source">
+                                            <p class="m-0 doc-source font-weight-normal font-italic">
+                                                {{docViewing.source}}
+                                            </p>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="docViewing.description"
+                                    class="d-flex justify-content-start align-self-top mx-3">
+                                    <h3 style="min-width: 100px;" class="mb-0">Description</h3>
+                                    <div class="flex-grow-1 mt-1">
+                                        <ng-container *ngIf="docViewing.source">
+                                            <p class="m-0 doc-source font-weight-normal font-italic">
+                                                {{docViewing.description}}
+                                            </p>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="docViewing.publisher"
+                                    class="d-flex justify-content-start align-self-top mx-3">
+                                    <h3 style="min-width: 100px;" class="mb-0">Publisher</h3>
+                                    <div class="flex-grow-1 mt-1">
+                                        <ng-container *ngIf="docViewing.source">
+                                            <p class="m-0 doc-source font-weight-normal font-italic">
+                                                {{docViewing.publisher}}
+                                            </p>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="docViewing.language"
+                                    class="d-flex justify-content-start align-self-top mx-3">
+                                    <h3 style="min-width: 100px;" class="mb-0">Language</h3>
+                                    <div class="flex-grow-1 mt-1">
+                                        <ng-container *ngIf="docViewing.source">
+                                            <p class="m-0 doc-source font-weight-normal font-italic">
+                                                {{docViewing.language}}
+                                            </p>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="docViewing.allIdentifiers&&docViewing.allIdentifiers.length>0"
+                                    class="d-flex justify-content-start align-self-top mx-3">
+                                    <h3 style="min-width: 100px;" class="mb-0">Identifier</h3>
+                                    <div class="flex-grow-1 mt-1">
+
+                                        <p *ngFor="let id of docViewing.allIdentifiers"
+                                            class="m-0 doc-source font-weight-normal font-italic">
+                                            {{id}}
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-right-sidebar align-self-stretch">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>

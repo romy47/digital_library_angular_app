@@ -120,6 +120,7 @@
 
   .docs-info-nav {
     height: 55px;
+    z-index: 1;
   }
 
   .page-size-select {
@@ -211,6 +212,19 @@ font-variant:
 normal;
 text-transform:
 uppercase;
+  }
+
+  .quick-find-desktop {
+    color:
+#3a3a3a;
+font-size:
+15px;
+line-height:
+normal;
+vertical-align:
+baseline;
+font-weight:
+400;
   }
   
 

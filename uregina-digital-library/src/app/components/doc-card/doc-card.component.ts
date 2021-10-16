@@ -18,7 +18,7 @@ export class DocCardComponent implements OnInit {
   @Input() availableLabels = [];
   @Output() saveDoc: EventEmitter<Doc> = new EventEmitter();
   @Output() viewDoc: EventEmitter<{ data: Doc, type: string }> = new EventEmitter();
-  @Output() savedDocChecked: EventEmitter<{ data: Doc, selected: boolean, location: string }> = new EventEmitter();
+  // @Output() savedDocChecked: EventEmitter<{ data: Doc, selected: boolean, location: string }> = new EventEmitter();
 
   newLabel = '';
   constructor(private libService: LibraryService) { }
@@ -32,7 +32,8 @@ export class DocCardComponent implements OnInit {
   }
   savedDocCheck(data) {
     console.log('wupwup')
-    this.savedDocChecked.emit({ data: this.doc, selected: true, location: 'doc-card' });
+    // this.savedDocChecked.emit({ data: this.doc, selected: true, location: 'doc-card' });
+    this.viewDoc.emit({ data: this.doc, type: 'checked' });
   }
 
   addExistingLabel(label: string) {

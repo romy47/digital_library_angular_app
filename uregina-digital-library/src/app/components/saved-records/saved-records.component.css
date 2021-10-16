@@ -37,3 +37,53 @@ font-style:
 italic;
 background-color: #E5EFEB;
   }
+
+  .saved-doc-side-menu-label {
+    color:
+#3a3a3a;
+font-size:
+18.4px;	
+line-height:
+normal;
+vertical-align:
+baseline;
+letter-spacing:
+normal;
+word-spacing:
+0px;	
+font-weight:
+600;
+  }
+
+
+  
+  .modal-control {
+    background: #5A7A8E;
+    width: 10%;
+  }
+
+  .modal-center {
+    background: #E5EFEB;
+  }
+
+  .modal-right-sidebar {
+    background: white;
+    width: 20%;
+  }
+
+  .modal-close-btn {
+    height: 90px;
+    width: 90px;
+    line-height: 90px;
+    text-align: center; 
+    border-radius: 50%;
+    font-size: 50px;
+    border: 1px solid #5A7A8E;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .modal-close-btn:hover{
+    background-color: #3a3a3a;
+    
+  }
