@@ -18,7 +18,10 @@
 
                 </div>
                 <div class="flex-grow-1">
-                    <p class="m-1 search-history-title" [routerLink]="['/search']">{{query.searchQuery}}</p>
+                    <p class="m-1 search-history-title search-history-query-log cursor-pointer"
+                        [routerLink]="['/library/search']" [queryParams]="{query: query.searchQuery}">
+                        {{query.searchQuery}}
+                    </p>
                     <p class="m-1"><span class="search-history-scope">SCOPE:</span> <span
                             class="search-history-type">Quick Find / Everything</span></p>
                     <p class="m-1 search-history-secondary">{{query.createdAt | date:'M/d/yy' }}</p>
@@ -34,7 +37,7 @@
             </div>
         </div>
     </ng-container>
-    <div *ngIf="searches.length<allSearches.length" class="load-more" (click)="loadMore()">
-        <p>LOAD MORE RESULTS</p>
+    <div *ngIf="searches.length<allSearches.length" class="load-more load-more-search-history" (click)="loadMore()">
+        <p class="load-more-search-history">LOAD MORE RESULTS</p>
     </div>
 </section>

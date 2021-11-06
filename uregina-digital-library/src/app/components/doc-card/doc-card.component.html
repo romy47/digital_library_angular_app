@@ -44,11 +44,18 @@
             <title-highlight [needle]="searchQuery" [needles]="searchTerms" [haystack]="doc.title"></title-highlight>
         </p>
         <span class="doc-author">
-            <span class="doc-author"
-                *ngFor="let contrib of doc.facets.contributors; let j = index">{{contrib.text}}{{j==doc.facets.contributors.length-1?'':';
-                '}}</span>
+            <span class="doc-author" *ngFor="let contrib of doc.facets.contributors; let j = index">
+                <title-highlight [needle]="searchQuery" [needles]="searchTerms" [haystack]="contrib.text">
+                </title-highlight>
+                {{j==doc.facets.contributors.length-1?'':';
+                '}}
+            </span>
         </span>
-
+        <ng-container *ngIf="doc.type=='book'&&doc.creationDate">
+            <div>
+                <h6 class="doc-author">{{doc.creationDate}}</h6>
+            </div>
+        </ng-container>
         <ng-container *ngIf="doc.source">
             <h6 class="m-0 doc-source font-weight-normal font-italic">{{doc.source}}</h6>
         </ng-container>
@@ -102,17 +109,17 @@
 
             <ng-container *ngIf="doc.labels.length>0">
                 <span class="doc-label-chip" *ngFor="let label of doc.labels">{{label}}</span>
-                <button [matMenuTriggerFor]="menu" #menuTrigger type="button"
+                <button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" type="button"
                     class="btn btn-outline-secondary btn-save-search">
                     <i class="fa fa-pencil"></i>
                 </button>
             </ng-container>
-            <button *ngIf="doc.labels.length==0" [matMenuTriggerFor]="menu" #menuTrigger type="button"
+            <button *ngIf="doc.labels.length==0" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" type="button"
                 class="btn btn-outline-secondary btn-save-search mt-1">
                 <i class="fa fa-pencil"></i>
                 ADD LABELS
             </button>
-            <!-- <button mat-button [matMenuTriggerFor]="menu" #menuTrigger>Menu</button> -->
+            <!-- <button mat-button style="visibility: hidden;" [matMenuTriggerFor]="menu" #menuTrigger>Menu</button> -->
             <mat-menu #menu="matMenu">
                 <div class="d-flex flex-column" style="padding: 10px;">
                     <strong *ngIf="doc.labels&&doc.labels.length>0">ASSIGNED LABELS</strong>
@@ -138,7 +145,5 @@
                 </div>
             </mat-menu>
         </ng-container>
-
-
     </div>
 </div>

@@ -51,18 +51,16 @@ export class DocumentModelConverter {
 
         // console.log(d);
         let imageSrc;
-        // if(d.delivery&&d.delivery.link&&d.delivery.link.length>0) {
-        //     d.delivery.link.forEach(linkOb => {
-        //         // if(linkOb.linkURL&&linkOb.linkURL.includes('syndetics.com')) {
-        //             if(linkOb.linkURL) {
-
-        //             var img = new Image();
-        //             img.src = url;
-        //             img.onload = function() { callback(true); };
-        //             imageSrc = linkOb.linkURL;
-        //         }
-        //     });
-        // }
+        let desc = '';
+        if (d.pnx.display.description && d.pnx.display.description[0]) {
+            d.pnx.display.description.forEach(element => {
+                if (element && element.length > 20) {
+                    desc += element;
+                    desc += '</br>';
+                }
+            });
+        }
+        // console.log('VVVVVVVVVVVVVVVV   ', desc);
         return new Doc({
             id: d['@id'],
             _id: d._id ? d._id : '',
@@ -75,10 +73,11 @@ export class DocumentModelConverter {
             issn: (d.pnx.addata && d.pnx.addata.issn && d.pnx.addata.issn[0]) ? d.pnx.addata.issn[0].replace(/-/g, "") : '',
             creationDate: (d.pnx.facets.creationdate && d.pnx.facets.creationdate[0]) ? d.pnx.facets.creationdate[0] : '',
             source: (d.pnx.display.ispartof && d.pnx.display.ispartof[0]) ? d.pnx.display.ispartof[0] : '',
+            source2: (d.pnx.display.source && d.pnx.display.source[0]) ? d.pnx.display.source[0] : '',
             snippet: (d.pnx.display.snippet && d.pnx.display.snippet[0]) ? d.pnx.display.snippet[0] : '',
             identifier: (d.pnx.display.identifier && d.pnx.display.identifier[0]) ? d.pnx.display.identifier[0] : '',
             allIdentifiers: (d.pnx.display.identifier) ? d.pnx.display.identifier : [],
-            description: (d.pnx.display.description && d.pnx.display.description[0]) ? d.pnx.display.description[0] : '',
+            description: desc,
             imageUrl: imageSrc ? imageSrc : 'assets/images/book-placeholder.jpg',
             facets: {
                 topics: this.getTopicFacets(d),

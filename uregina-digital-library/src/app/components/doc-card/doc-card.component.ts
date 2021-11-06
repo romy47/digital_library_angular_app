@@ -1,6 +1,8 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { Doc } from 'src/app/Models';
 import { LibraryService } from 'src/app/services';
+import { customLog } from 'src/app/Utils/log.util';
 
 @Component({
   selector: 'app-doc-card',
@@ -19,6 +21,7 @@ export class DocCardComponent implements OnInit {
   @Output() saveDoc: EventEmitter<Doc> = new EventEmitter();
   @Output() viewDoc: EventEmitter<{ data: Doc, type: string }> = new EventEmitter();
   // @Output() savedDocChecked: EventEmitter<{ data: Doc, selected: boolean, location: string }> = new EventEmitter();
+  @ViewChild('menuTrigger') menuBtn: MatMenuTrigger;
 
   newLabel = '';
   constructor(private libService: LibraryService) { }
@@ -38,18 +41,22 @@ export class DocCardComponent implements OnInit {
 
   addExistingLabel(label: string) {
     this.libService.addLabelToDoc(label, this.doc._id).subscribe(res => {
+      customLog('add-doc-label-existing', label);
       this.doc.labels.push(label);
     });
   }
 
   submitLabel() {
     this.libService.addLabelToDoc(this.newLabel.trim(), this.doc._id).subscribe(res => {
+      customLog('add-doc-label-new', this.newLabel);
       this.doc.labels.push(this.newLabel);
+      this.menuBtn.closeMenu();
     });
   }
 
   removeLabel(label: string) {
     this.libService.removeLabelFromDoc(label, this.doc._id).subscribe(res => {
+      customLog('remove-doc-label', label);
       this.doc.labels = this.doc.labels.filter(l => l != label);
     });
   }

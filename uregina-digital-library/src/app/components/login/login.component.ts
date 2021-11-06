@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { LibraryService } from 'src/app/services/library.service';
+import { customLog, updateLogUIAppData } from 'src/app/Utils/log.util';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,9 @@ export class LoginComponent implements OnInit {
           this.authService.setToken(res2);
           this.verifyingCode = false;
           this.errMessage = '';
-          this.router.navigate(['/library/search']);
+          this.router.navigate(['/library/search'], { replaceUrl: true });
+          updateLogUIAppData(this.authService.getCurrentUserData());
+          customLog('login-successful');
 
 
         }, err => {

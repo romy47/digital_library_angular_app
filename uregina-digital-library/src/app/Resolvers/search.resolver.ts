@@ -19,7 +19,7 @@ export class SearchResolver implements Resolve<Doc[]> {
         }), mergeMap(res => {
             console.log('Resolver Calling', res);
             let docs = [];
-            res.forEach(d => {
+            res.slice().reverse().forEach(d => {
                 docs.push(new Doc(d));
             });
             return of(docs);

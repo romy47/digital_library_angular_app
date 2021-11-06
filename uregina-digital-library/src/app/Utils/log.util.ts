@@ -112,6 +112,7 @@ export function updateLogUIAppData(auth: AuthToken) {
             userName: auth && auth.name ? auth.name : 'Not Logged in',
             userOrcID: auth && auth.orcid ? auth.orcid : '',
             userID: auth && auth._id ? auth._id : '',
+            interface: 'UR_BASELINE'
         });
     }
 }

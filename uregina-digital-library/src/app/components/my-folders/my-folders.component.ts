@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Doc } from 'src/app/Models';
 import { DataService } from 'src/app/services';
 import { AuthService } from 'src/app/services/auth.service';
+import { customLog } from 'src/app/Utils/log.util';
 
 @Component({
   selector: 'app-my-folders',
@@ -56,8 +57,35 @@ export class MyFoldersComponent implements OnInit {
     this.dataService.updatemyFolderBatchEditLabelAddAndRemove({ label: label, type: type });
   }
 
+  logOut() {
+    customLog('user-signed-out');
+    customLog('user-signed-out');
+    customLog('user-signed-out');
+    customLog('user-signed-out');
+    customLog('user-signed-out');
+    this.authService.clearSession();
+    this.router.navigate(['/login']);
+  }
+
   onTabChanged(event: any) {
-    console.log(this.selectedTabIndex);
+    this.selectedTabIndex = event.index;
+    switch (this.selectedTabIndex) {
+      case 0: {
+        console.log('Case 0: ', this.selectedTabIndex);
+        customLog('saved-records-tab-clicked');
+        break;
+      }
+      case 1: {
+        console.log('Case 1: ', this.selectedTabIndex);
+        customLog('saved-searches-tab-clicked');
+        break;
+      }
+      case 2: {
+        console.log('Case 2: ', this.selectedTabIndex);
+        customLog('search-history-tab-clicked');
+        break;
+      }
+    }
   }
 
 
@@ -83,6 +111,7 @@ export class MyFoldersComponent implements OnInit {
 
   submitLabel() {
     this.dataService.updatemyFolderBatchEditLabelAddAndRemove({ label: this.newLabel, type: 'add' });
+    this.menuBtn.closeMenu()
   }
 
   search() {

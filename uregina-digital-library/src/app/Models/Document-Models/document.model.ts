@@ -19,6 +19,7 @@ export class Doc {
     identifier?: string;
     description?: string;
     source?: string;
+    source2?: string;
     visFacets?: Facet[];
     title?: string;
     isFocused?= false;

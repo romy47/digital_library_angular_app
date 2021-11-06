@@ -5,10 +5,12 @@ import { DocumentModelConverter } from 'src/app/Utils/model-converter.util';
 import { LibraryService, DataService } from 'src/app/services';
 import { AuthService } from 'src/app/services/auth.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { timeout } from 'rxjs/operators';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { customLog } from 'src/app/Utils/log.util';
+import { Location } from "@angular/common";
 declare var $: any;
 declare var require: any;
 
@@ -57,13 +59,15 @@ export class SerpComponent implements OnInit {
   mobileSelectEnbaled = false;
   newLabel = '';
   allDocLabels: unknown[] = [];
-  constructor(private libraryService: LibraryService, private authService: AuthService, private sanitizer: DomSanitizer, private route: ActivatedRoute) { }
+  searchFromFormSubmit = false;
+  onInit = true;
+  constructor(private router: Router, private libraryService: LibraryService, private authService: AuthService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private location: Location) { }
 
   ngOnInit(): void {
     this.username = this.authService.getCurrentUserData().name;
 
     const savedDocs: Doc[] = this.route.snapshot.data.savedDocs;
-    console.log('**** ****** ***** ****** ***** ***** ***** ****** ***** ****', savedDocs);
+    // console.log('**** ****** ***** ****** ***** ***** ***** ****** ***** ****', savedDocs);
     let allLabels = new Set();
     if (savedDocs && savedDocs.length > 0) {
       savedDocs.forEach(d => {
@@ -78,9 +82,47 @@ export class SerpComponent implements OnInit {
 
     this.searchQuery = this.route.snapshot.queryParamMap.get('query');
     console.log(this.searchQuery);
-    if (this.searchQuery) {
-      this.search(0);
-    }
+    // if (this.searchQuery && this.searchQuery.trim().length > 0) {
+    //   customLog('my-folder-to-serp-query', this.searchQuery, '');
+    //   console.log('~~~~~~~~~~~~~~~~~~~~~ Searchimg From: On Init');
+    //   this.search(0, false);
+    // }
+
+    this.route.queryParams.subscribe(p => {
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', this.searchFromFormSubmit);
+      this.searchQuery = this.route.snapshot.queryParamMap.get('query');
+      if (this.searchFromFormSubmit) {
+        this.searchFromFormSubmit = false;
+      } else {
+        console.log('~~~~~~~~~~~~~~~~~~~~~ Searchimg From: Query Subscription');
+        this.search(0, false);
+      }
+    });
+
+    this.location.subscribe(location => {
+
+      if ($('#serpDocViewModal').hasClass('show')) {
+        console.log('Back Pressed ^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+        this.closeModal();
+        event.preventDefault();
+        //  this.location.go(state.url);
+
+        window.history.pushState(null, "", window.location.href);
+        window.onpopstate = function () {
+          window.history.pushState(null, "", window.location.href);
+        };
+      }
+    });
+  }
+
+  logOut() {
+    customLog('user-signed-out');
+    customLog('user-signed-out');
+    customLog('user-signed-out');
+    customLog('user-signed-out');
+    customLog('user-signed-out');
+    this.authService.clearSession();
+    this.router.navigate(['/login']);
   }
 
   changeLabel(label: string, type: string) {
@@ -88,6 +130,7 @@ export class SerpComponent implements OnInit {
     selecteDocs.forEach(d => {
       d.labels.push(label);
     })
+    customLog('batch-save-doc-with-label', 'Label: ' + label + ', size: ' + selecteDocs.length.toString())
     this.libraryService.addBatchBaselineSavedDoc(selecteDocs).subscribe(res => {
       this.documents.filter(d => d.selected == true).forEach(doc => {
         doc.isSaved = true;
@@ -115,8 +158,8 @@ export class SerpComponent implements OnInit {
     // })
   }
 
-  search(offset = 0) {
-    if (this.searching == false) {
+  search(offset = 0, fromSubmit = true) {
+    if (this.searching == false && this.searchQuery && this.searchQuery.trim().length > 0) {
       this.searching = true;
       this.documents = [];
       this.libraryService.getSearchResult(this.searchQuery, '', offset).subscribe(res => {
@@ -142,6 +185,20 @@ export class SerpComponent implements OnInit {
           this.searchId = searchResponse._id;
 
           this.searching = false;
+
+          const queryParams: Params = { query: this.searchQuery };
+          if (fromSubmit) {
+            console.log('$$$$$$$$$$$$$$$$$$$$ $$$$$$$$$$$$$ $$$$ $');
+            this.searchFromFormSubmit = true;
+            this.router.navigate(
+              [],
+              {
+                relativeTo: this.route,
+                queryParams: queryParams,
+                queryParamsHandling: 'merge', // remove to replace all query params by provided
+              });
+
+          }
         }, err => {
           this.searching = false;
         });
@@ -163,7 +220,8 @@ export class SerpComponent implements OnInit {
 
   saveSearch() {
     this.libraryService.addBaselineSavedSearch(this.searchQuery, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
-      console.log('Search Saved');
+      // console.log('Search Saved');
+      customLog('save-search-from-serp', this.searchQuery);
       this.showSaveSearchMessage();
     });
   }
@@ -208,9 +266,11 @@ export class SerpComponent implements OnInit {
       input.data.page = this.currentPage;
       // Object.assign(this.docViewing, input.data);
       this.docViewing = input.data;
-      console.log("lalalalalalalalalalalalalal", this.docViewing)
+      console.log(this.docViewing);
       setTimeout(() => {
         $('#serpDocViewModal').modal('show');
+        customLog('view-doc', this.docViewing.title, this.docViewing.id);
+
       }, 200)
     } else {
       let doc = input.data;
@@ -221,6 +281,7 @@ export class SerpComponent implements OnInit {
         url = url.replace(pattern, sbDomain);
         console.log(url)
         window.open(url, '_blanc');
+        customLog('get-doc', doc.title, doc.id);
       }
     }
   }
@@ -232,6 +293,7 @@ export class SerpComponent implements OnInit {
 
   closeModal() {
     $('#serpDocViewModal').modal('hide');
+    customLog('doc-view-modal-close-clicked');
   }
 
   saveToWorkspace(doc: Doc) {
@@ -239,11 +301,13 @@ export class SerpComponent implements OnInit {
       doc.isSaved = false;
       this.libraryService.deleteBaselineSavedDoc(doc.id).subscribe(res => {
         this.savedDocIds.delete(doc.id);
+        customLog('removed-saved-document', doc.title, doc.id);
       });
     } else {
       doc.isSaved = true;
       this.libraryService.addBaselineSavedDoc(doc).subscribe(res => {
         this.savedDocIds.add(doc.id);
+        customLog('saved-document', doc.title, doc.id);
       });
     }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Search } from 'src/app/Models';
 import { DataService, LibraryService } from 'src/app/services';
+import { customLog } from 'src/app/Utils/log.util';
 
 @Component({
   selector: 'app-saved-search',
@@ -37,7 +38,7 @@ export class SavedSearchComponent implements OnInit {
       this.searches = [];
       this.allSearches = [];
       this.pagingIndex = 0;
-      res.forEach(t => {
+      res.slice().reverse().forEach(t => {
         t['selected'] = false;
         this.allSearches.push(new Search(t));
       });
@@ -56,6 +57,7 @@ export class SavedSearchComponent implements OnInit {
     });
     console.log(deleteIds);
     this.libraryService.deleteBatchBaselineSavedSearch(deleteIds).subscribe(res => {
+      customLog('batch-remove-saved-search');
       console.log(res);
       deleteIds.forEach(id => {
         this.allSearches = this.allSearches.filter(s => !(s._id == id));
@@ -67,6 +69,7 @@ export class SavedSearchComponent implements OnInit {
   loadMore() {
     if (this.pagingIndex < this.allSearches.length) {
       setTimeout(() => {
+        // customLog('load-more-saved-searches', this.pagingIndex.toString());
         let count = 0
         for (let i = this.pagingIndex; i < this.allSearches.length; i++) {
           if (count <= 9) {
@@ -96,6 +99,8 @@ export class SavedSearchComponent implements OnInit {
       this.allSearches = this.allSearches.filter(s => !(s._id == search._id));
       this.refreshDocsAfterRemove();
     });
+
+    customLog('removed-saved-searches', search.searchQuery, search._id);
   }
 
   allSavedSearchChecked(event: any) {

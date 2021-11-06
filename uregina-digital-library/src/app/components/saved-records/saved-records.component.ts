@@ -2,6 +2,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Doc } from 'src/app/Models';
 import { DataService } from 'src/app/services';
 import { LibraryService } from 'src/app/services/library.service';
+import { customLog } from 'src/app/Utils/log.util';
+import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -22,7 +24,7 @@ export class SavedRecordsComponent implements OnInit {
   labelFilter: { label: string, docs: Doc[], selected: boolean, hovering: boolean }[] = [{ label: 'Unlabeled items', docs: [], selected: false, hovering: false }];
   docViewing: Doc;
 
-  constructor(private libraryService: LibraryService, private dataService: DataService) { }
+  constructor(private libraryService: LibraryService, private dataService: DataService, private location: Location) { }
 
   ngOnInit(): void {
     this.getAllSavedDocs();
@@ -62,6 +64,11 @@ export class SavedRecordsComponent implements OnInit {
         this.batchUpdateDocLabel(data);
       }
     });
+
+    this.location.subscribe(location => {
+      this.closeModal();
+      this.closeFilterModal();
+    });
   }
 
 
@@ -74,10 +81,12 @@ export class SavedRecordsComponent implements OnInit {
       // input.data.page = this.currentPage;
       // Object.assign(this.docViewing, input.data);
       this.docViewing = input.data;
-      console.log("lalalalalalalalalalalalalal", this.docViewing)
+      // console.log("lalalalalalalalalalalalalal", this.docViewing)
       setTimeout(() => {
         $('#serpDocViewModal').appendTo("body").modal('show');
       }, 200)
+      customLog('view-doc', this.docViewing.title, this.docViewing.id);
+
     } else {
       let doc = input.data;
       if (doc.rawObject.delivery && doc.rawObject.delivery.GetIt1 && doc.rawObject.delivery.GetIt1.length > 0 && doc.rawObject.delivery.GetIt1[0].links && doc.rawObject.delivery.GetIt1[0].links.length > 0 && doc.rawObject.delivery.GetIt1[0].links[0].link) {
@@ -87,12 +96,14 @@ export class SavedRecordsComponent implements OnInit {
         url = url.replace(pattern, sbDomain);
         console.log(url)
         window.open(url, '_blanc');
+        customLog('get-doc', doc.title, doc.id);
       }
     }
   }
 
   closeModal() {
     $('#serpDocViewModal').modal('hide');
+    customLog('doc-view-modal-close-clicked');
   }
 
   openFilterModal() {
@@ -102,6 +113,7 @@ export class SavedRecordsComponent implements OnInit {
   }
 
   closeFilterModal() {
+    // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
     setTimeout(() => {
       $('#labelFilterModal').modal('hide');
     }, 200);
@@ -135,7 +147,7 @@ export class SavedRecordsComponent implements OnInit {
     this.docs = [];
     this.libraryService.getAllSavedBaselineDocs().subscribe(res => {
       this.allDocs = [];
-      res.forEach(d => {
+      res.slice().reverse().forEach(d => {
         if (d.labels && d.labels.length > 0) {
           d.labels.forEach(label => {
             this.availableLabels.add(label);
@@ -225,12 +237,14 @@ export class SavedRecordsComponent implements OnInit {
     });
     if (data.type == 'add') {
       this.libraryService.addLabelToDocBatch(data.label, docIds).subscribe(res => {
+        customLog('batch-add-label-from-saved-records', data.label);
         this.docs.filter(d => d.selected == true).forEach(d => {
           d.labels.push(data.label);
         });
       });
     } else if (data.type == 'remove') {
       this.libraryService.removeLabelFromDocBatch(data.label, docIds).subscribe(res => {
+        customLog('batch-remove-label-from-saved-records', data.label);
         this.docs.filter(d => d.selected == true).forEach(d => {
           d.labels = d.labels.filter(l => l != data.label);
         });
@@ -251,6 +265,7 @@ export class SavedRecordsComponent implements OnInit {
           }
         }
         this.pagingIndex += count;
+        // customLog('load-more-saved-records', this.pagingIndex.toString());
       }, 800)
     }
   }
@@ -268,6 +283,7 @@ export class SavedRecordsComponent implements OnInit {
       this.allDocs = this.allDocs.filter(d => !(d.id == doc.id));
       this.refreshDocsAfterRemove();
       $('#serpDocViewModal').modal('hide');
+      customLog('removed-saved-document', doc.title, doc.id);
     });
 
   }
@@ -306,6 +322,7 @@ export class SavedRecordsComponent implements OnInit {
     });
     console.log(deleteIds);
     this.libraryService.deleteBatchBaselineSavedDocs(deleteIds).subscribe(res => {
+      customLog('batch-remove-saved-document');
       console.log(res);
       deleteIds.forEach(id => {
         this.allDocs = this.allDocs.filter(s => !(s._id == id));

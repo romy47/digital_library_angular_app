@@ -25,19 +25,17 @@
     </div>
     <div class="d-flex align-items-center nav-profile-menu">
         <div class="d-flex align-items-center px-3 nav-toggle-icon">
-            <a [routerLink]="['/library/search']" [queryParams]="{query: searchQuery}">
-                <i style="color: black;" class="fa fa-search fa-rotate-90 text-dark"></i>
+            <a [routerLink]="['/library/search']" class="my-folder-to-serp" [queryParams]="{query: searchQuery}">
+                <i style="color: black;" class="fa fa-search fa-rotate-90 text-dark my-folder-to-serp"></i>
             </a>
         </div>
-        <div class="dropdown d-none d-md-flex d-lg-flex d-xl-flex align-items-center">
+        <div class="dropdown d-md-flex d-lg-flex d-xl-flex align-items-center">
             <button class="btn btn-light user-profile-btn" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                {{username}}
+                {{ (username.length>12)? (username | slice:0:12)+'..':(username) }}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
             </ul>
         </div>
     </div>
@@ -135,8 +133,8 @@
                 </span>
             </div>
         </div>
-        <mat-tab-group [(selectedIndex)]="selectedTabIndex" ngDefaultControl (selectedTabChange)="onTabChanged($event);"
-            animationDuration="600ms" class="remove-border-bottom">
+        <mat-tab-group ngDefaultControl (selectedTabChange)="onTabChanged($event);" animationDuration="600ms"
+            class="remove-border-bottom">
 
             <mat-tab label="SAVED RECORDS">
                 <!-- <ng-template matTabContent> -->
