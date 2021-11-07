@@ -64,6 +64,8 @@ export class SerpComponent implements OnInit {
   constructor(private router: Router, private libraryService: LibraryService, private authService: AuthService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private location: Location) { }
 
   ngOnInit(): void {
+    customLog('serp-reached');
+
     this.username = this.authService.getCurrentUserData().name;
 
     const savedDocs: Doc[] = this.route.snapshot.data.savedDocs;

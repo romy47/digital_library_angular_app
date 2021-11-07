@@ -28,6 +28,7 @@ export class MyFoldersComponent implements OnInit {
 
 
   ngOnInit(): void {
+    customLog('myfolder-reached');
     this.searchQuery = this.route.snapshot.queryParamMap.get('query');
     this.username = this.authService.getCurrentUserData().name;
   }
