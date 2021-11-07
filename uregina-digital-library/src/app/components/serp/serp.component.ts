@@ -104,13 +104,13 @@ export class SerpComponent implements OnInit {
       if ($('#serpDocViewModal').hasClass('show')) {
         console.log('Back Pressed ^^^^^^^^^^^^^^^^^^^^^^^^^^^')
         this.closeModal();
-        event.preventDefault();
-        //  this.location.go(state.url);
+        // event.preventDefault();
+        // //  this.location.go(state.url);
 
-        window.history.pushState(null, "", window.location.href);
-        window.onpopstate = function () {
-          window.history.pushState(null, "", window.location.href);
-        };
+        // window.history.pushState(null, "", window.location.href);
+        // window.onpopstate = function () {
+        //   window.history.pushState(null, "", window.location.href);
+        // };
       }
     });
   }
@@ -211,6 +211,7 @@ export class SerpComponent implements OnInit {
   }
 
   pageChanged(nextPage: any) {
+    customLog('serp-paging', (nextPage - 1).toString());
     this.search((nextPage - 1) * this.pageSize);
   }
 

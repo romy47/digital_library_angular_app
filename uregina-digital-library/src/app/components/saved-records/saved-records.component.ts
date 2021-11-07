@@ -1,9 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Doc } from 'src/app/Models';
 import { DataService } from 'src/app/services';
 import { LibraryService } from 'src/app/services/library.service';
 import { customLog } from 'src/app/Utils/log.util';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -12,7 +13,11 @@ declare var $: any;
   styleUrls: ['./saved-records.component.css']
 })
 
-export class SavedRecordsComponent implements OnInit {
+export class SavedRecordsComponent implements OnInit, OnDestroy {
+  myFolderSavedRecordsDeleteAllObs: Subscription;
+  myFolderBatchEditLabelObs: Subscription;
+  myFolderBatchEditLabelAddAndRemoveObs: Subscription;
+
   @Output() edilAllLabels: EventEmitter<{ all: unknown[], selected: unknown[] }> = new EventEmitter<{ all: unknown[], selected: unknown[] }>();
   docs: Doc[] = [];
   allDocs: Doc[] = [];
@@ -28,14 +33,15 @@ export class SavedRecordsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllSavedDocs();
-    this.dataService.myFolderSavedRecordsDeleteAllObs.subscribe(data => {
-      console.log(data);
+    this.myFolderSavedRecordsDeleteAllObs = this.dataService.myFolderSavedRecordsDeleteAllObs.subscribe(data => {
       if (data != null) {
+        console.log(data);
+        console.log('3--btch called--3');
         this.deleteBatchSavedDocs();
       }
-    })
+    });
 
-    this.dataService.myFolderBatchEditLabelObs.subscribe(data => {
+    this.myFolderBatchEditLabelObs = this.dataService.myFolderBatchEditLabelObs.subscribe(data => {
       console.log(data);
       if (data != null) {
         let selectedDocsLabels = new Set();
@@ -58,7 +64,7 @@ export class SavedRecordsComponent implements OnInit {
       }
     });
 
-    this.dataService.myFolderBatchEditLabelAddAndRemoveObs.subscribe(data => {
+    this.myFolderBatchEditLabelAddAndRemoveObs = this.dataService.myFolderBatchEditLabelAddAndRemoveObs.subscribe(data => {
       console.log(data);
       if (data != null) {
         this.batchUpdateDocLabel(data);
@@ -69,6 +75,12 @@ export class SavedRecordsComponent implements OnInit {
       this.closeModal();
       this.closeFilterModal();
     });
+  }
+
+  ngOnDestroy() {
+    this.myFolderSavedRecordsDeleteAllObs.unsubscribe();
+    this.myFolderBatchEditLabelObs.unsubscribe();
+    this.myFolderBatchEditLabelAddAndRemoveObs.unsubscribe();
   }
 
 

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Search } from 'src/app/Models';
 import { DataService, LibraryService } from 'src/app/services';
 import { customLog } from 'src/app/Utils/log.util';
@@ -8,7 +9,9 @@ import { customLog } from 'src/app/Utils/log.util';
   templateUrl: './search-history.component.html',
   styleUrls: ['./search-history.component.css']
 })
-export class SearchHistoryComponent implements OnInit {
+export class SearchHistoryComponent implements OnInit, OnDestroy {
+  myFolderSearchHistoryDeleteAllObs: Subscription;
+  myFolderSearchHistorySaveAllObs: Subscription;
 
   searches: Search[] = [];
   allSearches: Search[] = [];
@@ -27,19 +30,25 @@ export class SearchHistoryComponent implements OnInit {
       this.getAllSearches();
     });
 
-    this.dataService.myFolderSearchHistoryDeleteAllObs.subscribe(data => {
+    this.myFolderSearchHistoryDeleteAllObs = this.dataService.myFolderSearchHistoryDeleteAllObs.subscribe(data => {
       console.log(data);
+      console.log('--batch delete subscribe--');
       if (data != null) {
         this.deleteBatchSearchHistory();
       }
     });
 
-    this.dataService.myFolderSearchHistorySaveAllObs.subscribe(data => {
+    this.myFolderSearchHistorySaveAllObs = this.dataService.myFolderSearchHistorySaveAllObs.subscribe(data => {
       console.log(data);
       if (data != null) {
         this.saveBatchSearchHistory();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.myFolderSearchHistoryDeleteAllObs.unsubscribe();
+    this.myFolderSearchHistorySaveAllObs.unsubscribe();
   }
 
   allSearchHistoryChecked(event: any) {

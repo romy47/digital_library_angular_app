@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Doc, Task } from '../Models';
 
 @Injectable({
@@ -7,31 +7,38 @@ import { Doc, Task } from '../Models';
 })
 export class DataService {
 
-    private document: BehaviorSubject<Doc> = new BehaviorSubject<Doc>(new Doc({}));
+    private document: Subject<Doc> = new Subject<Doc>();
     documentObs = this.document.asObservable();
 
-    private task: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+    private task: Subject<Task> = new Subject<Task>();
     taskObs = this.task.asObservable();
 
-    private myFolderSearchHistoryDeleteAll: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    // Unsubscription handled
+    private myFolderSearchHistoryDeleteAll: Subject<number> = new Subject<number>();
     myFolderSearchHistoryDeleteAllObs = this.myFolderSearchHistoryDeleteAll.asObservable();
 
-    private myFolderSearchHistorySaveAll: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    // Unsubscription handled
+    private myFolderSearchHistorySaveAll: Subject<number> = new Subject<number>();
     myFolderSearchHistorySaveAllObs = this.myFolderSearchHistorySaveAll.asObservable();
 
-    private myFolderSavedSearchesDeleteAll: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    // Unsubscription handled
+    private myFolderSavedSearchesDeleteAll: Subject<number> = new Subject<number>();
     myFolderSavedSearchesDeleteAllObs = this.myFolderSavedSearchesDeleteAll.asObservable();
 
-    private myFolderSavedRecordsDeleteAll: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    // Unsubscription handled
+    private myFolderSavedRecordsDeleteAll: Subject<number> = new Subject<number>();
     myFolderSavedRecordsDeleteAllObs = this.myFolderSavedRecordsDeleteAll.asObservable();
 
-    private myFolderSavedSearchForceRefresh: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    // Unsubscription handled
+    private myFolderSavedSearchForceRefresh: Subject<number> = new Subject<number>();
     myFolderSavedSearchForceRefreshObs = this.myFolderSavedSearchForceRefresh.asObservable();
 
-    private myFolderBatchEditLabel: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    // Unsubscription handled
+    private myFolderBatchEditLabel: Subject<number> = new Subject<number>();
     myFolderBatchEditLabelObs = this.myFolderBatchEditLabel.asObservable();
 
-    private myFolderBatchEditLabelAddAndRemove: BehaviorSubject<{ label: string, type: string }> = new BehaviorSubject<{ label: string, type: string }>(null);
+    // Unsubscription handled
+    private myFolderBatchEditLabelAddAndRemove: Subject<{ label: string, type: string }> = new Subject<{ label: string, type: string }>();
     myFolderBatchEditLabelAddAndRemoveObs = this.myFolderBatchEditLabelAddAndRemove.asObservable();
 
     constructor() { }
@@ -57,6 +64,8 @@ export class DataService {
     }
 
     updateMyFolderSavedRecordsDeleteAll(data: number) {
+        console.log('2-btch called--2')
+
         this.myFolderSavedRecordsDeleteAll.next(data);
     }
 

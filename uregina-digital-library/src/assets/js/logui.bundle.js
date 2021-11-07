@@ -3339,8 +3339,8 @@ if (localStorage.getItem('currentUser')) {
 }
 let configurationObject = {
 	logUIConfiguration: {
-		// endpoint: 'wss://sebastiangomes.com/ws/',
-		endpoint: 'ws://localhost:8080/ws/endpoint/',
+		endpoint: 'wss://sebastiangomes.com/ws/',
+		// endpoint: 'ws://localhost:8080/ws/endpoint/',
 		authorisationToken: 'AUTHTOKEN',  // The authorisation token.
 		verbose: true,
 		browserEvents: {
@@ -3382,6 +3382,21 @@ let configurationObject = {
 						nameForLog: 'search-query-issued',
 						sourcer: 'elementProperty',
 						selector: '#serp-query-form-input',
+						lookFor: 'value',
+					}
+				]
+			}
+		},
+		'myfolder-query-issued': {
+			selector: '#myfolder-query-form',
+			event: 'formSubmission',
+			name: 'myfolder-query-issued',
+			properties: {
+				includeValues: [
+					{
+						nameForLog: 'myfolder-query-issued',
+						sourcer: 'elementProperty',
+						selector: '#myfolder-query-form-input',
 						lookFor: 'value',
 					}
 				]

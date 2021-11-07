@@ -3,7 +3,7 @@ import { CommentStmt, Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthToken } from '../Models';
-import * as api from './../../environments/custom/sandbox-localhost';
+import * as api from './../../environments/custom/prod-aws';
 
 @Injectable({
   providedIn: 'root'

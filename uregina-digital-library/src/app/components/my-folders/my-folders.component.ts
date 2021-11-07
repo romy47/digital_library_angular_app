@@ -102,6 +102,7 @@ export class MyFoldersComponent implements OnInit {
   }
 
   deleteBatchSavedRecords() {
+    console.log('-btch called-')
     this.dataService.updateMyFolderSavedRecordsDeleteAll(1);
   }
 

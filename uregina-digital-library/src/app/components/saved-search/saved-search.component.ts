@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Search } from 'src/app/Models';
 import { DataService, LibraryService } from 'src/app/services';
 import { customLog } from 'src/app/Utils/log.util';
@@ -9,6 +10,8 @@ import { customLog } from 'src/app/Utils/log.util';
   styleUrls: ['./saved-search.component.css']
 })
 export class SavedSearchComponent implements OnInit {
+  myFolderSavedSearchesDeleteAllObs: Subscription;
+  myFolderSavedSearchForceRefreshObs: Subscription;
 
   searches: Search[] = [];
   allSearches: Search[] = [];
@@ -18,19 +21,25 @@ export class SavedSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllSavedSearches();
-    this.dataService.myFolderSavedSearchesDeleteAllObs.subscribe(data => {
+    this.myFolderSavedSearchesDeleteAllObs = this.dataService.myFolderSavedSearchesDeleteAllObs.subscribe(data => {
       console.log(data);
       if (data != null) {
+        console.log("-- Subscribed batch -- ");
         this.deleteBatchSavedSearch();
       }
     });
 
-    this.dataService.myFolderSavedSearchForceRefreshObs.subscribe(data => {
+    this.myFolderSavedSearchForceRefreshObs = this.dataService.myFolderSavedSearchForceRefreshObs.subscribe(data => {
       console.log(data);
       if (data != null) {
         this.getAllSavedSearches();
       }
     })
+  }
+
+  ngOnDestroy() {
+    this.myFolderSavedSearchesDeleteAllObs.unsubscribe();
+    this.myFolderSavedSearchForceRefreshObs.unsubscribe();
   }
 
   getAllSavedSearches() {

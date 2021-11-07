@@ -48,10 +48,10 @@
 
     </div>
     <div class="col-md-6">
-        <form style="width: 100%;" (submit)="search()">
+        <form style="width: 100%;" id="myfolder-query-form" (submit)="search()">
             <div class="input-group input-group-lg">
-                <input [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" type="text"
-                    class="form-control search-bar-input" placeholder="Quick Find">
+                <input [(ngModel)]="searchQuery" id="myfolder-query-form-input" [ngModelOptions]="{standalone: true}"
+                    type="text" class="form-control search-bar-input" placeholder="Quick Find">
                 <div class="input-group-append">
                     <button class="btn btn-lg bg-white anti-round-left search-bar-btn" type="submit"><i
                             class="fa fa-search fa-rotate-90"></i></button>
