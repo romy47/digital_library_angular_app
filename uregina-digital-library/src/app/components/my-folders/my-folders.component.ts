@@ -33,6 +33,10 @@ export class MyFoldersComponent implements OnInit {
     this.username = this.authService.getCurrentUserData().name;
   }
 
+  startTask() {
+    customLog("start-session2-task");
+  }
+
   forceRefresh(tab: number) {
     switch (tab) {
       case 0:

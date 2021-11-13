@@ -117,6 +117,10 @@ export class SerpComponent implements OnInit {
     });
   }
 
+  startTask() {
+    customLog("start-session2-task");
+  }
+
   logOut() {
     customLog('user-signed-out');
     customLog('user-signed-out');

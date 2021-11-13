@@ -5,6 +5,7 @@ import { LibraryService } from 'src/app/services/library.service';
 import { customLog } from 'src/app/Utils/log.util';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { DocumentModelConverter } from 'src/app/Utils/model-converter.util';
 declare var $: any;
 
 @Component({
@@ -166,8 +167,17 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
           });
           this.availableLabelsArr = Array.from(this.availableLabels);
         }
-        d['isSaved'] = true;
-        this.allDocs.push(new Doc(d));
+        let savedDoc = new Doc(d);
+        let convertedDoc = DocumentModelConverter.formatSingleDocumentModel(d.rawObject);
+        savedDoc.snippet = convertedDoc.snippet;
+        savedDoc.description = convertedDoc.description;
+        savedDoc.language = convertedDoc.language;
+        savedDoc.identifier = convertedDoc.identifier;
+        savedDoc.source2 = convertedDoc.source2;
+        savedDoc.source = convertedDoc.source;
+        savedDoc.allIdentifiers = convertedDoc.allIdentifiers;
+        savedDoc['isSaved'] = true;
+        this.allDocs.push(savedDoc);
       });
       console.log(this.docs);
       if (filteringByLabel == false) {
