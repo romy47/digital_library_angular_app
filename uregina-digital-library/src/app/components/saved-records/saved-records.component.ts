@@ -137,6 +137,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
     this.LabelFilterActive = this.labelFilter.filter(l => l.selected == true).length > 0;
 
     this.getAllSavedDocs(true);
+    customLog("label-filter-clicked");
   }
 
   clearLabelSelection() {
@@ -145,6 +146,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
     });
     this.LabelFilterActive = false;
     this.getAllSavedDocs(true);
+    customLog("label-filter-cleared");
   }
 
   filterLabelMouseEnter(label) {
@@ -208,6 +210,11 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
 
             }
           });
+
+          // update
+          if (d.labels.length == 0 && selectedFilters.includes("Unlabeled items")) {
+            docAllowed = true;
+          }
           console.log('docAllowed status', docAllowed)
           if ((this.LabelFilterActive == false) || (docAllowed && this.allDocs.filter(ad => ad._id == d._id).length < 1)) {
             this.allDocs.push(d)
