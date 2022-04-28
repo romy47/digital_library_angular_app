@@ -1,3 +1,6 @@
+/* p, h6 {
+    line-height: 25px;
+} */
 div{
     font-family: Arial,verdana !important;
 }
@@ -49,7 +52,7 @@ h6, .doc-author {
     font-size:
 15px;	
 line-height:
-21px;
+24px;
 vertical-align:
 baseline;
 letter-spacing:

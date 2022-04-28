@@ -8,19 +8,19 @@
             <a class="nav-center-menu cursor-pointer" (click)="startTask()">New<br />Search</a>
         </div>
         <div class="nav-cell">
-            <a class="nav-center-menu" href="#">e-Journal<br />Titles</a>
+            <a class="nav-center-menu" href="#">Databases</a>
         </div>
         <div class="nav-cell">
-            <a class="nav-center-menu" href="#">Databases</a>
+            <a class="nav-center-menu" href="#">e-Journal<br />Titles</a>
         </div>
         <div class="nav-cell">
             <a class="nav-center-menu" href="#">Browse</a>
         </div>
         <div class="nav-cell">
-            <a class="nav-center-menu" href="#">Help</a>
+            <a class="nav-center-menu" href="#">Citation<br />Finder</a>
         </div>
         <div class="nav-cell last-nav-cell">
-            <a class="nav-center-menu" href="#">Citation<br />Finder</a>
+            <a class="nav-center-menu" href="#">Help</a>
         </div>
         <!-- <div class="nav-cell last-nav-cell">
             <a class="nav-center-menu" href="#"><i class="fas fa-ellipsis-h"></i></a>
@@ -34,10 +34,10 @@
                     style="color: black;" class="serp-to-my-folder fa fa-thumbtack fa-rotate-lite"></i></a>
         </div>
         <div class="dropdown d-md-flex d-lg-flex d-xl-flex align-items-center">
-            <button class="btn btn-light user-profile-btn" type="button" id="dropdownMenuButton1"
+            <!-- <button class="btn btn-light user-profile-btn" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                {{ (username.length>12)? (username | slice:0:12)+'..':(username) }}
-            </button>
+                {{ (username.length>20)? (username | slice:0:20)+'..':(username) }}
+            </button> -->
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
             </ul>
@@ -47,10 +47,10 @@
 <p style="display: none;" class="quick-find-text">Quick Find <i class="fas fa-caret-down"
         style="margin-left: 20px;"></i></p>
 <section class="row nav-accent-bg mx-0 nav-section">
-    <div class="col-md-3 px-0">
+    <div class="col-md-1 px-0">
 
     </div>
-    <div class="col-md-6">
+    <div class="col-md-10">
         <form style="width: 100%;" id="serp-query-form" (submit)="search()">
             <div class="input-group input-group-lg">
                 <input [(ngModel)]="searchQuery" id="serp-query-form-input" [ngModelOptions]="{standalone: true}"
@@ -71,16 +71,16 @@
             </div>
         </form>
     </div>
-    <div class="col-md-3 px-0">
+    <div class="col-md-1 px-0">
 
     </div>
 </section>
 <section style="width: 100%; height: 47px;" class="row accent-bg pt-2">
-    <div class="col-md-3 px-0">
+    <div class="col-md-1 px-0">
 
     </div>
 
-    <div class="col-md-6 d-flex all-items-center">
+    <div class="col-md-10 d-flex all-items-center">
         <span class="text-white" style="font-size: 15px;">
             <span>All items <i class="fas fa-caret-down" style="margin-left: 5px; margin-right: 50px;"></i></span>
 
@@ -88,17 +88,17 @@
         </span>
     </div>
 
-    <div class="col-md-3 px-0">
+    <div class="col-md-1 px-0">
 
     </div>
 </section>
 <section class="row sticky-top docs-info-nav  docs-info-nav-large-device mb-2"
     *ngIf="documents.length>0&&searching==false">
-    <div class="col-md-3 px-0">
+    <div class="col-md-1 px-0">
 
     </div>
 
-    <div class="col-md-6 d-flex justify-content-between align-items-center myfolder-list-item-bg">
+    <div class="col-md-10 d-flex justify-content-between align-items-center myfolder-list-item-bg">
         <!-- <div class="d-flex "> -->
         <span>
             <span style="margin: 0px 30px 10px 0px;" class="mt-2">
@@ -110,7 +110,7 @@
             <span class="me-2 fst-italic result-count"> {{totalDocuments | number}} Results</span>
             <button type="button" (click)="saveSearch()" class="btn btn-outline-secondary btn-save-search">
                 <i class="fa fa-thumbtack baseline-danger fa-rotate-lite"></i>
-                Save Search
+                Save query
             </button>
 
 
@@ -148,7 +148,7 @@
         <!-- </div> -->
     </div>
 
-    <div class="col-md-3 px-0">
+    <div class="col-md-1 px-0">
 
     </div>
 </section>
@@ -194,11 +194,11 @@
     </div>
 </section>
 <section class="row">
-    <div class="col-md-3 px-0">
+    <div class="col-md-1 px-0">
 
     </div>
 
-    <div class="col-md-6 px-0">
+    <div class="col-md-10 px-0">
         <ng-container *ngIf="documents!=null">
             <div class="doc-index-{{i}}" *ngFor="let doc of documents  | paginate: { id: 'document-search-paginator',
             itemsPerPage: pageSize,
@@ -230,7 +230,7 @@
         </ng-container>
     </div>
 
-    <div class="col-md-3 px-0">
+    <div class="col-md-1 px-0">
 
     </div>
 
