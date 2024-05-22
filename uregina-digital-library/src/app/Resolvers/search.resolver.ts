@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { EMPTY, Observable, of } from "rxjs";
 import { take, mergeMap, catchError } from 'rxjs/operators'
 import { Doc } from "../Models";
 import { DataService, LibraryService } from "../services";
 
 @Injectable({ providedIn: 'root' })
-export class SearchResolver implements Resolve<Doc[]> {
+export class SearchResolver  {
     constructor(private service: LibraryService, private dataService: DataService) { }
 
     resolve(

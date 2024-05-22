@@ -23,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { SignupComponent } from './components/signup/signup.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +37,7 @@ import { MatInputModule } from '@angular/material/input';
     TitleHighlightComponent,
     DefaultPagerComponent,
     SavedRecordsComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
