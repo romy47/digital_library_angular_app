@@ -28,16 +28,12 @@ $uregina-digital-library-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$uregina-digital-library-theme: mat.define-light-theme((
-  color: (
-    primary: $uregina-digital-library-primary,
-    accent: $uregina-digital-library-accent,
-    warn: $uregina-digital-library-warn,
-  )
-));
+$uregina-digital-library-theme: mat.define-light-theme((color: (primary: $uregina-digital-library-primary,
+        accent: $uregina-digital-library-accent,
+        warn: $uregina-digital-library-warn,
+      )));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-legacy-component-themes($uregina-digital-library-theme);
-
