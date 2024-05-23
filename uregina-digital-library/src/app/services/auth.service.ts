@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthToken } from '../Models';
-import * as api from './../../environments/custom/sandbox-localhost';
+import { environment } from 'src/environments/environment';
+const api = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -39,13 +40,6 @@ export class AuthService {
   }
 
   orcidSigninStage2(code: string): Observable<any> {
-    // const payload = new HttpParams()
-    //   .set('client_id', this.orcidClientId)
-    //   .set('client_secret', this.orcidClientSecret)
-    //   .set('grant_type', 'authorization_code')
-    //   .set('code', code)
-    //   .set('redirect_uri', this.orcidRedirectURL);
-
     const body = {
       client_id: api.orcidClientId,
       client_secret: api.orcidClientSecret,
@@ -62,6 +56,19 @@ export class AuthService {
       api.API_PATH + 'token',
       // payload,
       body,
+      httpOptions);
+  }
+
+  signup(data: { firstName: string, lastName: string, email: string, password: string }): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'accept': 'application/json'
+      })
+    };
+    return this.http.post(
+      api.API_PATH + 'auth/signup',
+      // payload,
+      data,
       httpOptions);
   }
 

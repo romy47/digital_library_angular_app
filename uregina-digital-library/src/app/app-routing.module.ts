@@ -5,9 +5,11 @@ import { MyFoldersComponent } from './components/my-folders/my-folders.component
 import { SerpComponent } from './components/serp/serp.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SearchResolver } from './Resolvers/search.resolver'
+import { SignupComponent } from './components/signup/signup.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   {
     path: 'library',
     canActivate: [AuthGuard],

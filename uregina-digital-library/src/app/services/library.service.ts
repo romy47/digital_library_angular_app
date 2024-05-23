@@ -4,7 +4,8 @@ import { HttpParams, HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Facet, AllFacets, Task, Doc, Search } from '../Models';
 import { AuthService } from './auth.service';
-import * as api from './../../environments/custom/sandbox-localhost';
+import { environment } from 'src/environments/environment';
+const api = environment;
 
 @Injectable({
   providedIn: 'root'

@@ -1,1 +1,47 @@
-<p>signup works!</p>
+<div class="card mt-5" style="width: 18rem;" style="margin: 0 auto; max-width: 400px;">
+    <div class="card-body">
+        <div class="text-center">
+            <h5 class="card-title">Academic Digital Library</h5>
+            <p class="card-text">Signup</p>
+            <p *ngIf="err" class="card-text text-danger">{{err}}</p>
+        </div>
+        <form [formGroup]="signupForm" (ngSubmit)="signupOnSubmit()">
+            <div class="form-group mb-2 mt-4">
+                <label for="signup-first-name">First Name: </label>
+                <input class="form-control" id="signup-first-name" type="text" formControlName="firstName">
+                <small class="form-text text-danger"
+                    *ngIf="this.signupForm.controls.firstName.touched && this.signupForm.controls.firstName.errors?.required">First
+                    name is required</small>
+            </div>
+            <div class="form-group mb-2">
+                <label for="signup-last-name">Last Name: </label>
+                <input class="form-control" id="signup-last-name" type="text" formControlName="lastName">
+                <small class="form-text text-danger"
+                    *ngIf="this.signupForm.controls.lastName.touched && this.signupForm.controls.lastName.errors?.required">Last
+                    name is required</small>
+            </div>
+            <div class="form-group mb-2">
+                <label for="signup-email">Email: </label>
+                <input class="form-control" id="signup-email" type="email" formControlName="email">
+                <small class="form-text text-danger"
+                    *ngIf="this.signupForm.controls.email.touched && this.signupForm.controls.email.errors?.required">Email
+                    is required</small>
+                <small class="form-text text-danger"
+                    *ngIf="this.signupForm.controls.email.touched && this.signupForm.controls.email.errors?.email">Invalid
+                    email address</small>
+            </div>
+            <div class="form-group mb-2">
+                <label for="signup-password">Password: </label>
+                <input class="form-control" id="signup-password" type="password" formControlName="password">
+                <small class="form-text text-danger"
+                    *ngIf="this.signupForm.controls.password.touched && this.signupForm.controls.password.errors?.required">Password
+                    is required. </small>
+                <small class="form-text text-danger"
+                    *ngIf="this.signupForm.controls.password.touched && this.signupForm.controls.password.errors?.invalidPassword">Password
+                    must contain at least one upper case character, one lower case character, one number and must
+                    have 6 or more characters</small>
+            </div>
+            <input class="btn btn-primary pull-right" type="submit" value="Signup">
+        </form>
+    </div>
+</div>
