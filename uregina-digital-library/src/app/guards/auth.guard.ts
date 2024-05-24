@@ -12,23 +12,11 @@ export class AuthGuard {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-    const redirectUrl = route['_routerState']['url'];
-
-
     if (this.authService.isLoggedIn()) {
-      console.log('USER LOGGED IN');
       return true;
     } else {
-      const code = route.queryParamMap.get('code');
-      if (code) {
-        this.router.navigate(['/login'], { queryParams: { code: code } });
-      } else {
-        this.router.navigateByUrl(
-          this.router.createUrlTree(
-            ['/login']
-          )
-        );
-      }
+      this.router.navigate(['/login']);
     }
+
   }
 }

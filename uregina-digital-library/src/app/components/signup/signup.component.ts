@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { CustomValidatorService } from '../../services/custom-validator.service'
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { ISignupPostData } from 'src/app/interfaces/auth.interfaces';
 
 @Component({
   selector: 'app-signup',
@@ -28,13 +29,14 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  public signupOnSubmit() {
+  signupOnSubmit() {
     if (this.signupForm.valid) {
       const formRaw = this.signupForm.getRawValue();
       const data = {
         firstName: formRaw.firstName, lastName: formRaw.lastName, email: formRaw.email, password: formRaw.password
-      }
+      } as ISignupPostData
       this.authService.signup(data).subscribe(res => {
+        this.authService.clearSession();
         this.router.navigate(['login']);
       }, err => {
         this.err = err.error.message;

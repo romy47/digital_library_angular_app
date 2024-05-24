@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthToken } from '../Models';
 import { environment } from 'src/environments/environment';
+import { ILoginPostData, ISignupPostData } from 'src/app/interfaces/auth.interfaces';
 const api = environment;
 
 @Injectable({
@@ -14,7 +15,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   isLoggedIn() {
-    return (this.getCurrentUserData() && this.getCurrentUserData().orcid);
+    return this.getCurrentUserData()?.access_token && this.getCurrentUserData()?.refresh_token;
   }
 
   getCurrentUserData(): AuthToken {
@@ -59,7 +60,7 @@ export class AuthService {
       httpOptions);
   }
 
-  signup(data: { firstName: string, lastName: string, email: string, password: string }): Observable<any> {
+  signup(data: ISignupPostData): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'accept': 'application/json'
@@ -67,7 +68,18 @@ export class AuthService {
     };
     return this.http.post(
       api.API_PATH + 'auth/signup',
-      // payload,
+      data,
+      httpOptions);
+  }
+
+  login(data: ILoginPostData): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'accept': 'application/json'
+      })
+    };
+    return this.http.post(
+      api.API_PATH + 'auth/login',
       data,
       httpOptions);
   }

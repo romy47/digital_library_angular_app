@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { CustomValidatorService } from '../../services/custom-validator.service'
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { LibraryService } from 'src/app/services/library.service';
-import { customLog, updateLogUIAppData } from 'src/app/Utils/log.util';
+import { ILoginPostData } from 'src/app/interfaces/auth.interfaces';
 
 @Component({
   selector: 'app-login',
@@ -10,45 +11,35 @@ import { customLog, updateLogUIAppData } from 'src/app/Utils/log.util';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  err = '';
+  public loginForm: FormGroup;
 
-  verifyingCode = false;
-  loginError = false;
-  code = null;
-  errMessage = '';
-  constructor(private authService: AuthService, private route: ActivatedRoute, private libService: LibraryService, private router: Router) { }
+  constructor(private fb: FormBuilder, private customValidation: CustomValidatorService, private authService: AuthService, private router: Router) { }
 
-  ngOnInit() {
-    this.code = this.route.snapshot.queryParamMap.get('code');
-    if (this.code) {
-      this.verifyingCode = true;
-      // code varification
-      this.authService.orcidSigninStage2(this.code).subscribe(res => {
-        this.libService.createUser(res.body.name, res.body.orcid).subscribe(res2 => {
-          this.authService.setToken(res.body);
-          res2.orcid ? delete res2.orcid : '';
-          this.authService.setToken(res2);
-          this.verifyingCode = false;
-          this.errMessage = '';
-          this.router.navigate(['/library/search'], { replaceUrl: true });
-          updateLogUIAppData(this.authService.getCurrentUserData());
-          customLog('login-successful');
-
-
-        }, err => {
-          this.verifyingCode = false;
-          this.errMessage = 'Login Failed. Please try again.';
-        })
-        // return true;
-      }, err => {
-        this.errMessage = 'Invalid attempt. Please try again.';
-        this.verifyingCode = false;
-      });
-    } else {
-    }
+  ngOnInit(): void {
+    this.initForm();
   }
 
-  openORCID() {
-    this.authService.orcidSigninStage1();
+  private initForm() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, this.customValidation.passwordValidator()]]
+    });
+  }
+
+  loginOnSubmit() {
+    if (this.loginForm.valid) {
+      const formRaw = this.loginForm.getRawValue();
+      const data = {
+        email: formRaw.email, password: formRaw.password
+      } as ILoginPostData
+      this.authService.login(data).subscribe(res => {
+        this.authService.setToken({ access_token: res.data.tokens.accessToken, refresh_token: res.data.tokens.refreshToken });
+        this.router.navigate(['/']);
+      }, err => {
+        this.err = err.error.message;
+      })
+    }
   }
 
 }
