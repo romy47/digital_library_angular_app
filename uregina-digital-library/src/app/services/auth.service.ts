@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthToken } from '../Models';
@@ -12,7 +12,7 @@ const api = environment;
 export class AuthService {
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private handler: HttpBackend) { }
 
   isLoggedIn() {
     return this.getCurrentUserData()?.access_token && this.getCurrentUserData()?.refresh_token;
@@ -66,7 +66,8 @@ export class AuthService {
         'accept': 'application/json'
       })
     };
-    return this.http.post(
+    let client = new HttpClient(this.handler);
+    return client.post(
       api.API_PATH + 'auth/signup',
       data,
       httpOptions);
@@ -78,7 +79,8 @@ export class AuthService {
         'accept': 'application/json'
       })
     };
-    return this.http.post(
+    let client = new HttpClient(this.handler);
+    return client.post(
       api.API_PATH + 'auth/login',
       data,
       httpOptions);

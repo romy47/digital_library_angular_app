@@ -6,7 +6,7 @@ import { Doc } from "../Models";
 import { DataService, LibraryService } from "../services";
 
 @Injectable({ providedIn: 'root' })
-export class SearchResolver  {
+export class SearchResolver {
     constructor(private service: LibraryService, private dataService: DataService) { }
 
     resolve(
@@ -19,7 +19,7 @@ export class SearchResolver  {
         }), mergeMap(res => {
             console.log('Resolver Calling', res);
             let docs = [];
-            res.slice().reverse().forEach(d => {
+            res.data.slice().reverse().forEach(d => {
                 docs.push(new Doc(d));
             });
             return of(docs);
