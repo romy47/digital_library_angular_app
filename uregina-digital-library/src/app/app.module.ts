@@ -7,7 +7,7 @@ import { SerpComponent } from './components/serp/serp.component';
 import { DocDetailComponent } from './components/doc-detail/doc-detail.component';
 import { MyFoldersComponent } from './components/my-folders/my-folders.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DocCardComponent } from './components/doc-card/doc-card.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -24,6 +24,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SignupComponent } from './components/signup/signup.component';
+import { AuthInterceptor } from './interceptors/auth.intercepter';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +58,9 @@ import { SignupComponent } from './components/signup/signup.component';
     MatInputModule,
     MatFormFieldModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
