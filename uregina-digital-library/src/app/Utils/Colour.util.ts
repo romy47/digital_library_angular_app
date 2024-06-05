@@ -13,17 +13,17 @@ export class ColourUtil {
         '#fccde5',
         '#d9d9d9',
         '#bc80bd'];
-        static subjects: string[] = [
-            'Machine Learning',
-            'Neural Network',
-            'Information Visualization',
-            'Data Mining',
-            'Data Science',
-            'Bayesian Networks',
-            'Topic Modeling',
-            'Faceted Navigation',
-            'Digital Library',
-            'Interactive information visualization'];
+    static subjects: string[] = [
+        'Machine Learning',
+        'Neural Network',
+        'Information Visualization',
+        'Data Mining',
+        'Data Science',
+        'Bayesian Networks',
+        'Topic Modeling',
+        'Faceted Navigation',
+        'Digital Library',
+        'Interactive information visualization'];
 
     public static getArr(max: number) {
         let arr = [];
@@ -53,12 +53,6 @@ export class ColourUtil {
         for (let i = 0; i < max; i++) {
             const fac = new Facet({
                 text: ColourUtil.subjects[i],
-                colour: new Colour({ value: ColourUtil.ALLColours[arr2[i]] }),
-                // draggable: false,
-                hasPopup: false,
-                // popup: null,
-                order: 0,
-                selectLevel: 0,
                 count: 0
             });
             arr.push(fac);

@@ -5,12 +5,12 @@ export class Doc {
     constructor(obj: Doc) {
         Object.assign(this, obj);
     }
-    linkText?= '';
-    language?= '';
-    publisher?= '';
-    allIdentifiers?= [];
-    peerReviewed?= false;
-    openAccess?= false;
+    linkText? = '';
+    language? = '';
+    publisher? = '';
+    allIdentifiers? = [];
+    peerReviewed? = false;
+    openAccess? = false;
     facets?: AllFacets;
     creationDate?: string;
     doi?: string;
@@ -19,26 +19,27 @@ export class Doc {
     identifier?: string;
     description?: string;
     source?: string;
-    source2?: string;
-    visFacets?: Facet[];
+    secondarySource?: string;
     title?: string;
-    isFocused?= false;
-    focusedFacetsCount?= 0;
-    type?= '';
+    isFocused? = false;
+    type? = '';
     rawObject?: any;
     page?: number;
-    isSaved?= false;
-    isRead?= false;
-    selected?= false;
+    isSaved? = false;
+    selected? = false;
     labels?: string[] = [];
     id?: string;
     _id?: string;
-    searchId?: string;
-    sessionSeparator?: boolean = false;
     createdAt?: Date = null;
-    sessionStartDate?: Date = null;
-    sessionEndDate?: Date = null;
     imageUrl?: string = 'assets/images/book-placeholder.jpg';
-    searchQuery?= '';
-    createdBy?= '';
+    createdBy? = '';
+    static getInsertApiModel(doc: Doc): any {
+        delete doc.isFocused;
+        delete doc.selected;
+        delete doc.imageUrl;
+        delete doc.createdAt;
+        delete doc.createdBy;
+        delete doc._id;
+        return doc;
+    }
 }

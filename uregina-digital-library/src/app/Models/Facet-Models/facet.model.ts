@@ -2,14 +2,8 @@ export class Facet {
     constructor(obj: Facet) {
         Object.assign(this, obj);
     }
-    text ?= 'undefined';
-    count ?= 1;
-    selectLevel ?= 0;
-    isSelected ?= false;
-    colour?: Colour = {value: '#8dd3c7'};
-    order ?= 0;
-    hasPopup ?= false;
-    type ?: string;
+    text? = '';
+    count? = 1;
 }
 
 export class AllFacets {
@@ -21,7 +15,7 @@ export class AllFacets {
     languages?: Facet[];
     creationDate?: Facet[];
 
-    constructor(obj ?: AllFacets) {
+    constructor(obj?: AllFacets) {
         Object.assign(this, obj);
     }
 }
@@ -30,8 +24,8 @@ export class Colour {
     constructor(obj: Colour = {}) {
         Object.assign(this, obj);
     }
-    value ?= '#dedede';
-    isSelected ?= false;
+    value? = '#dedede';
+    isSelected? = false;
 }
 
 export class PopupMenu {

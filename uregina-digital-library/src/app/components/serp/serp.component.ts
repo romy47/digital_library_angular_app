@@ -267,7 +267,6 @@ export class SerpComponent implements OnInit {
       this.docCheckCount = this.documents.filter(d => d.selected == true).length;
     }
     else if (input.type == 'view') {
-      input.data.isRead = true;
       input.data.page = this.currentPage;
       // Object.assign(this.docViewing, input.data);
       this.docViewing = input.data;

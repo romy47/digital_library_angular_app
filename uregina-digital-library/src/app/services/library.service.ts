@@ -145,8 +145,8 @@ export class LibraryService {
       })
     };
     doc.createdBy = this.authService.getCurrentUserData()._id;
-    return this.http.post(api.API_PATH + 'baseline/doc',
-      doc
+    return this.http.post(api.API_PATH + 'documents',
+      Doc.getInsertApiModel(doc)
       , httpOptions);
   }
 

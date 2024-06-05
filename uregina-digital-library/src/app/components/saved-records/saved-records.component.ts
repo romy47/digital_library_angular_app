@@ -90,7 +90,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
       // this.docCheckCount = this.documents.filter(d => d.selected == true).length;
     }
     else if (input.type == 'view') {
-      input.data.isRead = true;
       // input.data.page = this.currentPage;
       // Object.assign(this.docViewing, input.data);
       this.docViewing = input.data;
@@ -175,7 +174,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
         savedDoc.description = convertedDoc.description;
         savedDoc.language = convertedDoc.language;
         savedDoc.identifier = convertedDoc.identifier;
-        savedDoc.source2 = convertedDoc.source2;
+        savedDoc.secondarySource = convertedDoc.secondarySource;
         savedDoc.source = convertedDoc.source;
         savedDoc.allIdentifiers = convertedDoc.allIdentifiers;
         savedDoc['isSaved'] = true;

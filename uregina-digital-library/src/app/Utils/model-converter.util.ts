@@ -20,20 +20,19 @@ export class DocumentModelConverter {
             rangeStr = '%5B' + rangeStr + '%5D';
             allFacetArr.push({
                 text: rangeStr,
-                type: selectedFacets.creationDate[0].type
             });
         }
 
 
-        const selectedFacetCount = allFacetArr.length;
+        // const selectedFacetCount = allFacetArr.length;
 
-        for (let i = 0; i < selectedFacetCount; i++) {
-            if (i === 0) {
-                query += 'facet_' + FacetTypesForApiAndModelRelation[allFacetArr[i].type] + ',include,' + allFacetArr[i].text;
-            } else {
-                query += '|,|facet_' + FacetTypesForApiAndModelRelation[allFacetArr[i].type] + ',include,' + allFacetArr[i].text;
-            }
-        }
+        // for (let i = 0; i < selectedFacetCount; i++) {
+        //     if (i === 0) {
+        //         query += 'facet_' + FacetTypesForApiAndModelRelation[allFacetArr[i].type] + ',include,' + allFacetArr[i].text;
+        //     } else {
+        //         query += '|,|facet_' + FacetTypesForApiAndModelRelation[allFacetArr[i].type] + ',include,' + allFacetArr[i].text;
+        //     }
+        // }
         return query;
     }
 
@@ -64,16 +63,14 @@ export class DocumentModelConverter {
         return new Doc({
             id: d['@id'],
             _id: d._id ? d._id : '',
-            searchId: d.searchId ? d.searchId : '',
             createdAt: d.createdAt ? d.createdAt : '',
             title: d.pnx.display.title[0],
-            visFacets: [],
             type: (d.pnx.display.type && d.pnx.display.type[0]) ? d.pnx.display.type[0] : '',
             doi: (d.pnx.addata && d.pnx.addata.doi && d.pnx.addata.doi[0]) ? d.pnx.addata.doi[0] : '',
             issn: (d.pnx.addata && d.pnx.addata.issn && d.pnx.addata.issn[0]) ? d.pnx.addata.issn[0].replace(/-/g, "") : '',
             creationDate: (d.pnx.facets.creationdate && d.pnx.facets.creationdate[0]) ? d.pnx.facets.creationdate[0] : '',
             source: (d.pnx.display.ispartof && d.pnx.display.ispartof[0]) ? d.pnx.display.ispartof[0] : '',
-            source2: (d.pnx.display.source && d.pnx.display.source[0]) ? d.pnx.display.source[0] : '',
+            secondarySource: (d.pnx.display.source && d.pnx.display.source[0]) ? d.pnx.display.source[0] : '',
             snippet: (d.pnx.display.snippet && d.pnx.display.snippet[0]) ? d.pnx.display.snippet[0] : '',
             identifier: (d.pnx.display.identifier && d.pnx.display.identifier[0]) ? d.pnx.display.identifier[0] : '',
             allIdentifiers: (d.pnx.display.identifier) ? d.pnx.display.identifier : [],
@@ -106,8 +103,6 @@ export class DocumentModelConverter {
                 allFacets.contributors.push(new Facet({
                     text: f.value,
                     count: f.count,
-                    type: 'contributors',
-                    colour: distinctColours[1]
                 }));
             });
             allFacets.contributors.sort((a, b) => (a.count < b.count) ? 1 : -1);
@@ -118,8 +113,6 @@ export class DocumentModelConverter {
                 allFacets.topics.push(new Facet({
                     text: f.value,
                     count: f.count,
-                    type: 'topics',
-                    colour: distinctColours[2]
                 }));
             });
             allFacets.topics.sort((a, b) => (a.count < b.count) ? 1 : -1);
@@ -130,8 +123,6 @@ export class DocumentModelConverter {
                 allFacets.categories.push(new Facet({
                     text: f.value,
                     count: f.count,
-                    type: 'categories',
-                    colour: distinctColours[3]
                 }));
             });
             allFacets.categories.sort((a, b) => (a.count < b.count) ? 1 : -1);
@@ -142,9 +133,7 @@ export class DocumentModelConverter {
             apiResponse.facets.find(af => af.name === 'rtype').values.forEach(f => {
                 allFacets.resourceTypes.push(new Facet({
                     text: f.value,
-                    count: f.count,
-                    type: 'resourceTypes',
-                    colour: distinctColours[4]
+                    count: f.count
                 }));
             });
             allFacets.resourceTypes.sort((a, b) => (a.count < b.count) ? 1 : -1);
@@ -154,9 +143,7 @@ export class DocumentModelConverter {
             apiResponse.facets.find(af => af.name === 'jtitle').values.forEach(f => {
                 allFacets.journalTitles.push(new Facet({
                     text: f.value,
-                    count: f.count,
-                    type: 'journalTitles',
-                    colour: distinctColours[5]
+                    count: f.count
                 }));
             });
             allFacets.journalTitles.sort((a, b) => (a.count < b.count) ? 1 : -1);
@@ -166,16 +153,13 @@ export class DocumentModelConverter {
             apiResponse.facets.find(af => af.name === 'lang').values.forEach(f => {
                 allFacets.languages.push(new Facet({
                     text: f.value,
-                    count: f.count,
-                    type: 'languages',
-                    colour: distinctColours[6]
+                    count: f.count
                 }));
             });
             allFacets.languages.sort((a, b) => (a.count < b.count) ? 1 : -1);
         }
         allFacets.creationDate.push(new Facet({
-            type: 'creationDate',
-            colour: distinctColours[7],
+            count: 1,
             text: '1900 : 2021'
         }));
         return allFacets;
@@ -193,7 +177,8 @@ export class DocumentModelConverter {
                                 facets[indx].count++;
                             } else {
                                 facets.push(new Facet({
-                                    text: f.text
+                                    text: f.text,
+                                    count: 1
                                 }));
                             }
                         });
