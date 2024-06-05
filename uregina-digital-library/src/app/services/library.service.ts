@@ -262,20 +262,19 @@ export class LibraryService {
   //********* **************** ********** *********** ********** ************ ************ ***** */
   // From the prototype ##########################################################################
   public getSearchResult(query: string, facetedQueryString?: string, offset = 0): Observable<any> {
-    let params = new HttpParams();
-    params = params.append('q', 'any,contains,' + query);
-    params = params.append('offset', offset.toString());
-
-    if (facetedQueryString) {
-      params = params.append('multiFacets', facetedQueryString);
-    }
-
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    const searchTerm = 'any,contains,' + query;
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
     // console.log(params);
-    return this.http.get(api.API_PATH + 'url', {
-      params: params,
-      headers: headers
-    });
+    return this.http.post(api.API_PATH + 'search',
+      {
+        searchTerm: searchTerm,
+        offset: offset
+      }, httpOptions);
   }
 
 

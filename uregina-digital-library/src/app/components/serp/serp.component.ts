@@ -167,11 +167,11 @@ export class SerpComponent implements OnInit {
       this.searching = true;
       this.documents = [];
       this.libraryService.getSearchResult(this.searchQuery, '', offset).subscribe(res => {
-        this.totalDocuments = res.info.total;
-        const firstIndex = res.info.first - 1;
+        this.totalDocuments = res.data.info.total;
+        const firstIndex = res.data.info.first - 1;
         this.currentPage = (firstIndex / this.pageSize) + 1;
         this.searchResult = res;
-        this.documents = DocumentModelConverter.formatDocumentModels(res.docs);
+        this.documents = DocumentModelConverter.formatDocumentModels(res.data.docs);
         this.documents.forEach(d => {
           if (this.savedDocIds.has(d.id)) {
             d.isSaved = true;
@@ -185,27 +185,27 @@ export class SerpComponent implements OnInit {
 
         console.log(this.searchTerms);
 
-        this.libraryService.addBaselineSearch(this.searchQuery, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
-          this.searchId = searchResponse._id;
+        // this.libraryService.addBaselineSearch(this.searchQuery, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
+        this.searchId = res.data._id;
 
-          this.searching = false;
+        this.searching = false;
 
-          const queryParams: Params = { query: this.searchQuery };
-          if (fromSubmit) {
-            console.log('$$$$$$$$$$$$$$$$$$$$ $$$$$$$$$$$$$ $$$$ $');
-            this.searchFromFormSubmit = true;
-            this.router.navigate(
-              [],
-              {
-                relativeTo: this.route,
-                queryParams: queryParams,
-                queryParamsHandling: 'merge', // remove to replace all query params by provided
-              });
+        const queryParams: Params = { query: this.searchQuery };
+        if (fromSubmit) {
+          console.log('$$$$$$$$$$$$$$$$$$$$ $$$$$$$$$$$$$ $$$$ $');
+          this.searchFromFormSubmit = true;
+          this.router.navigate(
+            [],
+            {
+              relativeTo: this.route,
+              queryParams: queryParams,
+              queryParamsHandling: 'merge', // remove to replace all query params by provided
+            });
 
-          }
-        }, err => {
-          this.searching = false;
-        });
+        }
+        // }, err => {
+        //   this.searching = false;
+        // });
       }, err => {
         console.log('Error')
       });
