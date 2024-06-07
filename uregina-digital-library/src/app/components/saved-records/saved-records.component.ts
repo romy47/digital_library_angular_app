@@ -157,11 +157,12 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
   }
 
   getAllSavedDocs(filteringByLabel = false) {
+    console.log('Inside Saved Docs')
     this.pagingIndex = 0;
     this.docs = [];
     this.libraryService.getAllSavedBaselineDocs().subscribe(res => {
       this.allDocs = [];
-      res.slice().reverse().forEach(d => {
+      res.data.slice().reverse().forEach(d => {
         if (d.labels && d.labels.length > 0) {
           d.labels.forEach(label => {
             this.availableLabels.add(label);

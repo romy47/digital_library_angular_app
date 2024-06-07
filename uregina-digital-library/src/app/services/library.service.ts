@@ -35,9 +35,7 @@ export class LibraryService {
       })
     };
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
-    return this.http.post(api.API_PATH + 'baseline/search/all', {
-      userId: this.authService.getCurrentUserData()._id
-    },
+    return this.http.get(api.API_PATH + 'searches',
       httpOptions
     );
   }
@@ -101,9 +99,7 @@ export class LibraryService {
       })
     };
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
-    return this.http.post(api.API_PATH + 'baseline/savedsearch/all', {
-      userId: this.authService.getCurrentUserData()._id
-    },
+    return this.http.get(api.API_PATH + 'saved-searches',
       httpOptions
     );
   }

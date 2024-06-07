@@ -34,7 +34,9 @@ export class LoginComponent implements OnInit {
         email: formRaw.email, password: formRaw.password
       } as ILoginPostData
       this.authService.login(data).subscribe(res => {
-        this.authService.setToken({ access_token: res.data.tokens.accessToken, refresh_token: res.data.tokens.refreshToken });
+        this.authService.setToken({
+          access_token: res.data.tokens.accessToken, refresh_token: res.data.tokens.refreshToken, name: `${res.data.user.firstName} ${res.data.user.lastName}`
+        });
         this.router.navigate(['/']);
       }, err => {
         this.err = err.error.message;

@@ -47,7 +47,7 @@ export class SavedSearchComponent implements OnInit {
       this.searches = [];
       this.allSearches = [];
       this.pagingIndex = 0;
-      res.slice().reverse().forEach(t => {
+      res.data.slice().reverse().forEach(t => {
         t['selected'] = false;
         this.allSearches.push(new Search(t));
       });

@@ -24,16 +24,15 @@ export class MyFoldersComponent implements OnInit {
   @ViewChild('mtfolderEditLabelBtn') menuBtn: MatMenuTrigger;
   batchEditLabel: { all: string[], selected: string[] } = { all: [], selected: [] };
 
-
-
   ngOnInit(): void {
-    customLog('myfolder-reached');
+    console.log('myfolder-reached');
     this.searchQuery = this.route.snapshot.queryParamMap.get('query');
     this.username = this.authService.getCurrentUserData().name;
+    console.log('myfolder-reached');
   }
 
   startTask() {
-    customLog("start-session2-task");
+    // customLog("start-session2-task");
   }
 
   forceRefresh(tab: number) {
@@ -62,11 +61,7 @@ export class MyFoldersComponent implements OnInit {
   }
 
   logOut() {
-    customLog('user-signed-out');
-    customLog('user-signed-out');
-    customLog('user-signed-out');
-    customLog('user-signed-out');
-    customLog('user-signed-out');
+
     this.authService.clearSession();
     this.router.navigate(['/login']);
   }
@@ -76,17 +71,17 @@ export class MyFoldersComponent implements OnInit {
     switch (this.selectedTabIndex) {
       case 0: {
         console.log('Case 0: ', this.selectedTabIndex);
-        customLog('saved-records-tab-clicked');
+        console.log('saved-records-tab-clicked');
         break;
       }
       case 1: {
         console.log('Case 1: ', this.selectedTabIndex);
-        customLog('saved-searches-tab-clicked');
+        console.log('saved-searches-tab-clicked');
         break;
       }
       case 2: {
         console.log('Case 2: ', this.selectedTabIndex);
-        customLog('search-history-tab-clicked');
+        console.log('search-history-tab-clicked');
         break;
       }
     }

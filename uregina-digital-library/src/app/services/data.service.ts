@@ -65,7 +65,6 @@ export class DataService {
 
     updateMyFolderSavedRecordsDeleteAll(data: number) {
         console.log('2-btch called--2')
-
         this.myFolderSavedRecordsDeleteAll.next(data);
     }
 

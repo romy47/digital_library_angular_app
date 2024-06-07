@@ -24,7 +24,7 @@ export class SearchHistoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.libraryService.getAllSavedBaselineSearches().subscribe(res => {
-      res.slice().reverse().forEach(t => {
+      res.data.slice().reverse().forEach(t => {
         this.savedSearcheQueryTitles.add(t.searchQuery);
       });
       this.getAllSearches();
@@ -88,7 +88,7 @@ export class SearchHistoryComponent implements OnInit, OnDestroy {
   getAllSearches() {
     this.libraryService.getAllBaselineSearches().subscribe(res => {
       this.allSearches = [];
-      res.slice().reverse().forEach(t => {
+      res.data.slice().reverse().forEach(t => {
         t['selected'] = false;
         if (this.savedSearcheQueryTitles.has(t.searchQuery)) {
           t['isSaved'] = true;
