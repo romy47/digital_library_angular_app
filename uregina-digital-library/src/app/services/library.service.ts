@@ -176,10 +176,9 @@ export class LibraryService {
         'Content-Type': 'application/json'
       })
     };
-    return this.http.post(api.API_PATH + 'baseline/doc/label/batch', {
-      label: label,
-      docIds: savedRecordIds,
-      createdBy: this.authService.getCurrentUserData()._id
+    return this.http.post(api.API_PATH + 'labels', {
+      title: label,
+      documents: savedRecordIds,
     }, httpOptions);
   }
 
