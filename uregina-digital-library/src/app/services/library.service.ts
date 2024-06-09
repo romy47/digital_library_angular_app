@@ -47,23 +47,13 @@ export class LibraryService {
       })
     };
     const createdBy = this.authService.getCurrentUserData()._id
-    return this.http.post(api.API_PATH + 'baseline/search/delete', {
-      id: id ? id.trim() : '',
-      createdBy: createdBy ? createdBy.trim() : '',
-    }, httpOptions);
+    return this.http.delete(api.API_PATH + `searches/${id}`, httpOptions);
   }
 
   public deleteBatchBaselineSearchHistory(ids: string[] = []): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    const createdBy = this.authService.getCurrentUserData()._id
-    return this.http.post(api.API_PATH + 'baseline/search/delete/batch', {
-      ids: ids,
-      createdBy: createdBy ? createdBy.trim() : '',
-    }, httpOptions);
+    let params = new HttpParams();
+    params = params.append('searchIds', ids.toString());
+    return this.http.delete(api.API_PATH + 'searches', {params: params});
   }
 
   public addBaselineSavedSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
