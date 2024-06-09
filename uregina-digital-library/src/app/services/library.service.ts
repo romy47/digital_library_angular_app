@@ -111,10 +111,7 @@ export class LibraryService {
       })
     };
     const createdBy = this.authService.getCurrentUserData()._id
-    return this.http.post(api.API_PATH + 'baseline/savedsearch/delete', {
-      id: searchId ? searchId.trim() : '',
-      createdBy: createdBy ? createdBy.trim() : '',
-    }, httpOptions);
+    return this.http.delete(api.API_PATH + `saved-searches/${searchId}`, httpOptions);
   }
 
   public deleteBatchBaselineSavedSearch(ids: string[] = []): Observable<any> {
@@ -123,11 +120,9 @@ export class LibraryService {
         'Content-Type': 'application/json'
       })
     };
-    const createdBy = this.authService.getCurrentUserData()._id
-    return this.http.post(api.API_PATH + 'baseline/savedsearch/delete/batch', {
-      ids: ids,
-      createdBy: createdBy ? createdBy.trim() : '',
-    }, httpOptions);
+    let params = new HttpParams();
+    params = params.append('savedSearchIds', ids.toString());
+    return this.http.delete(api.API_PATH + 'saved-searches', {params:params});
   }
 
 
