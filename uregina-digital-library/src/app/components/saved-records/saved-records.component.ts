@@ -248,7 +248,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
 
     this.allDocs.forEach(d => {
       d.labels.forEach(lbl => {
-        let index = this.labelFilter.findIndex(lf => lf.label == lbl);
+        let index = this.labelFilter.findIndex(lf => lf.label == lbl.title);
         if (index > -1) {
           this.labelFilter[index].docs.push(d);
         }
@@ -308,7 +308,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
   }
 
   saveToWorkspace(doc: Doc) {
-    this.libraryService.deleteBaselineSavedDoc(doc.id).subscribe(res => {
+    this.libraryService.deleteBaselineSavedDoc(doc._id).subscribe(res => {
       this.allDocs = this.allDocs.filter(d => !(d.id == doc.id));
       this.refreshDocsAfterRemove();
       $('#serpDocViewModal').modal('hide');

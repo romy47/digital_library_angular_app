@@ -59,7 +59,6 @@ export class DocumentModelConverter {
                 }
             });
         }
-        // console.log('VVVVVVVVVVVVVVVV   ', desc);
         return new Doc({
             id: d['@id'],
             _id: d._id ? d._id : '',

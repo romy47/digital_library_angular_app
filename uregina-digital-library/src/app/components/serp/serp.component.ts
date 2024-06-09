@@ -9,6 +9,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { customLog } from 'src/app/Utils/log.util';
 import { Location } from "@angular/common";
+import { Label } from 'src/app/Models/Document-Models/label.model';
 declare var $: any;
 declare var require: any;
 
@@ -132,7 +133,7 @@ export class SerpComponent implements OnInit {
   changeLabel(label: string, type: string) {
     let selecteDocs = this.documents.filter(d => d.selected == true);
     selecteDocs.forEach(d => {
-      d.labels.push(label);
+      d.labels.push(new Label({ title: label, documents: [], _id: '' }));
     })
     customLog('batch-save-doc-with-label', 'Label: ' + label + ', size: ' + selecteDocs.length.toString())
     this.libraryService.addBatchBaselineSavedDoc(selecteDocs).subscribe(res => {

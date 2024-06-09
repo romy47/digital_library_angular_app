@@ -227,10 +227,7 @@ export class LibraryService {
       })
     };
     const createdBy = this.authService.getCurrentUserData()._id
-    return this.http.post(api.API_PATH + 'baseline/doc/delete', {
-      id: docId ? docId.trim() : '',
-      createdBy: createdBy ? createdBy.trim() : '',
-    }, httpOptions);
+    return this.http.delete(api.API_PATH + 'documents/'+docId, httpOptions);
   }
 
   deleteBatchBaselineSavedDocs(ids: string[] = []): Observable<any> {

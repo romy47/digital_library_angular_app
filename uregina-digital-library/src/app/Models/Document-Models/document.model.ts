@@ -1,4 +1,5 @@
 import { Facet, AllFacets } from '..';
+import { Label } from './label.model';
 
 
 export class Doc {
@@ -27,7 +28,7 @@ export class Doc {
     page?: number;
     isSaved? = false;
     selected? = false;
-    labels?: string[] = [];
+    labels?: Label[] = [];
     id?: string;
     _id?: string;
     createdAt?: Date = null;
