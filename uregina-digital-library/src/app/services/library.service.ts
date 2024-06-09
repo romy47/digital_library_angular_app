@@ -236,15 +236,10 @@ export class LibraryService {
         'Content-Type': 'application/json'
       })
     };
-    const createdBy = this.authService.getCurrentUserData()._id
-    return this.http.post(api.API_PATH + 'baseline/doc/delete/batch', {
-      ids: ids,
-      createdBy: createdBy ? createdBy.trim() : '',
-    }, httpOptions);
+    let params = new HttpParams();
+    params = params.append('documentIds', ids.toString());
+    return this.http.delete(api.API_PATH + 'documents', {params: params});
   }
-
-
-
 
 
   // *********************************************************************************************
