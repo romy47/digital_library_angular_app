@@ -12,9 +12,6 @@ import { customLog } from 'src/app/Utils/log.util';
   styleUrls: ['./my-folders.component.css']
 })
 
-
-
-
 export class MyFoldersComponent implements OnInit {
   searchQuery = '';
   selectedTabIndex = 0;
@@ -122,5 +119,4 @@ export class MyFoldersComponent implements OnInit {
     };
     this.router.navigate(['/library/search'], extras);
   }
-
 }

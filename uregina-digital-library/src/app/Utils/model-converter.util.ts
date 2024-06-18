@@ -61,7 +61,7 @@ export class DocumentModelConverter {
         }
         return new Doc({
             id: d['@id'],
-            _id: d._id ? d._id : '',
+            _id: d._id ? d._id : null,
             createdAt: d.createdAt ? d.createdAt : '',
             title: d.pnx.display.title[0],
             type: (d.pnx.display.type && d.pnx.display.type[0]) ? d.pnx.display.type[0] : '',
@@ -85,11 +85,12 @@ export class DocumentModelConverter {
             peerReviewed: (d.pnx.display.lds50 && d.pnx.display.lds50[0] && d.pnx.display.lds50[0] == "peer_reviewed") ? true : false,
             openAccess: (d.pnx.display.oa && d.pnx.display.oa[0] && d.pnx.display.oa[0] == "free_for_read") ? true : false,
             linkText: (d.delivery && d.delivery.availability && d.delivery.availability[0]) ? d.delivery.availability[0] : '',
-            createdBy: d.createdBy ? d.createdBy : '',
+            createdBy: d.createdBy,
             language: (d.pnx.display.language && d.pnx.display.language[0]) ? langs.where("2", d.pnx.display.language[0]) ? langs.where("2", d.pnx.display.language[0]).name : '' : '',
             publisher: (d.pnx.addata && d.pnx.addata.cop && d.pnx.addata.cop.length > 0) && (d.pnx.addata && d.pnx.addata.pub && d.pnx.addata.pub.length > 0) ?
                 d.pnx.addata.cop[0] + ' : ' + d.pnx.addata.pub[0] : '',
-            labels: d.labels ? d.labels : []
+            labels: d.labels ? d.labels : [],
+            labelsPopulated: d.labelsPopulated ? d.labelsPopulated : [],
         });
     }
 

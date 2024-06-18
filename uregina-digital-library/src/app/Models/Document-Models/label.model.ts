@@ -8,4 +8,11 @@ export class Label {
     createdAt?: Date;
     updatedAt?: Date;
     createdBy?: string;
+    selected?: boolean = false;
+
+    static getApiModel(label: Label): any {
+        let labelOutput = new Label(label);
+        delete labelOutput.selected;
+        return labelOutput;
+    }
 }

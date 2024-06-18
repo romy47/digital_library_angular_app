@@ -30,8 +30,8 @@ export class DocCardComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.doc);
     this.getUrl();
-    if (this.doc.labels && this.doc.labels.length > 0) {
-      this.availableLabels = this.availableLabels.filter((el) => !this.doc.labels.includes(el));
+    if (this.doc.labelsPopulated && this.doc.labelsPopulated.length > 0) {
+      this.availableLabels = this.availableLabels.filter((el) => !this.doc.labelsPopulated.includes(el));
     }
   }
   savedDocCheck(data) {
@@ -43,14 +43,14 @@ export class DocCardComponent implements OnInit {
   addExistingLabel(label: string) {
     this.libService.addLabelToDoc(label, this.doc._id).subscribe(res => {
       customLog('add-doc-label-existing', label);
-      this.doc.labels.push(res.data);
+      this.doc.labelsPopulated.push(res.data);
     });
   }
 
   submitLabel() {
     this.libService.addLabelToDoc(this.newLabel.trim(), this.doc._id).subscribe(res => {
       customLog('add-doc-label-new', this.newLabel);
-      this.doc.labels.push(res.data);
+      this.doc.labelsPopulated.push(res.data);
       this.menuBtn.closeMenu();
     });
   }
@@ -58,7 +58,7 @@ export class DocCardComponent implements OnInit {
   removeLabel(label: Label) {
     this.libService.removeLabelFromDoc(label._id, this.doc._id).subscribe(res => {
       customLog('remove-doc-label', label._id);
-      this.doc.labels = this.doc.labels.filter(l => l._id != label._id);
+      this.doc.labelsPopulated = this.doc.labelsPopulated.filter(l => l._id != label._id);
     });
   }
   getUrl() {

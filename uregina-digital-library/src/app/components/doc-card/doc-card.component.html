@@ -107,26 +107,26 @@
         </ng-container>
         <ng-container *ngIf="parent=='saved-records'">
 
-            <ng-container *ngIf="doc.labels.length>0">
-                <span class="doc-label-chip" *ngFor="let label of doc.labels">{{label}}</span>
+            <ng-container *ngIf="doc.labelsPopulated.length>0">
+                <span class="doc-label-chip" *ngFor="let label of doc.labelsPopulated">{{label.title}}</span>
                 <button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" type="button"
                     class="btn btn-outline-secondary btn-save-search">
                     <i class="fa fa-pencil"></i>
                 </button>
             </ng-container>
-            <button *ngIf="doc.labels.length==0" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" type="button"
-                class="btn btn-outline-secondary btn-save-search mt-1">
+            <button *ngIf="doc.labelsPopulated.length==0" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+                type="button" class="btn btn-outline-secondary btn-save-search mt-1">
                 <i class="fa fa-pencil"></i>
                 ADD LABELS
             </button>
             <!-- <button mat-button style="visibility: hidden;" [matMenuTriggerFor]="menu" #menuTrigger>Menu</button> -->
             <mat-menu #menu="matMenu">
                 <div class="d-flex flex-column" style="padding: 10px;">
-                    <strong *ngIf="doc.labels&&doc.labels.length>0">ASSIGNED LABELS</strong>
+                    <strong *ngIf="doc.labelsPopulated&&doc.labelsPopulated.length>0">ASSIGNED LABELS</strong>
                     <p (click)="removeLabel(label)"
                         class="label-items cursor-pointer d-flex justify-content-between align-items-center"
-                        *ngFor="let label of doc.labels">
-                        <span>{{label}}</span>
+                        *ngFor="let label of doc.labelsPopulated">
+                        <span>{{label.title}}</span>
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </p>
                     <strong *ngIf="availableLabels.length>0">AVILABLE LABELS</strong>

@@ -28,19 +28,43 @@ export class Doc {
     page?: number;
     isSaved? = false;
     selected? = false;
-    labels?: Label[] = [];
+    labels?: string[] = [];
+    labelsPopulated: Label[] = [];
     id?: string;
-    _id?: string;
+    _id: string = null;
     createdAt?: Date = null;
     imageUrl?: string = 'assets/images/book-placeholder.jpg';
-    createdBy? = '';
+    createdBy? = null;
     static getInsertApiModel(doc: Doc): any {
-        delete doc.isFocused;
-        delete doc.selected;
-        delete doc.imageUrl;
-        delete doc.createdAt;
-        delete doc.createdBy;
-        delete doc._id;
-        return doc;
+        let output = new Doc(doc);
+        delete output._id;
+        delete output.isFocused;
+        delete output.selected;
+        delete output.imageUrl;
+        delete output.createdAt;
+        delete output.createdBy;
+        output.labels = output.labelsPopulated ? output.labelsPopulated.map(l => l._id) : []
+        delete output.labelsPopulated;
+        return output;
+    }
+
+    static getUpdateApiModel(doc: Doc): any {
+        let output = new Doc(doc);
+        let labels = [];
+        output.labelsPopulated.forEach(l => {
+            if (l._id) {
+                labels.push(l._id)
+            }
+        });
+        if (output._id == null) {
+            delete output._id;
+        }
+        delete output.isFocused;
+        delete output.selected;
+        delete output.imageUrl;
+        delete output.createdAt;
+        output.labels = labels;
+        delete output.labelsPopulated;
+        return output;
     }
 }

@@ -5,6 +5,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Facet, AllFacets, Task, Doc, Search } from '../Models';
 import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
+import { Label } from '../Models/Document-Models/label.model';
 const api = environment;
 
 @Injectable({
@@ -53,7 +54,7 @@ export class LibraryService {
   public deleteBatchBaselineSearchHistory(ids: string[] = []): Observable<any> {
     let params = new HttpParams();
     params = params.append('searchIds', ids.toString());
-    return this.http.delete(api.API_PATH + 'searches', {params: params});
+    return this.http.delete(api.API_PATH + 'searches', { params: params });
   }
 
   public addBaselineSavedSearch(searchQuery: string, totalDocuments?: number, docBrowsed?: number): Observable<any> {
@@ -112,7 +113,7 @@ export class LibraryService {
     };
     let params = new HttpParams();
     params = params.append('savedSearchIds', ids.toString());
-    return this.http.delete(api.API_PATH + 'saved-searches', {params:params});
+    return this.http.delete(api.API_PATH + 'saved-searches', { params: params });
   }
 
 
@@ -128,17 +129,16 @@ export class LibraryService {
       , httpOptions);
   }
 
-  public addBatchBaselineSavedDoc(docs: Doc[]): Observable<any> {
+  public addBatchBaselineSavedDoc(docs: Doc[], label: Label): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
-    docs.forEach(s => {
-      s['createdBy'] = this.authService.getCurrentUserData()._id;
-    });
-    return this.http.post(api.API_PATH + 'baseline/doc/batch', {
-      docs
+    const apiPayloadDocs = docs.map(d => Doc.getUpdateApiModel(d))
+    return this.http.post(api.API_PATH + 'documents/create-or-update-many', {
+      documents: apiPayloadDocs,
+      label: Label.getApiModel(label)
     }, httpOptions);
   }
 
@@ -212,7 +212,7 @@ export class LibraryService {
       })
     };
     const createdBy = this.authService.getCurrentUserData()._id
-    return this.http.delete(api.API_PATH + 'documents/'+docId, httpOptions);
+    return this.http.delete(api.API_PATH + 'documents/' + docId, httpOptions);
   }
 
   deleteBatchBaselineSavedDocs(ids: string[] = []): Observable<any> {
@@ -223,7 +223,7 @@ export class LibraryService {
     };
     let params = new HttpParams();
     params = params.append('documentIds', ids.toString());
-    return this.http.delete(api.API_PATH + 'documents', {params: params});
+    return this.http.delete(api.API_PATH + 'documents', { params: params });
   }
 
 

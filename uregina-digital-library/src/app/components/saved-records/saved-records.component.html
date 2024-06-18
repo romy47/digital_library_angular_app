@@ -47,8 +47,7 @@
             <div>
                 <p class="mb-0 saved-doc-side-menu-label cursor-pointer mt-3">Labels</p>
                 <p [ngClass]="{'label-selcted': label.selected==true}" (click)="filterLabelClick(label)"
-                    (mouseleave)="filterLabelMouseLeave(label)" *ngFor="let label of labelFilter"
-                    class="cursor-pointer">
+                    (mouseleave)="filterLabelMouseLeave(label)" *ngFor="let label of labels" class="cursor-pointer">
                     <span (mouseenter)="filterLabelMouseEnter(label)" (mouseleave)="filterLabelMouseLeave(label)">
                         <span *ngIf="label.selected==true&&label.hovering==false"><i class="fas fa-check"></i>
                         </span>
@@ -56,8 +55,8 @@
                                 aria-hidden="true"></i>
                         </span>
                     </span>
-                    {{label.label}}
-                    ({{label.docs.length}})
+                    {{label.title}}
+                    ({{label.documents.length}})
                 </p>
                 <p *ngIf="LabelFilterActive" (click)="clearLabelSelection()" class="text-danger cursor-pointer">
                     <i class="fa fa-times text-danger" aria-hidden="true"></i>
@@ -92,18 +91,18 @@
                     <div>
                         <p class="mb-0 saved-doc-side-menu-label cursor-pointer mt-3">Labels</p>
                         <p [ngClass]="{'label-selcted': label.selected==true}" (click)="filterLabelClick(label)"
-                            (mouseleave)="filterLabelMouseLeave(label)" *ngFor="let label of labelFilter"
+                            (mouseleave)="filterLabelMouseLeave(label)" *ngFor="let label of labels"
                             class="cursor-pointer">
                             <span (mouseenter)="filterLabelMouseEnter(label)"
                                 (mouseleave)="filterLabelMouseLeave(label)">
-                                <span *ngIf="label.selected==true&&label.hovering==false"><i class="fas fa-check"></i>
+                                <span *ngIf="label.selected==true"><i class="fas fa-check"></i>
                                 </span>
-                                <span *ngIf="label.selected==true&&label.hovering==true"><i
-                                        class="fa fa-times text-danger" aria-hidden="true"></i>
+                                <span *ngIf="label.selected==true"><i class="fa fa-times text-danger"
+                                        aria-hidden="true"></i>
                                 </span>
                             </span>
-                            {{label.label}}
-                            ({{label.docs.length}})
+                            {{label.title}}
+                            ({{label.documents.length}})
                         </p>
                         <p *ngIf="LabelFilterActive" (click)="clearLabelSelection()" class="text-danger cursor-pointer">
                             <i class="fa fa-times text-danger" aria-hidden="true"></i>

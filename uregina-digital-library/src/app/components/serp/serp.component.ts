@@ -8,7 +8,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { customLog } from 'src/app/Utils/log.util';
-import { Location } from "@angular/common";
+import { DOCUMENT, Location } from "@angular/common";
 import { Label } from 'src/app/Models/Document-Models/label.model';
 declare var $: any;
 declare var require: any;
@@ -21,7 +21,6 @@ declare var require: any;
 export class SerpComponent implements OnInit {
   @ViewChild('EditLabelBtn') menuBtn: MatMenuTrigger;
   stopwords = ["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"];
-  savedDocIds = new Set();
   taskEmpty = false;
   docViewing: Doc;
   interestedDocuments: Doc[] = [];
@@ -57,9 +56,10 @@ export class SerpComponent implements OnInit {
   docCheckCount = 0;
   mobileSelectEnbaled = false;
   newLabel = '';
-  allDocLabels: unknown[] = [];
+  allDocLabels: Label[] = [];
   searchFromFormSubmit = false;
   onInit = true;
+  savedDocs: Doc[] = [];
   constructor(private router: Router, private libraryService: LibraryService, private authService: AuthService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private location: Location) { }
 
   ngOnInit(): void {
@@ -67,13 +67,13 @@ export class SerpComponent implements OnInit {
 
     this.username = this.authService.getCurrentUserData().name;
 
-    const savedDocs: Doc[] = this.route.snapshot.data.savedDocs;
+    this.savedDocs = this.route.snapshot.data.savedDocs;
+
     // console.log('**** ****** ***** ****** ***** ***** ***** ****** ***** ****', savedDocs);
-    let allLabels = new Set();
-    if (savedDocs && savedDocs.length > 0) {
-      savedDocs.forEach(d => {
-        this.savedDocIds.add(d.id);
-        d.labels.forEach(l => {
+    let allLabels = new Set<Label>();
+    if (this.savedDocs && this.savedDocs.length > 0) {
+      this.savedDocs.forEach(d => {
+        d.labelsPopulated.forEach(l => {
           allLabels.add(l)
         });
       });
@@ -130,13 +130,14 @@ export class SerpComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  changeLabel(label: string, type: string) {
+  changeLabel(label: Label, type: string) {
     let selecteDocs = this.documents.filter(d => d.selected == true);
-    selecteDocs.forEach(d => {
-      d.labels.push(new Label({ title: label, documents: [], _id: '' }));
-    })
+    console.log('tEST X1', this.documents);
+    // selecteDocs.forEach(d => {
+    //   d.labelsPopulated.push(label);
+    // })
     customLog('batch-save-doc-with-label', 'Label: ' + label + ', size: ' + selecteDocs.length.toString())
-    this.libraryService.addBatchBaselineSavedDoc(selecteDocs).subscribe(res => {
+    this.libraryService.addBatchBaselineSavedDoc(selecteDocs, label).subscribe(res => {
       this.documents.filter(d => d.selected == true).forEach(doc => {
         doc.isSaved = true;
       });
@@ -144,7 +145,7 @@ export class SerpComponent implements OnInit {
   }
 
   submitLabel() {
-    this.changeLabel(this.newLabel, 'add');
+    this.changeLabel(new Label({ title: this.newLabel, documents: [], _id: null }), 'add');
     this.menuBtn.closeMenu()
   }
 
@@ -174,8 +175,13 @@ export class SerpComponent implements OnInit {
         this.searchResult = res;
         this.documents = DocumentModelConverter.formatDocumentModels(res.data.docs);
         this.documents.forEach(d => {
-          if (this.savedDocIds.has(d.id)) {
+          const doc = this.savedDocs.find(doc => doc.id === d.id);
+          if (doc) {
+            console.log('Found');
             d.isSaved = true;
+            d._id = doc._id;
+          } else {
+            console.log('Not Found');
           }
         });
         this.searching = false;
@@ -226,7 +232,6 @@ export class SerpComponent implements OnInit {
 
   saveSearch() {
     this.libraryService.addBaselineSavedSearch(this.searchQuery, this.totalDocuments, (this.totalDocuments < this.pageSize) ? this.totalDocuments : this.pageSize).subscribe(searchResponse => {
-      // console.log('Search Saved');
       customLog('save-search-from-serp', this.searchQuery);
       this.showSaveSearchMessage();
     });
@@ -303,15 +308,17 @@ export class SerpComponent implements OnInit {
 
   saveToWorkspace(doc: Doc) {
     if (doc.isSaved) {
-      doc.isSaved = false;
-      this.libraryService.deleteBaselineSavedDoc(doc.id).subscribe(res => {
-        this.savedDocIds.delete(doc.id);
+      this.libraryService.deleteBaselineSavedDoc(doc._id).subscribe(res => {
+        doc.isSaved = false;
+        this.savedDocs = this.savedDocs.filter(d => d._id != doc._id);
+        doc._id = null;
         customLog('removed-saved-document', doc.title, doc.id);
       });
     } else {
-      doc.isSaved = true;
       this.libraryService.addBaselineSavedDoc(doc).subscribe(res => {
-        this.savedDocIds.add(doc.id);
+        doc.isSaved = true;
+        this.savedDocs.push(new Doc(res.data));
+        doc._id = res.data._id
         customLog('saved-document', doc.title, doc.id);
       });
     }
