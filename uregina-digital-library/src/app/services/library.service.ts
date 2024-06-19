@@ -64,7 +64,7 @@ export class LibraryService {
       })
     };
     return this.http.post(api.API_PATH + 'saved-searches', {
-      searchTerm: searchQuery ? searchQuery.trim() : '',
+      searchQuery: searchQuery ? searchQuery.trim() : '',
       totalDocuments: totalDocuments ? totalDocuments : 0
     }, httpOptions);
   }
@@ -75,11 +75,9 @@ export class LibraryService {
         'Content-Type': 'application/json'
       })
     };
-    searches.forEach(s => {
-      s['createdBy'] = this.authService.getCurrentUserData()._id;
-    });
-    return this.http.post(api.API_PATH + 'baseline/savedsearch/batch', {
-      searches
+    const savedSearches = searches.map(s => Search.getUpdateApiModel(s))
+    return this.http.post(api.API_PATH + 'saved-searches/create-or-update-many', {
+      savedSearches: savedSearches
     }, httpOptions);
   }
 
@@ -236,12 +234,12 @@ export class LibraryService {
         'Content-Type': 'application/json'
       })
     };
-    const searchTerm = 'any,contains,' + query;
+    const searchQuery = 'any,contains,' + query;
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=UTF-8');
     // console.log(params);
     return this.http.post(api.API_PATH + 'searches',
       {
-        searchTerm: searchTerm,
+        searchQuery: searchQuery,
         offset: offset
       }, httpOptions);
   }

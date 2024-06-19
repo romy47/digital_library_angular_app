@@ -33,4 +33,17 @@ export class Search {
     totalDocuments?: number;
     updatedAt?: Date;
     _id?: string;
+    __v?: number;
+
+    static getUpdateApiModel(search: Search): any {
+        let output = new Search(search);
+        delete output.selected;
+        delete output.isSaved;
+        delete output.interestedDocuments;
+        delete output.documentSaved;
+        delete output.createdAt;
+        delete output.updatedAt;
+        delete output.__v;
+        return output;
+    }
 }
