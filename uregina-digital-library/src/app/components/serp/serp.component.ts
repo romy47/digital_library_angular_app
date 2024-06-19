@@ -70,15 +70,16 @@ export class SerpComponent implements OnInit {
     this.savedDocs = this.route.snapshot.data.savedDocs;
 
     // console.log('**** ****** ***** ****** ***** ***** ***** ****** ***** ****', savedDocs);
-    let allLabels = new Set<Label>();
+    this.allDocLabels = [];
     if (this.savedDocs && this.savedDocs.length > 0) {
       this.savedDocs.forEach(d => {
         d.labelsPopulated.forEach(l => {
-          allLabels.add(l)
+          const label = this.allDocLabels.find(label => label._id = l._id);
+          if (label == null) {
+            this.allDocLabels.push(l)
+          }
         });
       });
-      this.allDocLabels = Array.from(allLabels);
-      // console.log("saved docs: ", this.savedDocIds);
     }
 
     this.searchQuery = this.route.snapshot.queryParamMap.get('query');

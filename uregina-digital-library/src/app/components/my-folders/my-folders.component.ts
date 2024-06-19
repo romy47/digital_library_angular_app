@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Doc } from 'src/app/Models';
+import { Label } from 'src/app/Models/Document-Models/label.model';
 import { DataService } from 'src/app/services';
 import { AuthService } from 'src/app/services/auth.service';
 import { customLog } from 'src/app/Utils/log.util';
@@ -19,7 +20,7 @@ export class MyFoldersComponent implements OnInit {
   username = '';
   newLabel = '';
   @ViewChild('mtfolderEditLabelBtn') menuBtn: MatMenuTrigger;
-  batchEditLabel: { all: string[], selected: string[] } = { all: [], selected: [] };
+  batchEditLabel: { all: Label[], selected: Label[] } = { all: [], selected: [] };
 
   ngOnInit(): void {
     console.log('myfolder-reached');
@@ -44,7 +45,7 @@ export class MyFoldersComponent implements OnInit {
     }
   }
 
-  edilAllLabels(data: { all: string[], selected: string[] }) {
+  edilAllLabels(data: { all: Label[], selected: Label[] }) {
     console.log(data);
     this.batchEditLabel = data;
     setTimeout(() => {

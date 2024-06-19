@@ -92,14 +92,14 @@
                                 LABELS</strong>
                             <p class="label-items cursor-pointer d-flex justify-content-between align-items-center"
                                 (click)="changeLabel(label, 'remove')" *ngFor="let label of batchEditLabel.selected">
-                                <span>{{label}}</span>
+                                <span>{{label.title}}</span>
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </p>
                             <strong *ngIf="batchEditLabel.all&&batchEditLabel.all.length>0">AVILABLE
                                 LABELS</strong>
                             <p *ngFor="let label of batchEditLabel.all" (click)="changeLabel(label, 'add')"
                                 class="label-items cursor-pointer  d-flex justify-content-between align-items-center">
-                                <span>{{label}}</span>
+                                <span>{{label.title}}</span>
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                             </p>
                             <form (ngSubmit)="submitLabel()" class="form">

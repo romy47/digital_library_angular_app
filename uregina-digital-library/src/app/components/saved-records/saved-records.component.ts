@@ -20,7 +20,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
   myFolderBatchEditLabelObs: Subscription;
   myFolderBatchEditLabelAddAndRemoveObs: Subscription;
 
-  @Output() edilAllLabels: EventEmitter<{ all: unknown[], selected: unknown[] }> = new EventEmitter<{ all: unknown[], selected: unknown[] }>();
+  @Output() edilAllLabels: EventEmitter<{ all: Label[], selected: Label[] }> = new EventEmitter<{ all: Label[], selected: Label[] }>();
   docs: Doc[] = [];
   allDocs: Doc[] = [];
   pagingIndex = 0;
@@ -47,21 +47,27 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
     this.myFolderBatchEditLabelObs = this.dataService.myFolderBatchEditLabelObs.subscribe(data => {
       console.log(data);
       if (data != null) {
-        let selectedDocsLabels = new Set();
-        let allDocsLabels = new Set();
+        let selectedDocsLabels = [];
+        let allDocsLabels = [];
         this.docs.forEach(d => {
           d.labelsPopulated.forEach(l => {
             if (d.selected == true) {
               console.log('sel: ', l);
-              selectedDocsLabels.add(l)
+              const existingLabel = selectedDocsLabels.find(label => label._id == l._id);
+              if (existingLabel == null) {
+                selectedDocsLabels.push(l)
+              }
             } else {
               console.log('unsel: ', l);
-              allDocsLabels.add(l);
+              const existingLabel = allDocsLabels.find(label => label._id == l._id);
+              if (existingLabel == null) {
+                allDocsLabels.push(l)
+              }
             }
           });
         });
         console.log('befor emit');
-        this.edilAllLabels.emit({ all: Array.from(allDocsLabels), selected: Array.from(selectedDocsLabels) });
+        this.edilAllLabels.emit({ all: allDocsLabels, selected: selectedDocsLabels });
       }
     });
 

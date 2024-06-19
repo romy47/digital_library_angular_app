@@ -9,10 +9,13 @@ export class Label {
     updatedAt?: Date;
     createdBy?: string;
     selected?: boolean = false;
-
+    __v?: string;
     static getApiModel(label: Label): any {
         let labelOutput = new Label(label);
         delete labelOutput.selected;
+        delete labelOutput.createdAt;
+        delete labelOutput.updatedAt;
+        delete labelOutput.__v;
         return labelOutput;
     }
 }

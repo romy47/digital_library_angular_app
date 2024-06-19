@@ -126,7 +126,7 @@
                     <p class="edit-label-header m-0">AVIALABLE LABELS</p>
                     <p class="label-items cursor-pointer d-flex justify-content-between align-items-center"
                         (click)="changeLabel(label, 'add')" *ngFor="let label of allDocLabels">
-                        <span>{{label}}</span>
+                        <span>{{label.title}}</span>
                         <i class="fa fa-plus" aria-hidden="true"></i>
                     </p>
                     <form (ngSubmit)="submitLabel()" class="form">
