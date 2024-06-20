@@ -18,7 +18,7 @@ export class DocCardComponent implements OnInit {
   @Input() searchTerms: string[] = [];
   @Input() mobileSelectEnbaled: boolean = false;
   @Input() searchQuery: string = '';
-  @Input() availableLabels = [];
+  @Input() availableLabels: Label[] = [];
   @Output() saveDoc: EventEmitter<Doc> = new EventEmitter();
   @Output() viewDoc: EventEmitter<{ data: Doc, type: string }> = new EventEmitter();
   // @Output() savedDocChecked: EventEmitter<{ data: Doc, selected: boolean, location: string }> = new EventEmitter();
@@ -40,23 +40,37 @@ export class DocCardComponent implements OnInit {
     this.viewDoc.emit({ data: this.doc, type: 'checked' });
   }
 
-  addExistingLabel(label: string) {
-    this.libService.addLabelToDoc(label, this.doc._id).subscribe(res => {
-      customLog('add-doc-label-existing', label);
-      this.doc.labelsPopulated.push(res.data);
+  addExistingLabel(label: Label) {
+    this.libService.addBatchBaselineSavedDoc(
+      [this.doc],
+      label,
+      null
+    ).subscribe(res => {
+      customLog('add-doc-label-existing', label.title);
+      this.doc.labelsPopulated = res.data.documents[0].labelsPopulated;
     });
   }
 
   submitLabel() {
-    this.libService.addLabelToDoc(this.newLabel.trim(), this.doc._id).subscribe(res => {
+    console.log('DLP', this.doc.labelsPopulated);
+    this.libService.addBatchBaselineSavedDoc(
+      [this.doc],
+      new Label({ title: this.newLabel.trim() }),
+      null
+    ).subscribe(res => {
       customLog('add-doc-label-new', this.newLabel);
-      this.doc.labelsPopulated.push(res.data);
+      // this.doc.labelsPopulated.push(new Label(res.data));
+      this.doc.labelsPopulated = res.data.documents[0].labelsPopulated
       this.menuBtn.closeMenu();
     });
   }
 
   removeLabel(label: Label) {
-    this.libService.removeLabelFromDoc(label._id, this.doc._id).subscribe(res => {
+    this.libService.addBatchBaselineSavedDoc(
+      [this.doc],
+      null,
+      label
+    ).subscribe(res => {
       customLog('remove-doc-label', label._id);
       this.doc.labelsPopulated = this.doc.labelsPopulated.filter(l => l._id != label._id);
     });

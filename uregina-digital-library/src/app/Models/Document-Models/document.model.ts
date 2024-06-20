@@ -53,8 +53,11 @@ export class Doc {
     }
 
     static getUpdateApiModel(doc: Doc): any {
+        console.log('OP -1 ', doc)
+
         let output = new Doc(doc);
         let labels = [];
+        console.log('OP ', output)
         output.labelsPopulated.forEach(l => {
             if (l._id) {
                 labels.push(l._id)

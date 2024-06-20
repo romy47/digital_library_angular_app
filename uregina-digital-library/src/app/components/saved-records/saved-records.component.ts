@@ -26,7 +26,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
   pagingIndex = 0;
   allSelected = false;
   availableLabels = new Set();
-  availableLabelsArr = [];
+  availableLabelsArr: Label[] = [];
   LabelFilterActive = false;
   labelFilter: { label: string, docs: Doc[], selected: boolean, hovering: boolean }[] = [{ label: 'Unlabeled items', docs: [], selected: false, hovering: false }];
   docViewing: Doc;
@@ -192,7 +192,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
             // }
           });
           console.log('L P 3', this.labels)
-          this.availableLabelsArr = Array.from(this.availableLabels);
+          // this.availableLabelsArr = Array.from(this.availableLabels);
         }
         let savedDoc = new Doc(d);
         let convertedDoc = DocumentModelConverter.formatSingleDocumentModel(d.rawObject);
