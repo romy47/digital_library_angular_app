@@ -54,7 +54,7 @@ export class MyFoldersComponent implements OnInit {
 
   }
 
-  changeLabel(label: string, type: string) {
+  changeLabel(label: Label, type: string) {
     this.dataService.updatemyFolderBatchEditLabelAddAndRemove({ label: label, type: type });
   }
 
@@ -108,7 +108,7 @@ export class MyFoldersComponent implements OnInit {
   }
 
   submitLabel() {
-    this.dataService.updatemyFolderBatchEditLabelAddAndRemove({ label: this.newLabel, type: 'add' });
+    this.dataService.updatemyFolderBatchEditLabelAddAndRemove({ label: new Label({ _id: null, documents: [], title: this.newLabel }), type: 'add' });
     this.menuBtn.closeMenu()
   }
 

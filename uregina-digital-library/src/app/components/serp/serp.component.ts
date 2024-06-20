@@ -138,7 +138,7 @@ export class SerpComponent implements OnInit {
     //   d.labelsPopulated.push(label);
     // })
     customLog('batch-save-doc-with-label', 'Label: ' + label + ', size: ' + selecteDocs.length.toString())
-    this.libraryService.addBatchBaselineSavedDoc(selecteDocs, label).subscribe(res => {
+    this.libraryService.addBatchBaselineSavedDoc(selecteDocs, label, null).subscribe(res => {
       this.documents.filter(d => d.selected == true).forEach(doc => {
         doc.isSaved = true;
       });

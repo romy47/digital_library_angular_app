@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Doc, Task } from '../Models';
+import { Label } from '../Models/Document-Models/label.model';
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +39,7 @@ export class DataService {
     myFolderBatchEditLabelObs = this.myFolderBatchEditLabel.asObservable();
 
     // Unsubscription handled
-    private myFolderBatchEditLabelAddAndRemove: Subject<{ label: string, type: string }> = new Subject<{ label: string, type: string }>();
+    private myFolderBatchEditLabelAddAndRemove: Subject<{ label: Label, type: string }> = new Subject<{ label: Label, type: string }>();
     myFolderBatchEditLabelAddAndRemoveObs = this.myFolderBatchEditLabelAddAndRemove.asObservable();
 
     constructor() { }
@@ -76,7 +77,7 @@ export class DataService {
         this.myFolderBatchEditLabel.next(data);
     }
 
-    updatemyFolderBatchEditLabelAddAndRemove(data: { label: string, type: string }) {
+    updatemyFolderBatchEditLabelAddAndRemove(data: { label: Label, type: string }) {
         this.myFolderBatchEditLabelAddAndRemove.next(data);
     }
 

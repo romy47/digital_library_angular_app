@@ -127,7 +127,7 @@ export class LibraryService {
       , httpOptions);
   }
 
-  public addBatchBaselineSavedDoc(docs: Doc[], label: Label): Observable<any> {
+  public addBatchBaselineSavedDoc(docs: Doc[], labelAdd?: Label, labelRemove?: Label): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -136,7 +136,8 @@ export class LibraryService {
     const apiPayloadDocs = docs.map(d => Doc.getUpdateApiModel(d))
     return this.http.post(api.API_PATH + 'documents/create-or-update-many', {
       documents: apiPayloadDocs,
-      label: Label.getApiModel(label)
+      labelAdd: labelAdd ? Label.getApiModel(labelAdd) : null,
+      labelRemove: labelRemove ? Label.getApiModel(labelRemove) : null,
     }, httpOptions);
   }
 

@@ -2,7 +2,7 @@ export class Label {
     constructor(obj: Label) {
         Object.assign(this, obj);
     }
-    _id: string;
+    _id?: string;
     title: string;
     documents?: string[];
     createdAt?: Date;

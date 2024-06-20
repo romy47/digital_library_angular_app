@@ -278,24 +278,20 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
   }
 
   batchUpdateDocLabel(data) {
-    let docIds: string[] = [];
-    this.docs.forEach(s => {
-      if (s.selected == true) {
-        docIds.push(s._id);
-      }
-    });
+    const documents = this.docs.filter(d => d.selected == true);
+
     if (data.type == 'add') {
-      this.libraryService.addLabelToDocBatch(data.label, docIds).subscribe(res => {
+      this.libraryService.addBatchBaselineSavedDoc(documents, data.label, null).subscribe(res => {
         customLog('batch-add-label-from-saved-records', data.label);
         this.docs.filter(d => d.selected == true).forEach(d => {
           d.labelsPopulated.push(data.label);
         });
       });
     } else if (data.type == 'remove') {
-      this.libraryService.removeLabelFromDocBatch(data.label, docIds).subscribe(res => {
+      this.libraryService.addBatchBaselineSavedDoc(documents, null, data.label).subscribe(res => {
         customLog('batch-remove-label-from-saved-records', data.label);
         this.docs.filter(d => d.selected == true).forEach(d => {
-          d.labelsPopulated = d.labelsPopulated.filter(l => l != data.label);
+          d.labelsPopulated = d.labelsPopulated.filter(l => l._id != data.label._id);
         });
       });
     }

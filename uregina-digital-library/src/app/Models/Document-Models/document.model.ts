@@ -32,7 +32,9 @@ export class Doc {
     labelsPopulated: Label[] = [];
     id?: string;
     _id: string = null;
+    __v?: number = 0;
     createdAt?: Date = null;
+    updatedAt?: Date = null;
     imageUrl?: string = 'assets/images/book-placeholder.jpg';
     createdBy? = null;
     static getInsertApiModel(doc: Doc): any {
@@ -42,9 +44,11 @@ export class Doc {
         delete output.selected;
         delete output.imageUrl;
         delete output.createdAt;
+        delete output.updatedAt;
         delete output.createdBy;
         output.labels = output.labelsPopulated ? output.labelsPopulated.map(l => l._id) : []
         delete output.labelsPopulated;
+        delete output.__v;
         return output;
     }
 
@@ -63,8 +67,10 @@ export class Doc {
         delete output.selected;
         delete output.imageUrl;
         delete output.createdAt;
-        output.labels = labels;
+        delete output.updatedAt;
         delete output.labelsPopulated;
+        delete output.__v;
+        output.labels = labels;
         return output;
     }
 }
