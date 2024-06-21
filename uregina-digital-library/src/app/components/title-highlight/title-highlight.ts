@@ -25,11 +25,8 @@ export class TitleHighlightComponent implements OnChanges {
   isMatch(value: string) {
     let match = false;
     for (let i = 0; i < this.needles.length; i++) {
-      // (value == 'AI:') ? console.log('-----------------    AI     --------------', value) : '';
       value = value.replace(/^[^\w]+/, "");
       value = value.replace(/[^\w]+$/, "");
-      // (value == 'AI:') ? console.log('-----------------    AI 2     --------------', value) : '';
-
       var reg = "^(" + this.needles[i] + ")$";
       var regex = new RegExp(reg, "i");
       if (value.match(regex)) {

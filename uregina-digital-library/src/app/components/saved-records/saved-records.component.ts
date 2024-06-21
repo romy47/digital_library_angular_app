@@ -1,12 +1,11 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Doc } from 'src/app/Models';
+import { Doc } from 'src/app/models';
 import { DataService } from 'src/app/services';
 import { LibraryService } from 'src/app/services/library.service';
-import { customLog } from 'src/app/Utils/log.util';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { DocumentModelConverter } from 'src/app/Utils/model-converter.util';
-import { Label } from 'src/app/Models/Document-Models/label.model';
+import { DocumentModelConverter } from 'src/app/utils/model-converter.util';
+import { Label } from 'src/app/models/Document-Models/label.model';
 declare var $: any;
 
 @Component({
@@ -38,27 +37,22 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
     this.getAllSavedDocs();
     this.myFolderSavedRecordsDeleteAllObs = this.dataService.myFolderSavedRecordsDeleteAllObs.subscribe(data => {
       if (data != null) {
-        console.log(data);
-        console.log('3--btch called--3');
         this.deleteBatchSavedDocs();
       }
     });
 
     this.myFolderBatchEditLabelObs = this.dataService.myFolderBatchEditLabelObs.subscribe(data => {
-      console.log(data);
       if (data != null) {
         let selectedDocsLabels = [];
         let allDocsLabels = [];
         this.docs.forEach(d => {
           d.labelsPopulated.forEach(l => {
             if (d.selected == true) {
-              console.log('sel: ', l);
               const existingLabel = selectedDocsLabels.find(label => label._id == l._id);
               if (existingLabel == null) {
                 selectedDocsLabels.push(l)
               }
             } else {
-              console.log('unsel: ', l);
               const existingLabel = allDocsLabels.find(label => label._id == l._id);
               if (existingLabel == null) {
                 allDocsLabels.push(l)
@@ -66,13 +60,11 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
             }
           });
         });
-        console.log('befor emit');
         this.edilAllLabels.emit({ all: allDocsLabels, selected: selectedDocsLabels });
       }
     });
 
     this.myFolderBatchEditLabelAddAndRemoveObs = this.dataService.myFolderBatchEditLabelAddAndRemoveObs.subscribe(data => {
-      console.log(data);
       if (data != null) {
         this.batchUpdateDocLabel(data);
       }
@@ -93,17 +85,13 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
 
   viewDocument(input: { data: Doc, type: string }) {
     if (input.type == 'checked') {
-      // this.docCheckCount = this.documents.filter(d => d.selected == true).length;
+
     }
     else if (input.type == 'view') {
-      // input.data.page = this.currentPage;
-      // Object.assign(this.docViewing, input.data);
       this.docViewing = input.data;
-      // console.log("lalalalalalalalalalalalalal", this.docViewing)
       setTimeout(() => {
         $('#serpDocViewModal').appendTo("body").modal('show');
       }, 200)
-      customLog('view-doc', this.docViewing.title, this.docViewing.id);
 
     } else {
       let doc = input.data;
@@ -112,16 +100,13 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
         let sbDomain = 'casls-regina.userservices.exlibrisgroup.com/view/uresolver/01CASLS_REGINA/openurl';
         var pattern = /1.1.1.1+/g;
         url = url.replace(pattern, sbDomain);
-        console.log(url)
         window.open(url, '_blanc');
-        customLog('get-doc', doc.title, doc.id);
       }
     }
   }
 
   closeModal() {
     $('#serpDocViewModal').modal('hide');
-    customLog('doc-view-modal-close-clicked');
   }
 
   openFilterModal() {
@@ -131,7 +116,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
   }
 
   closeFilterModal() {
-    // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
     setTimeout(() => {
       $('#labelFilterModal').modal('hide');
     }, 200);
@@ -142,7 +126,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
     this.LabelFilterActive = this.labelFilter.filter(l => l.selected == true).length > 0;
 
     this.getAllSavedDocs(true);
-    customLog("label-filter-clicked");
   }
 
   clearLabelSelection() {
@@ -151,7 +134,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
     });
     this.LabelFilterActive = false;
     this.getAllSavedDocs(true);
-    customLog("label-filter-cleared");
   }
 
   filterLabelMouseEnter(label) {
@@ -163,36 +145,18 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
   }
 
   getAllSavedDocs(filteringByLabel = false) {
-    console.log('Inside Saved Docs')
     this.pagingIndex = 0;
     this.docs = [];
     this.libraryService.getAllSavedBaselineDocs().subscribe(res => {
       this.allDocs = [];
       res.data.slice().reverse().forEach(d => {
         if (d.labelsPopulated && d.labelsPopulated.length > 0) {
-          console.log('L P 1', d.labelsPopulated)
-
           d.labelsPopulated.forEach(label => {
             const existingLabel = this.labels.find(l => l._id == label._id)
             if (existingLabel == null) {
               this.labels.push(label)
             }
-            // this.availableLabels.add(label);
-
-
-
-            // if (this.labels.findIndex(l => {
-            //   l._id == label._id
-            // }) < 0) {
-            //   console.log('L P 1.2 ' + label._id, this.labels.findIndex(l => {
-            //     l._id == label._id
-            //   }))
-            //   console.log('L P 2', `${this.labels.length.toString()}`)
-            //   this.labels.push(label);
-            // }
           });
-          console.log('L P 3', this.labels)
-          // this.availableLabelsArr = Array.from(this.availableLabels);
         }
         let savedDoc = new Doc(d);
         let convertedDoc = DocumentModelConverter.formatSingleDocumentModel(d.rawObject);
@@ -206,7 +170,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
         savedDoc['isSaved'] = true;
         this.allDocs.push(savedDoc);
       });
-      console.log(this.docs);
       if (filteringByLabel == false) {
         this.loadLabelFilter();
       }
@@ -219,24 +182,17 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
           if (l.selected == true) { selectedFiltersSet.add(l.label); }
         });
         selectedFilters = Array.from(selectedFiltersSet);
-        console.log('p-0', selectedFilters.length);
         allDocsBackup.forEach((d, index) => {
-          console.log('p-', index);
-
           let docAllowed = false;
           d.labelsPopulated.forEach(l => {
             if (selectedFilters.includes(l)) {
               docAllowed = true;
-              // console.log(l, ' matched with: ', selectedFilters[0], ' ', selectedFilters[1], ' ', selectedFilters[3]);
-            } else {
-              // console.log(l, ' not matched with: ', selectedFilters[0], ' ', selectedFilters[1], ' ', selectedFilters[3]);
             }
           });
           // update
           if (d.labelsPopulated.length == 0 && selectedFilters.includes("Unlabeled items")) {
             docAllowed = true;
           }
-          console.log('docAllowed status', docAllowed)
           if ((this.LabelFilterActive == false) || (docAllowed && this.allDocs.filter(ad => ad._id == d._id).length < 1)) {
             this.allDocs.push(d)
           }
@@ -249,22 +205,17 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
   loadLabelFilter() {
     let allLabels = new Set();
     this.allDocs.forEach(d => {
-      console.log('Labeller Phase -2');
       if (d.labelsPopulated.length < 1) {
-        console.log('Labeller Phase -1')
         this.labelFilter[0].docs.push(d);
       } else {
-        console.log('Labeller Phase -0.5')
         d.labelsPopulated.forEach(l => {
           allLabels.add(l);
         });
       }
     });
-    console.log('Labeller Phase 0', allLabels);
     Array.from(allLabels).forEach(l => {
       this.labelFilter.push({ label: l.toString(), docs: [], selected: false, hovering: false });
     });
-    console.log('Labeller Phase 1', this.labelFilter);
 
     this.allDocs.forEach(d => {
       d.labelsPopulated.forEach(lbl => {
@@ -274,7 +225,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
         }
       });
     });
-    console.log(this.labelFilter);
   }
 
   batchUpdateDocLabel(data) {
@@ -282,14 +232,12 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
 
     if (data.type == 'add') {
       this.libraryService.addBatchBaselineSavedDoc(documents, data.label, null).subscribe(res => {
-        customLog('batch-add-label-from-saved-records', data.label);
         this.docs.filter(d => d.selected == true).forEach(d => {
           d.labelsPopulated.push(data.label);
         });
       });
     } else if (data.type == 'remove') {
       this.libraryService.addBatchBaselineSavedDoc(documents, null, data.label).subscribe(res => {
-        customLog('batch-remove-label-from-saved-records', data.label);
         this.docs.filter(d => d.selected == true).forEach(d => {
           d.labelsPopulated = d.labelsPopulated.filter(l => l._id != data.label._id);
         });
@@ -310,7 +258,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
           }
         }
         this.pagingIndex += count;
-        // customLog('load-more-saved-records', this.pagingIndex.toString());
       }, 800)
     }
   }
@@ -328,7 +275,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
       this.allDocs = this.allDocs.filter(d => !(d.id == doc.id));
       this.refreshDocsAfterRemove();
       $('#serpDocViewModal').modal('hide');
-      customLog('removed-saved-document', doc.title, doc.id);
     });
 
   }
@@ -365,10 +311,7 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
         deleteIds.push(s._id);
       }
     });
-    console.log(deleteIds);
     this.libraryService.deleteBatchBaselineSavedDocs(deleteIds).subscribe(res => {
-      customLog('batch-remove-saved-document');
-      console.log(res);
       deleteIds.forEach(id => {
         this.allDocs = this.allDocs.filter(s => !(s._id == id));
       });

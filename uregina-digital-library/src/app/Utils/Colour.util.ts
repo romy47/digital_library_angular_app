@@ -1,4 +1,4 @@
-import { Facet, Colour } from 'src/app/Models/index';
+import { Facet, Colour } from 'src/app/models/index';
 
 
 export class ColourUtil {
@@ -31,7 +31,6 @@ export class ColourUtil {
             let r = Math.floor(Math.random() * max) + 1;
             if (arr.indexOf(r) === -1) { arr.push(r); }
         }
-        // console.log(arr);
         return arr;
     }
 

@@ -14,7 +14,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log('Request Intercepted')
         if (this.authService.getCurrentUserData().access_token) {
             const modReq = req.clone({
                 setHeaders: {

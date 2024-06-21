@@ -1,9 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { Doc } from 'src/app/Models';
-import { Label } from 'src/app/Models/Document-Models/label.model';
+import { Doc } from 'src/app/models';
+import { Label } from 'src/app/models/Document-Models/label.model';
 import { LibraryService } from 'src/app/services';
-import { customLog } from 'src/app/Utils/log.util';
 
 @Component({
   selector: 'app-doc-card',
@@ -28,14 +27,12 @@ export class DocCardComponent implements OnInit {
   constructor(private libService: LibraryService) { }
 
   ngOnInit(): void {
-    console.log(this.doc);
     this.getUrl();
     if (this.doc.labelsPopulated && this.doc.labelsPopulated.length > 0) {
       this.availableLabels = this.availableLabels.filter((el) => !this.doc.labelsPopulated.includes(el));
     }
   }
   savedDocCheck(data) {
-    console.log('wupwup')
     // this.savedDocChecked.emit({ data: this.doc, selected: true, location: 'doc-card' });
     this.viewDoc.emit({ data: this.doc, type: 'checked' });
   }
@@ -46,20 +43,16 @@ export class DocCardComponent implements OnInit {
       label,
       null
     ).subscribe(res => {
-      customLog('add-doc-label-existing', label.title);
       this.doc.labelsPopulated = res.data.documents[0].labelsPopulated;
     });
   }
 
   submitLabel() {
-    console.log('DLP', this.doc.labelsPopulated);
     this.libService.addBatchBaselineSavedDoc(
       [this.doc],
       new Label({ title: this.newLabel.trim() }),
       null
     ).subscribe(res => {
-      customLog('add-doc-label-new', this.newLabel);
-      // this.doc.labelsPopulated.push(new Label(res.data));
       this.doc.labelsPopulated = res.data.documents[0].labelsPopulated
       this.menuBtn.closeMenu();
     });
@@ -71,7 +64,6 @@ export class DocCardComponent implements OnInit {
       null,
       label
     ).subscribe(res => {
-      customLog('remove-doc-label', label._id);
       this.doc.labelsPopulated = this.doc.labelsPopulated.filter(l => l._id != label._id);
     });
   }
@@ -133,12 +125,10 @@ export class DocCardComponent implements OnInit {
   // }
 
   viewDocument(doc: Doc) {
-    console.log('View Document')
     this.viewDoc.emit({ data: this.doc, type: 'view' });
   }
 
   openDocument(doc: Doc) {
-    console.log('OpenDocument')
     this.viewDoc.emit({ data: this.doc, type: 'open' });
     // this.viewDoc.emit(doc);
 

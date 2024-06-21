@@ -1,7 +1,7 @@
 import { HttpBackend, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthToken } from '../Models';
+import { AuthToken } from '../models';
 import { environment } from 'src/environments/environment';
 import { ILoginPostData, ISignupPostData } from 'src/app/interfaces/auth.interfaces';
 const api = environment;

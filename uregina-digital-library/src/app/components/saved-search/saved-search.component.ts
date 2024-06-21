@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Search } from 'src/app/Models';
+import { Search } from 'src/app/models';
 import { DataService, LibraryService } from 'src/app/services';
-import { customLog } from 'src/app/Utils/log.util';
 
 @Component({
   selector: 'app-saved-search',
@@ -22,15 +21,12 @@ export class SavedSearchComponent implements OnInit {
   ngOnInit(): void {
     this.getAllSavedSearches();
     this.myFolderSavedSearchesDeleteAllObs = this.dataService.myFolderSavedSearchesDeleteAllObs.subscribe(data => {
-      console.log(data);
       if (data != null) {
-        console.log("-- Subscribed batch -- ");
         this.deleteBatchSavedSearch();
       }
     });
 
     this.myFolderSavedSearchForceRefreshObs = this.dataService.myFolderSavedSearchForceRefreshObs.subscribe(data => {
-      console.log(data);
       if (data != null) {
         this.getAllSavedSearches();
       }
@@ -64,10 +60,7 @@ export class SavedSearchComponent implements OnInit {
         deleteIds.push(s._id);
       }
     });
-    console.log(deleteIds);
     this.libraryService.deleteBatchBaselineSavedSearch(deleteIds).subscribe(res => {
-      customLog('batch-remove-saved-search');
-      console.log(res);
       deleteIds.forEach(id => {
         this.allSearches = this.allSearches.filter(s => !(s._id == id));
       });
@@ -78,7 +71,6 @@ export class SavedSearchComponent implements OnInit {
   loadMore() {
     if (this.pagingIndex < this.allSearches.length) {
       setTimeout(() => {
-        // customLog('load-more-saved-searches', this.pagingIndex.toString());
         let count = 0
         for (let i = this.pagingIndex; i < this.allSearches.length; i++) {
           if (count <= 9) {
@@ -102,14 +94,10 @@ export class SavedSearchComponent implements OnInit {
   }
 
   saveToWorkspace(search: Search) {
-    console.log(search)
-
     this.libraryService.deleteBaselineSavedSearch(search._id).subscribe(res => {
       this.allSearches = this.allSearches.filter(s => !(s._id == search._id));
       this.refreshDocsAfterRemove();
     });
-
-    customLog('removed-saved-searches', search.searchQuery, search._id);
   }
 
   allSavedSearchChecked(event: any) {

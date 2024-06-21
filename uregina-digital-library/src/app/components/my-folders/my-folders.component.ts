@@ -1,11 +1,10 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Doc } from 'src/app/Models';
-import { Label } from 'src/app/Models/Document-Models/label.model';
+import { Doc } from 'src/app/models';
+import { Label } from 'src/app/models/Document-Models/label.model';
 import { DataService } from 'src/app/services';
 import { AuthService } from 'src/app/services/auth.service';
-import { customLog } from 'src/app/Utils/log.util';
 
 @Component({
   selector: 'app-my-folders',
@@ -23,14 +22,11 @@ export class MyFoldersComponent implements OnInit {
   batchEditLabel: { all: Label[], selected: Label[] } = { all: [], selected: [] };
 
   ngOnInit(): void {
-    console.log('myfolder-reached');
     this.searchQuery = this.route.snapshot.queryParamMap.get('query');
     this.username = this.authService.getCurrentUserData().name;
-    console.log('myfolder-reached');
   }
 
   startTask() {
-    // customLog("start-session2-task");
   }
 
   forceRefresh(tab: number) {
@@ -46,7 +42,6 @@ export class MyFoldersComponent implements OnInit {
   }
 
   edilAllLabels(data: { all: Label[], selected: Label[] }) {
-    console.log(data);
     this.batchEditLabel = data;
     setTimeout(() => {
       this.menuBtn.openMenu();
@@ -66,23 +61,6 @@ export class MyFoldersComponent implements OnInit {
 
   onTabChanged(event: any) {
     this.selectedTabIndex = event.index;
-    switch (this.selectedTabIndex) {
-      case 0: {
-        console.log('Case 0: ', this.selectedTabIndex);
-        console.log('saved-records-tab-clicked');
-        break;
-      }
-      case 1: {
-        console.log('Case 1: ', this.selectedTabIndex);
-        console.log('saved-searches-tab-clicked');
-        break;
-      }
-      case 2: {
-        console.log('Case 2: ', this.selectedTabIndex);
-        console.log('search-history-tab-clicked');
-        break;
-      }
-    }
   }
 
 
@@ -99,7 +77,6 @@ export class MyFoldersComponent implements OnInit {
   }
 
   deleteBatchSavedRecords() {
-    console.log('-btch called-')
     this.dataService.updateMyFolderSavedRecordsDeleteAll(1);
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Doc, Task } from '../Models';
-import { Label } from '../Models/Document-Models/label.model';
+import { Doc, Task } from '../models';
+import { Label } from '../models/Document-Models/label.model';
 
 @Injectable({
     providedIn: 'root'
@@ -65,7 +65,6 @@ export class DataService {
     }
 
     updateMyFolderSavedRecordsDeleteAll(data: number) {
-        console.log('2-btch called--2')
         this.myFolderSavedRecordsDeleteAll.next(data);
     }
 

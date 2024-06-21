@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
+import { LoginComponent, MyFoldersComponent, SerpComponent, SignupComponent } from './components';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { MyFoldersComponent } from './components/my-folders/my-folders.component';
-import { SerpComponent } from './components/serp/serp.component';
 import { AuthGuard } from './guards/auth.guard';
-import { SearchResolver } from './Resolvers/search.resolver'
-import { SignupComponent } from './components/signup/signup.component';
+import { SearchResolver } from './resolvers/search.resolver'
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },

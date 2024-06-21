@@ -1,5 +1,5 @@
-import { Facet, Colour, Doc, AllFacets } from 'src/app/Models/index';
-import { ColourUtil } from './Colour.util';
+import { Facet, Colour, Doc, AllFacets } from 'src/app/models/index';
+import { ColourUtil } from './colour.util';
 import { FacetTypesForDropdown, FacetTypesForApiAndModelRelation } from '../static-data';
 declare var require: any;
 
@@ -47,8 +47,6 @@ export class DocumentModelConverter {
 
     public static formatSingleDocumentModel(d: any): Doc {
         let langs = require('langs');
-
-        // console.log(d);
         let imageSrc;
         let desc = '';
         if (d.pnx.display.description && d.pnx.display.description[0]) {
