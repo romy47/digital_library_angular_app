@@ -229,7 +229,6 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
 
   batchUpdateDocLabel(data) {
     const documents = this.docs.filter(d => d.selected == true);
-
     if (data.type == 'add') {
       this.libraryService.addBatchBaselineSavedDoc(documents, data.label, null).subscribe(res => {
         this.docs.filter(d => d.selected == true).forEach(d => {
@@ -276,11 +275,9 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
       this.refreshDocsAfterRemove();
       $('#serpDocViewModal').modal('hide');
     });
-
   }
 
   allSavedDocsChecked(event: any) {
-    // this.allSelected = !this.allSelected;
     if (this.allSelected) {
       this.docs.forEach(s => {
         s.selected = true;
@@ -318,7 +315,4 @@ export class SavedRecordsComponent implements OnInit, OnDestroy {
       this.refreshDocsAfterRemove(deleteIds.length);
     });
   }
-
-
-
 }

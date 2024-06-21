@@ -18,6 +18,7 @@ export class DefaultPagerComponent implements OnInit {
 
   @Input() id: string;
   @Input() maxSize: number = 7;
+
   @Input()
   get directionLinks(): boolean {
     return this._directionLinks;
@@ -25,6 +26,7 @@ export class DefaultPagerComponent implements OnInit {
   set directionLinks(value: boolean) {
     this._directionLinks = coerceToBoolean(value);
   }
+
   @Input()
   get autoHide(): boolean {
     return this._autoHide;
@@ -32,6 +34,7 @@ export class DefaultPagerComponent implements OnInit {
   set autoHide(value: boolean) {
     this._autoHide = coerceToBoolean(value);
   }
+
   @Input()
   get responsive(): boolean {
     return this._responsive;
@@ -39,6 +42,7 @@ export class DefaultPagerComponent implements OnInit {
   set responsive(value: boolean) {
     this._responsive = coerceToBoolean(value);
   }
+
   @Input() previousLabel: string = 'Previous';
   @Input() nextLabel: string = 'Next';
   @Input() screenReaderPaginationLabel: string = 'Pagination';

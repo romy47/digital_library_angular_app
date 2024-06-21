@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DocDetailComponent } from './doc-detail.component';
 
 describe('DocDetailComponent', () => {
@@ -8,9 +7,9 @@ describe('DocDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DocDetailComponent ]
+      declarations: [DocDetailComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

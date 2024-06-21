@@ -1,4 +1,3 @@
-
 import { Component, Input, OnChanges } from "@angular/core";
 
 @Component({
@@ -10,16 +9,15 @@ import { Component, Input, OnChanges } from "@angular/core";
         </ng-container>
     `,
 })
+
 export class TitleHighlightComponent implements OnChanges {
   @Input() needle: string = '';
   @Input() needles: string[] = [];
   @Input() haystack: string;
   public result: string[];
 
-
   ngOnChanges() {
     this.result = this.haystack.split(' ');
-
   }
 
   isMatch(value: string) {
@@ -34,7 +32,6 @@ export class TitleHighlightComponent implements OnChanges {
         break;
       }
     }
-
     return match;
   }
 }

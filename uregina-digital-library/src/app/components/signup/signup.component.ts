@@ -10,6 +10,7 @@ import { ISignupPostData } from 'src/app/interfaces/auth.interfaces';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+
 export class SignupComponent implements OnInit {
   public signupForm: FormGroup;
   public err = ''

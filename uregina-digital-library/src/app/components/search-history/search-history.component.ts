@@ -8,6 +8,7 @@ import { DataService, LibraryService } from 'src/app/services';
   templateUrl: './search-history.component.html',
   styleUrls: ['./search-history.component.css']
 })
+
 export class SearchHistoryComponent implements OnInit, OnDestroy {
   myFolderSearchHistoryDeleteAllObs: Subscription;
   myFolderSearchHistorySaveAllObs: Subscription;
@@ -48,7 +49,6 @@ export class SearchHistoryComponent implements OnInit, OnDestroy {
   }
 
   allSearchHistoryChecked(event: any) {
-    // this.allSelected = !this.allSelected;
     if (this.allSelected) {
       this.searches.forEach(s => {
         s.selected = true;
@@ -66,7 +66,6 @@ export class SearchHistoryComponent implements OnInit, OnDestroy {
       this.saveToWorkspace(search, false);
     });
   }
-
 
   searchHistoryChecked(search: Search) {
     if (this.allSelected == false) {
@@ -147,7 +146,6 @@ export class SearchHistoryComponent implements OnInit, OnDestroy {
 
   saveBatchSearchHistory() {
     const searchesToBeSaved = this.searches.filter(s => s.selected == true);
-
     this.libraryService.addBatchBaselineSavedSearch(searchesToBeSaved).subscribe(res => {
       this.deleteBatchSearchHistory(false);
     }, err => {

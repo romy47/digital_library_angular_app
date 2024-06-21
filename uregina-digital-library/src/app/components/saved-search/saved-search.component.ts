@@ -16,6 +16,7 @@ export class SavedSearchComponent implements OnInit {
   allSearches: Search[] = [];
   pagingIndex = 0;
   allSelected = false;
+
   constructor(private libraryService: LibraryService, private dataService: DataService) { }
 
   ngOnInit(): void {
@@ -53,7 +54,6 @@ export class SavedSearchComponent implements OnInit {
   }
 
   deleteBatchSavedSearch() {
-
     let deleteIds: string[] = [];
     this.searches.forEach(s => {
       if (s.selected == true) {
@@ -101,7 +101,6 @@ export class SavedSearchComponent implements OnInit {
   }
 
   allSavedSearchChecked(event: any) {
-    // this.allSelected = !this.allSelected;
     if (this.allSelected) {
       this.searches.forEach(s => {
         s.selected = true;
@@ -124,5 +123,4 @@ export class SavedSearchComponent implements OnInit {
       });
     }
   }
-
 }

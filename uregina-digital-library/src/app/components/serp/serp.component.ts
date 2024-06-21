@@ -18,6 +18,7 @@ declare var require: any;
   templateUrl: './serp.component.html',
   styleUrls: ['./serp.component.css']
 })
+
 export class SerpComponent implements OnInit {
   @ViewChild('EditLabelBtn') menuBtn: MatMenuTrigger;
   stopwords = ["a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"];
@@ -34,7 +35,6 @@ export class SerpComponent implements OnInit {
   documents: Doc[] = [];
   focusedDocIndex = 0;
   activePagefacetTab = 'Subject';
-  // This has to be done properly
   searchResult: any;
   popupMenuFacet: Facet = new Facet({ text: '', count: 0 });
   minValue = 1900;
@@ -64,9 +64,7 @@ export class SerpComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = this.authService.getCurrentUserData().name;
-
     this.savedDocs = this.route.snapshot.data.savedDocs;
-
     this.allDocLabels = [];
     if (this.savedDocs && this.savedDocs.length > 0) {
       this.savedDocs.forEach(d => {
@@ -91,7 +89,6 @@ export class SerpComponent implements OnInit {
     });
 
     this.location.subscribe(location => {
-
       if ($('#serpDocViewModal').hasClass('show')) {
         this.closeModal();
       }
@@ -120,19 +117,12 @@ export class SerpComponent implements OnInit {
     this.menuBtn.closeMenu()
   }
 
-
   toggleMobileSelect() {
     this.mobileSelectEnbaled = !this.mobileSelectEnbaled;
   }
 
   saveBatch() {
     this.menuBtn.openMenu();
-    // let selecteDocs = this.documents.filter(d => d.selected == true);
-    // this.libraryService.addBatchBaselineSavedDoc(selecteDocs).subscribe(res => {
-    //   this.documents.filter(d => d.selected == true).forEach(doc => {
-    //     doc.isSaved = true;
-    //   });;
-    // })
   }
 
   search(offset = 0, fromSubmit = true) {
@@ -153,15 +143,10 @@ export class SerpComponent implements OnInit {
           }
         });
         this.searching = false;
-
         this.searchTerms = this.searchQuery.split(' ');
-
         this.searchTerms = this.searchTerms.filter((el) => !this.stopwords.includes(el.toLowerCase()));
-
         this.searchId = res.data._id;
-
         this.searching = false;
-
         const queryParams: Params = { query: this.searchQuery };
         if (fromSubmit) {
           this.searchFromFormSubmit = true;
@@ -174,9 +159,6 @@ export class SerpComponent implements OnInit {
             });
 
         }
-        // }, err => {
-        //   this.searching = false;
-        // });
       }, err => {
       });
     } else {
@@ -188,7 +170,6 @@ export class SerpComponent implements OnInit {
   }
 
   pageBoundsCorrection() {
-
   }
 
   saveSearch() {
@@ -256,11 +237,9 @@ export class SerpComponent implements OnInit {
         doc._id = res.data._id
       });
     }
-
   }
 
   getLanguage(code: string) {
     return this.langs.where("2", code);
   }
-
 }

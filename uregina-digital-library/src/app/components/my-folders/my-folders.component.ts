@@ -26,9 +26,6 @@ export class MyFoldersComponent implements OnInit {
     this.username = this.authService.getCurrentUserData().name;
   }
 
-  startTask() {
-  }
-
   forceRefresh(tab: number) {
     switch (tab) {
       case 0:
@@ -46,7 +43,6 @@ export class MyFoldersComponent implements OnInit {
     setTimeout(() => {
       this.menuBtn.openMenu();
     }, 100);
-
   }
 
   changeLabel(label: Label, type: string) {
@@ -54,7 +50,6 @@ export class MyFoldersComponent implements OnInit {
   }
 
   logOut() {
-
     this.authService.clearSession();
     this.router.navigate(['/login']);
   }
@@ -62,7 +57,6 @@ export class MyFoldersComponent implements OnInit {
   onTabChanged(event: any) {
     this.selectedTabIndex = event.index;
   }
-
 
   saveBatchSearchedHistory() {
     this.dataService.updateMyFolderSearchHistorySaveAll(1);

@@ -9,6 +9,7 @@ import { LibraryService } from 'src/app/services';
   templateUrl: './doc-card.component.html',
   styleUrls: ['./doc-card.component.css']
 })
+
 export class DocCardComponent implements OnInit {
   @Input() itemCount: number = null;
   @Input() parent: string = 'serp';
@@ -20,10 +21,9 @@ export class DocCardComponent implements OnInit {
   @Input() availableLabels: Label[] = [];
   @Output() saveDoc: EventEmitter<Doc> = new EventEmitter();
   @Output() viewDoc: EventEmitter<{ data: Doc, type: string }> = new EventEmitter();
-  // @Output() savedDocChecked: EventEmitter<{ data: Doc, selected: boolean, location: string }> = new EventEmitter();
   @ViewChild('menuTrigger') menuBtn: MatMenuTrigger;
-
   newLabel = '';
+
   constructor(private libService: LibraryService) { }
 
   ngOnInit(): void {
@@ -33,7 +33,6 @@ export class DocCardComponent implements OnInit {
     }
   }
   savedDocCheck(data) {
-    // this.savedDocChecked.emit({ data: this.doc, selected: true, location: 'doc-card' });
     this.viewDoc.emit({ data: this.doc, type: 'checked' });
   }
 
@@ -67,6 +66,7 @@ export class DocCardComponent implements OnInit {
       this.doc.labelsPopulated = this.doc.labelsPopulated.filter(l => l._id != label._id);
     });
   }
+
   getUrl() {
     if (this.doc.type.toLocaleLowerCase() == 'article') {
       if (!this.doc.doi) {
@@ -120,18 +120,12 @@ export class DocCardComponent implements OnInit {
     this.saveDoc.emit(doc);
   }
 
-  // saveToWorkspace(doc: Doc) {
-  //   this.saveDoc.emit(doc);
-  // }
-
   viewDocument(doc: Doc) {
     this.viewDoc.emit({ data: this.doc, type: 'view' });
   }
 
   openDocument(doc: Doc) {
     this.viewDoc.emit({ data: this.doc, type: 'open' });
-    // this.viewDoc.emit(doc);
-
   }
 
 }
