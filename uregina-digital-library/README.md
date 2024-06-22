@@ -1,27 +1,34 @@
-# UreginaDigitalLibrary
+#Academic Digital Library Application
+This is an academic digital library search interface built with Angular and  Material UI components. This interface was created to asses Dilex (another digital library search application) in a controlled laboratory test where this interface was the baseline condition used by half of the participants. The app consumes a node.js (express) REST API which uses Exlibris REST API for fetching search results and uses mongoDB atlas database for storing search queries, saved documents, and user data.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.5.
+##Features
+- JWT Authentication with acess and refresh tokens
+- Material UI Component
+- Search Page Features:
+	- Search, views, save/delete documents
+	- Select and save/delete documents in batch
+	- Assign labels to selected documents
+	- Save search query to workspace
+- Personal Workspace Features:
+	- History Tab: Browse, delete, reissue search history in single or batch mode
+	- Saved Query Tab: Browse delete, reissue saved search queries or batch mode
+	- Saved documents Tab:
+		- Browse, delete, view saved documents
+		- Select documents and assign new or existing labels
+		- Remove labels from documents
+		- Filter saved documents by labels
 
-## Development server
+##Prerequisites
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Node.js (version v18.20.2 or higher)
+- npm (Node Package Manager)
+- Angular CLI (Command Line Interface)
 
-## Code scaffolding
+##Installation
+Clone repo: `$ git clone git@bitbucket.org:romy6047/uregina-baseline.git`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Install: `$ npm install`
 
-## Build
+Start app: `$ ng serve `
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Make sure the node.js repo is running
