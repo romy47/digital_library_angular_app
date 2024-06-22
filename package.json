@@ -24,6 +24,7 @@
     "bootstrap": "^5.1.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.6.0",
+    "langs": "^2.0.0",
     "ngx-pagination": "6.0.3",
     "node-sass": "^9.0.0",
     "rxjs": "~6.5.5",
