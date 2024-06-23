@@ -1,4 +1,4 @@
-# Academic Digital Library Application
+# Academic Digital Library Application: Angular Frontend
 This is the front end of an academic digital library search interface built with Angular and  Material UI components. It was developed to assess Dilex (another digital library search application) in a controlled laboratory test where this interface was the baseline condition used by half of the participants. The app consumes a node.js (express) REST API which uses Exlibris REST API for fetching search results and mongoDB atlas database for storing search queries, saved documents, and user data.
 
 ## Features
